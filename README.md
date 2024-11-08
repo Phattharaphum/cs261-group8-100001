@@ -1,3 +1,4 @@
+วิธีการติดตั้งและรัน
 ---
 
 ### สิ่งที่ต้องเตรียมก่อน
@@ -18,6 +19,7 @@ cd <project-folder>
 
 แทนที่ `<repository-url>` ด้วย URL ของ Repository และ `<project-folder>` ด้วยชื่อโฟลเดอร์ที่ clone ลงมา
 โดย path ไปยัง dir หลักคือ CS261_Group8_TermProject01/project-root
+
 ---
 
 ### ขั้นตอนที่ 2: ตั้งค่า Environment Variables
