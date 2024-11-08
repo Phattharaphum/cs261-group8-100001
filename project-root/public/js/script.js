@@ -1,4 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
+    async function getApiKey() {
+        try {
+            const response = await fetch('/api/get-api-key');
+            const data = await response.json();
+            return data.apiKey;
+        } catch (error) {
+            console.error('Error fetching API Key:', error);
+            return null;
+        }
+    }
+
     // กำหนดตัวแปรที่เชื่อมต่อกับ element ต่างๆ ใน HTML
     const usernameInput = document.getElementById('username');
     const passwordInput = document.getElementById('password');
@@ -33,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ฟังก์ชันจัดการการล็อกอินเมื่อผู้ใช้ส่งฟอร์ม
-    function submitLogin() {
+    async function submitLogin() {
         const username = usernameInput.value;
         const password = passwordInput.value;
 
@@ -65,14 +76,15 @@ document.addEventListener("DOMContentLoaded", function () {
             `);
             return;
         }
-
+        const apiKey = await getApiKey();
         // ถ้าข้อมูลถูกต้อง ส่งคำขอล็อกอินไปที่ API
         if (usernameValid && passwordValid) {
+            
             fetch('https://restapi.tu.ac.th/api/v1/auth/Ad/verify', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Application-Key': ''
+                    'Application-Key': apiKey
                 },
                 body: JSON.stringify({
                     UserName: username,
