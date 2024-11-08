@@ -1,0 +1,53 @@
+<!-- project-root/public/draftPetitions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draft Petitions</title>
+</head>
+<body>
+    <h1>Draft Petitions</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Petition ID</th>
+                <th>Type</th>
+                <th>Semester</th>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Section</th>
+                <th>Submitted On</th>
+            </tr>
+        </thead>
+        <tbody id="petitionTableBody">
+            <!-- ข้อมูลคำร้องจะถูกเพิ่มที่นี่โดย JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // ดึงข้อมูลรายการคำร้องจาก backend
+        fetch('/draft-petitions')
+            .then(response => response.json())
+            .then(data => {
+                const tableBody = document.getElementById('petitionTableBody');
+                data.forEach(petition => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${petition.petition_id}</td>
+                        <td>${petition.petition_type}</td>
+                        <td>${petition.semester}</td>
+                        <td>${petition.subject_code}</td>
+                        <td>${petition.subject_name}</td>
+                        <td>${petition.section}</td>
+                        <td>${new Date(petition.submit_time).toLocaleString()}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching draft petitions:', error);
+            });
+    </script>
+</body>
+</html>

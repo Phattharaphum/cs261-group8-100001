@@ -14,4 +14,18 @@ const config = {
     }
 };
 
-module.exports = sql.connect(config);
+const connectToDatabase = async () => {
+    try {
+        // ตรวจสอบว่ามีการเชื่อมต่อแล้วหรือไม่
+        if (!sql.pool) {
+            await sql.connect(config);
+            console.log('Connected to the database');
+        }
+    } catch (error) {
+        console.error('Database connection failed:', error);
+    }
+};
+
+connectToDatabase();
+
+module.exports = sql;

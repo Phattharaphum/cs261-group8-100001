@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const usernameBox = document.getElementById('userbox');
     const passwordBox = document.getElementById('passbox');
 
+    /*
     // เมื่อมีการป้อนข้อมูลใน input จะตรวจสอบความถูกต้อง
     usernameInput.addEventListener('input', validateInputs);
     passwordInput.addEventListener('input', validateInputs); // ตรวจสอบรหัสผ่านด้วย
@@ -42,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
             passwordBox.style.border = '2px solid #495057'; // ขอบปกติถ้าถูกต้อง
         }
     }
-
+    */
     // ฟังก์ชันจัดการการล็อกอินเมื่อผู้ใช้ส่งฟอร์ม
     async function submitLogin() {
         const username = usernameInput.value;
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
             `);
             return; 
         }
-
+        /*
         const usernameValid = /^\d{10}$/.test(username); // ตรวจสอบว่า username เป็นตัวเลข 10 หลัก
         const passwordValid = password.length >= 6; // ตรวจสอบว่ารหัสผ่านมีมากกว่า 6 ตัวอักษร
 
@@ -76,8 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
             `);
             return;
         }
+            */
         // ถ้าข้อมูลถูกต้อง ส่งคำขอล็อกอินไปที่ API
-        if (usernameValid && passwordValid) {
+        if (/*usernameValid && passwordValid*/ true) {
             
             try {
                 const response = await fetch('/login', {

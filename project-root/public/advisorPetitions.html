@@ -1,0 +1,60 @@
+<!-- project-root/public/advisorPetitions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการคำร้อง</title>
+    <style>
+        /* ตัวอย่างการจัดสไตล์เพื่อให้แสดงผลตามที่ออกแบบ */
+        .petition-list {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        .petition-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            background-color: #f3f3f3;
+            margin-bottom: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="petition-list">
+        <h2>ยังไม่ได้ตรวจสอบ</h2>
+        <div id="pending-petitions"></div>
+
+        <h2>ตรวจสอบแล้ว</h2>
+        <div id="reviewed-petitions"></div>
+    </div>
+
+    <script>
+        fetch('/advisor/pending-petitions')
+            .then(response => response.json())
+            .then(data => {
+                const pendingContainer = document.getElementById('pending-petitions');
+                const reviewedContainer = document.getElementById('reviewed-petitions');
+
+                data.pending.forEach(petition => {
+                    const item = document.createElement('div');
+                    item.className = 'petition-item';
+                    item.textContent = `${petition.submit_time} - ${petition.petition_type} - ${petition.student_id} - ${petition.student_name}`;
+                    item.onclick = () => window.location.href = `/advisor/petition/${petition.petition_id}`;
+                    pendingContainer.appendChild(item);
+                });
+
+                data.reviewed.forEach(petition => {
+                    const item = document.createElement('div');
+                    item.className = 'petition-item';
+                    item.textContent = `${petition.submit_time} - ${petition.petition_type} - ${petition.student_id} - ${petition.student_name}`;
+                    item.onclick = () => window.location.href = `/advisor/petition/${petition.petition_id}`;
+                    reviewedContainer.appendChild(item);
+                });
+            })
+            .catch(error => console.error('Error fetching petitions:', error));
+    </script>
+</body>
+</html>

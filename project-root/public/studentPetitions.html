@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สถานะคำร้อง</title>
+</head>
+<body>
+    <div>
+        <h1>รายการคำร้อง</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>วันที่</th>
+                    <th>ประเภท</th>
+                    <th>รหัสวิชา</th>
+                    <th>สถานะ</th>
+                    <th>ตรวจสอบ</th>
+                </tr>
+            </thead>
+            <tbody id="petition-list"></tbody>
+        </table>
+    </div>
+
+    <script>
+        // Fetch the list of petitions for the student
+        fetch('/student/petitions')
+            .then(response => response.json())
+            .then(data => {
+                const petitionList = document.getElementById('petition-list');
+                data.forEach(petition => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${petition.submit_time}</td>
+                        <td>${petition.petition_type}</td>
+                        <td>${petition.subject_code}</td>
+                        <td>${petition.status}</td>
+                        <td><button onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
+                    `;
+                    petitionList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching petitions:', error));
+
+        function viewPetition(id) {
+            window.location.href = `/studentPetitionDetail.html?id=${id}`;
+        }
+    </script>
+</body>
+</html>
