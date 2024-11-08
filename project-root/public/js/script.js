@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     // เคลียร์ฟิลด์เมื่อสำเร็จ
                     usernameInput.value = '';
                     passwordInput.value = '';
+                    window.location.href = '/home';
                 } else {
                     // ถ้าล็อกอินล้มเหลวแสดงข้อความผิดพลาด
                     showModal(`

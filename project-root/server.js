@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const userRoutes = require('./routes/userRoutes');
 const dotenv = require('dotenv');
+const path = require('path');
 
 dotenv.config(); // โหลด environment variables จาก .env
 
@@ -12,6 +13,11 @@ app.use(express.static('public')); // ให้บริการไฟล์ st
 app.get('/api/get-api-key', (req, res) => {
     // ส่งค่า API Key กลับไปที่ frontend
     res.json({ apiKey: process.env.API_KEY });
+});
+
+// โหลดไฟล์ HTML สำหรับหน้า Home
+app.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'home.html'));
 });
 
 // กำหนดเส้นทางสำหรับ user routes
