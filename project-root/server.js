@@ -23,8 +23,6 @@ app.use(session({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        // ไม่ตั้งค่า maxAge ทำให้ session เป็น session cookie
-        // ซึ่งจะหมดอายุเมื่อปิดเบราว์เซอร์
         secure: false, // ตั้งเป็น true ถ้าใช้งานผ่าน HTTPS
         httpOnly: true  // ป้องกันการเข้าถึงจาก client-side JavaScript
     }
@@ -64,7 +62,7 @@ app.post('/login', async (req, res) => {
             // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า hometeacher
             res.json({
                 success: true,
-                redirectUrl: '/hometeacher'
+                redirectUrl: '/advisorPetitions'
             });
         } else {
             // ถ้า username และ password ไม่ตรงตามเงื่อนไข ให้เรียก TU API
@@ -97,7 +95,7 @@ app.post('/login', async (req, res) => {
                 // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า homestudent
                 res.json({
                     success: true,
-                    redirectUrl: '/homestudent'
+                    redirectUrl: '/draftPetitions'
                 });
             } else {
                 // กรณี API แจ้งว่าข้อมูลไม่ถูกต้อง
@@ -126,35 +124,25 @@ app.get('/get-session-data', (req, res) => {
     if (req.session.user) {
         res.json({
             student_id: req.session.user.username,
-            student_name: req.session.user.displayname_th
+            student_name: req.session.user.displayname_th,
+            department: req.session.user.department
         });
     } else {
         res.json({
             student_id: '',
-            student_name: ''
+            student_name: '',
+            department:''
         });
     }
 });
 
 // Route สำหรับ submit คำร้อง
-app.post('/submit-petition', express.urlencoded({ extended: true }), async (req, res) => {
+app.post('/submit-petition', express.json(), async (req, res) => {
     const {
         student_id, student_name, major, year, address,
         student_phone, guardian_phone, petition_type, semester,
         subject_code, subject_name, section, status
     } = req.body;
-
-    const query = `
-        INSERT INTO petition (
-            student_id, student_name, major, year, address,
-            student_phone, guardian_phone, petition_type, semester,
-            subject_code, subject_name, section, status
-        ) VALUES (
-            @student_id, @student_name, @major, @year, @address,
-            @student_phone, @guardian_phone, @petition_type, @semester,
-            @subject_code, @subject_name, @section, @status
-        )
-    `;
 
     try {
         const pool = await sql.connect();
@@ -171,13 +159,74 @@ app.post('/submit-petition', express.urlencoded({ extended: true }), async (req,
             .input('subject_code', sql.NVarChar, subject_code)
             .input('subject_name', sql.NVarChar, subject_name)
             .input('section', sql.NVarChar, section)
-            .input('status', sql.Int, status)
-            .query(query);
+            .input('status', sql.TinyInt, status)
+            .query(`
+                INSERT INTO petition (
+                    student_id, student_name, major, year, address,
+                    student_phone, guardian_phone, petition_type, semester,
+                    subject_code, subject_name, section, status
+                ) VALUES (
+                    @student_id, @student_name, @major, @year, @address,
+                    @student_phone, @guardian_phone, @petition_type, @semester,
+                    @subject_code, @subject_name, @section, @status
+                )
+            `);
 
-        res.status(201).json({ message: 'Petition submitted successfully' });
-    } catch (error) {
-        console.error('Error inserting petition:', error);
-        res.status(500).json({ error: 'Failed to submit petition' });
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error inserting petition:', err);
+        res.status(500).json({ success: false, message: 'Failed to submit petition' });
+    }
+});
+
+
+app.put('/update-petition/:id', express.json(), async (req, res) => {
+    const { id } = req.params;
+    const {
+        student_id, student_name, major, year, address,
+        student_phone, guardian_phone, petition_type, semester,
+        subject_code, subject_name, section, status
+    } = req.body;
+
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('id', sql.Int, id)
+            .input('student_id', sql.NVarChar, student_id)
+            .input('student_name', sql.NVarChar, student_name)
+            .input('major', sql.NVarChar, major)
+            .input('year', sql.Int, year)
+            .input('address', sql.NVarChar, address)
+            .input('student_phone', sql.NVarChar, student_phone)
+            .input('guardian_phone', sql.NVarChar, guardian_phone)
+            .input('petition_type', sql.NVarChar, petition_type)
+            .input('semester', sql.NVarChar, semester)
+            .input('subject_code', sql.NVarChar, subject_code)
+            .input('subject_name', sql.NVarChar, subject_name)
+            .input('section', sql.NVarChar, section)
+            .input('status', sql.TinyInt, status)
+            .query(`
+                UPDATE petition SET
+                    student_id = @student_id,
+                    student_name = @student_name,
+                    major = @major,
+                    year = @year,
+                    address = @address,
+                    student_phone = @student_phone,
+                    guardian_phone = @guardian_phone,
+                    petition_type = @petition_type,
+                    semester = @semester,
+                    subject_code = @subject_code,
+                    subject_name = @subject_name,
+                    section = @section,
+                    status = @status
+                WHERE petition_id = @id
+            `);
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error updating petition:', err);
+        res.status(500).json({ success: false, message: 'Failed to update petition' });
     }
 });
 
@@ -339,6 +388,18 @@ app.get('/advisorPetitions', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'advisorPetitions.html'));
 });
 
+app.get('/studentPetitions', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'studentPetitions.html'));
+});
+
+app.get('/draftPetitions', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'draftPetitions.html'));
+});
+
+app.get('/advisorPetitions', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'advisorPetitions.html'));
+});
+
 // Fetch petitions for the logged-in student
 app.get('/student/petitions', async (req, res) => {
     try {
@@ -371,10 +432,34 @@ app.get('/student/petition-details/:id', async (req, res) => {
     }
 });
 
+// Fetch specific draft petition details by ID
+app.get('/draft-petitions/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query('SELECT * FROM petition WHERE petition_id = @id AND status = 1'); // Ensure it's a draft
+        res.json(result.recordset[0]);
+    } catch (err) {
+        console.error('Error fetching draft petition details:', err);
+        res.status(500).json({ error: 'Failed to fetch draft petition details' });
+    }
+});
 
 
+app.get('/logout', (req, res) => {
+    // Destroy the session
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error destroying session:', err);
+            return res.status(500).json({ error: 'Failed to log out' });
+        }
 
-
+        // Redirect to the login page after successful logout
+        res.redirect('/index.html');
+    });
+});
 
 
 

@@ -8,7 +8,7 @@
 </head>
 <body>
     <h1>Petition Form</h1>
-    <form id="petitionForm" method="POST" action="/submit-petition">
+    <form id="petitionForm">
         <label for="student_id">Student ID:</label>
         <input type="text" id="student_id" name="student_id" readonly><br>
 
@@ -45,7 +45,8 @@
         <label for="section">Section:</label>
         <input type="text" id="section" name="section"><br>
 
-        <!-- Hidden field for status -->
+        <!-- Hidden field for petition_id and status -->
+        <input type="hidden" id="petition_id" name="petition_id">
         <input type="hidden" id="status" name="status" value="1">
 
         <!-- Buttons for saving as draft and submitting -->
@@ -54,19 +55,71 @@
     </form>
 
     <script>
-        // Fetch session data from the server to populate the form fields
+        const urlParams = new URLSearchParams(window.location.search);
+        const petitionId = urlParams.get('petition_id'); // Get petition_id from query parameters
+
+        // Fetch session data to populate form fields if available
         fetch('/get-session-data')
             .then(response => response.json())
             .then(data => {
                 document.getElementById('student_id').value = data.student_id || '';
                 document.getElementById('student_name').value = data.student_name || '';
+                document.getElementById('major').value = data.department || '';
             })
             .catch(error => console.error('Error fetching session data:', error));
 
-        // Function to set the status and submit the form
+        // If a petition_id is present, load the draft data for editing
+        if (petitionId) {
+            fetch(`/draft-petitions/${petitionId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('petition_id').value = petitionId;
+                    document.getElementById('year').value = data.year || '';
+                    document.getElementById('address').value = data.address || '';
+                    document.getElementById('student_phone').value = data.student_phone || '';
+                    document.getElementById('guardian_phone').value = data.guardian_phone || '';
+                    document.getElementById('petition_type').value = data.petition_type || '';
+                    document.getElementById('semester').value = data.semester || '';
+                    document.getElementById('subject_code').value = data.subject_code || '';
+                    document.getElementById('subject_name').value = data.subject_name || '';
+                    document.getElementById('section').value = data.section || '';
+                })
+                .catch(error => console.error('Error fetching draft petition data:', error));
+        }
+
         function submitForm(status) {
-            document.getElementById('status').value = status; // Set status value
-            document.getElementById('petitionForm').submit(); // Submit form
+            const petitionId = document.getElementById('petition_id').value;
+            const formData = new FormData(document.getElementById('petitionForm'));
+            const data = Object.fromEntries(formData.entries());
+            data.status = status; // Set status for draft or submit
+
+            // If petition_id is present, update the petition; otherwise, create a new one
+            const url = petitionId ? `/update-petition/${petitionId}` : '/submit-petition';
+            const method = petitionId ? 'PUT' : 'POST';
+
+            fetch(url, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    // Redirect based on action
+                    if (status === 1) {
+                        window.location.href = '/draft-petitions-page'; // Redirect after saving as draft
+                    } else if (status === 2) {
+                        window.location.href = '/studentPetitions'; // Redirect after submitting petition
+                    }
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting form:', error);
+            });
         }
     </script>
 </body>

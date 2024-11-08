@@ -1,12 +1,61 @@
+<!-- project-root/public/studentPetitions.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สถานะคำร้อง</title>
+    <style>
+        /* Basic layout and styling */
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .sidebar a.active {
+            background-color: #ccc;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <div>
+    <!-- Sidebar with navigation -->
+    <div class="sidebar">
+        <a href="/draftPetitions.html">เขียนคำร้อง</a>
+        <a href="#" class="active">สถานะคำร้อง</a>
+        <a href="/logout">ออกจากระบบ</a>
+    </div>
+
+    <!-- Main content area -->
+    <div class="content">
         <h1>รายการคำร้อง</h1>
         <table>
             <thead>
@@ -31,7 +80,7 @@
                 data.forEach(petition => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${petition.submit_time}</td>
+                        <td>${new Date(petition.submit_time).toLocaleDateString()}</td>
                         <td>${petition.petition_type}</td>
                         <td>${petition.subject_code}</td>
                         <td>${petition.status}</td>
