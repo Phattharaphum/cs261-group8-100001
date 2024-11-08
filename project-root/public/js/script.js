@@ -76,53 +76,36 @@ document.addEventListener("DOMContentLoaded", function () {
             `);
             return;
         }
-        const apiKey = await getApiKey();
         // ถ้าข้อมูลถูกต้อง ส่งคำขอล็อกอินไปที่ API
         if (usernameValid && passwordValid) {
             
-            fetch('https://restapi.tu.ac.th/api/v1/auth/Ad/verify', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Application-Key': apiKey
-                },
-                body: JSON.stringify({
-                    UserName: username,
-                    PassWord: password
-                })
-            })
-            .then(response => response.json()) // รอรับผลลัพธ์จาก API
-            .then(data => {
-                // ถ้าล็อกอินสำเร็จ แสดงข้อมูลผู้ใช้
-                if (data.status === true) {
-                    showModal(`
-                        <p class="login-success">Login successful !</p>
-                        <p class="username"><span class="spatata">Username:</span> ${data.username}</p>
-                        <p class="email"><span class="spatata">Email:</span> ${data.email}</p>
-                        <p class="displayname-en"><span class="spatata">Name (EN):</span> ${data.displayname_en}</p>
-                        <p class="displayname-th"><span class="spatata">Name (TH):</span> ${data.displayname_th}</p>
-                        <p class="faculty"><span class="spatata">Faculty:</span> ${data.faculty}</p>
-                        <p class="department"><span class="spatata">Department:</span> ${data.department}</p>
-                    `);
-                    // เคลียร์ฟิลด์เมื่อสำเร็จ
-                    usernameInput.value = '';
-                    passwordInput.value = '';
-                    window.location.href = '/home';
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+        
+                const data = await response.json();
+        
+                if (data.success) {
+                    window.location.href = data.redirectUrl; // เปลี่ยนเส้นทางไปยังหน้าที่กำหนด
                 } else {
                     // ถ้าล็อกอินล้มเหลวแสดงข้อความผิดพลาด
                     showModal(`
-                        <p class="login-failed">Login Failed !</p>
+                        <p class="login-failed">Login Failed!</p>
                         <p class="login-failed-message">${data.message}</p>
                     `);
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 // จัดการกรณีมีข้อผิดพลาดในการเชื่อมต่อ
                 showModal(`
-                    <p class="login-failed">Error !</p>
+                    <p class="login-failed">Error!</p>
                     <p class="login-failed-message">Error: ${error}</p>
                 `);
-            });
+            }
         }
     }
 
