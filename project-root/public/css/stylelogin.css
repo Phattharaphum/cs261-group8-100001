@@ -1,0 +1,210 @@
+.mainbgpic {
+	width: 100%;
+	height: 100%;
+	background-image: url('../img/bg02.jpg');
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	flex-direction: column;
+
+}
+body {
+	width: 100vw;
+	height: 100vh;
+	margin: 0;
+	font-family: Poppins;
+}
+.logo {
+	width: 120px;
+	margin: auto;
+}
+
+.tn2 {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+}
+
+.login-box {
+	margin: auto;
+	background-color: rgba(255, 255, 255, 0.75);
+	width: 300px;
+	padding: 30px;
+	border-radius: 25px;
+	display: flex;
+	flex-direction: column;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.title {
+	margin: auto;
+	font-size: 26pt;
+	color: white;
+}
+
+.input-box {
+	position: relative;
+	margin-bottom: 15px;
+	display: flex;
+	border: 2px solid #495057;
+	border-radius: 15px;
+	height: 40px;
+}
+
+.input-box input {
+	width: 80%;
+
+	font-family: Poppins;
+	font-size: 12pt;
+	border: none;
+	background-color: transparent;
+}
+
+input:focus {
+	outline: none;
+}
+
+.formicon {
+	width: 25px;
+	height: 25px;
+	margin: auto;
+	margin-left: 10px;
+	opacity: 0.7;
+}
+
+.loginh2 {
+	margin: auto;
+	text-align: center;
+	margin-bottom: 15px;
+	font-size: 22pt;
+	color: #343a40;
+}
+
+.login-btn {
+	width: 100%;
+	padding: 10px;
+	background-color: #d32f2f;
+	color: white;
+	border: none;
+	border-radius: 10px;
+	cursor: pointer;
+	font-size: 18px;
+	font-family: Poppins;
+	font-weight: 600;
+}
+
+.login-btn:hover {
+	background-color: #aa0e0e;
+
+}
+
+.usi {
+	margin: auto;
+	font-size: 15pt;
+	color: #495057;
+}
+
+.modal {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	padding: 20px;
+	box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+	border-radius: 30px;
+	z-index: 1000;
+	min-width: 300px;
+}
+
+#closeModal {
+	margin-top: 10px;
+	font-family: Poppins;
+	margin: auto;
+	border-radius: 5px;
+	border: none;
+	font-weight: 700;
+	padding: 8px;
+	background-color: #9e2a2b;
+	color: white;
+
+}
+
+#closeModal:hover {
+	background-color: #641818;
+	cursor: pointer;
+}
+
+.login-success {
+	text-align: center;
+	font-size: 15pt;
+	font-weight: 600;
+	margin: 0;
+	background-color: #f48c06;
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.spatata {
+	font-weight: 700;
+	font-family: Poppins;
+}
+
+.displayname-th {
+	font-family: 'Bai jamjuree';
+	font-weight: 500;
+}
+
+.login-failed {
+	text-align: center;
+	font-size: 15pt;
+	font-weight: 600;
+	margin: 0;
+	background-color: #f48c06;
+	color: white;
+	padding: 10px;
+	border-radius: 10px;
+}
+
+.faculty {
+	font-family: 'Bai jamjuree';
+	font-weight: 500;
+}
+
+.department {
+	font-family: 'Bai jamjuree';
+	font-weight: 500;
+}
+
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 999;
+	display: none;
+	/* ซ่อนเมื่อไม่ได้แสดง */
+}
+
+.toggle-password-btn {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+	color: #495057;
+	font-size: 14px;
+	font-family: Poppins;
+	padding: 5px;
+	width: 55px;
+}
+
+.toggle-password-btn:hover {
+	text-decoration: underline;
+	/* ขีดเส้นใต้เมื่อ hover */
+}
+
+#password {
+	width: 180px;
+}
