@@ -1,99 +1,105 @@
 <!-- project-root/public/studentPetitions.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>สถานะคำร้อง</title>
     <style>
-        /* Basic layout and styling */
-        body {
-            display: flex;
-            font-family: Arial, sans-serif;
-        }
-        .sidebar {
-            width: 200px;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            margin-bottom: 10px;
-            color: black;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .sidebar a.active {
-            background-color: #ccc;
-        }
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
+      /* Basic layout and styling */
+      body {
+        display: flex;
+        font-family: Arial, sans-serif;
+      }
+      .sidebar {
+        width: 200px;
+        background-color: #f4f4f4;
+        padding: 20px;
+      }
+      .sidebar a {
+        display: block;
+        padding: 10px;
+        margin-bottom: 10px;
+        color: black;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .sidebar a.active {
+        background-color: #ccc;
+      }
+      .content {
+        flex-grow: 1;
+        padding: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Sidebar with navigation -->
     <div class="sidebar">
-        <a href="/draftPetitions.html">เขียนคำร้อง</a>
-        <a href="#" class="active">สถานะคำร้อง</a>
-        <a href="/logout">ออกจากระบบ</a>
+      <a href="/draftPetitions.html">เขียนคำร้อง</a>
+      <a href="#" class="active">สถานะคำร้อง</a>
+      <a href="/logout">ออกจากระบบ</a>
     </div>
 
     <!-- Main content area -->
     <div class="content">
-        <h1>รายการคำร้อง</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>วันที่</th>
-                    <th>ประเภท</th>
-                    <th>รหัสวิชา</th>
-                    <th>สถานะ</th>
-                    <th>ตรวจสอบ</th>
-                </tr>
-            </thead>
-            <tbody id="petition-list"></tbody>
-        </table>
+      <h1>รายการคำร้อง</h1>
+      <table>
+        <thead>
+          <tr>
+            <th>วันที่</th>
+            <th>ประเภท</th>
+            <th>รหัสวิชา</th>
+            <th>สถานะ</th>
+            <th>ตรวจสอบ</th>
+          </tr>
+        </thead>
+        <tbody id="petition-list"></tbody>
+      </table>
     </div>
 
     <script>
-        // Fetch the list of petitions for the student
-        fetch('/student/petitions')
-            .then(response => response.json())
-            .then(data => {
-                const petitionList = document.getElementById('petition-list');
-                data.forEach(petition => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${new Date(petition.submit_time).toLocaleDateString()}</td>
+      // Fetch the list of petitions for the student
+      fetch("/student/petitions")
+        .then((response) => response.json())
+        .then((data) => {
+          const petitionList = document.getElementById("petition-list");
+          data.forEach((petition) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+                        <td>${new Date(
+                          petition.submit_time
+                        ).toLocaleDateString()}</td>
                         <td>${petition.petition_type}</td>
                         <td>${petition.subject_code}</td>
                         <td>${petition.status}</td>
-                        <td><button onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
+                        <td><button onclick="viewPetition(${
+                          petition.petition_id
+                        })">ตรวจสอบ</button></td>
                     `;
-                    petitionList.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error fetching petitions:', error));
+            petitionList.appendChild(row);
+          });
+        })
+        .catch((error) => console.error("Error fetching petitions:", error));
 
-        function viewPetition(id) {
-            window.location.href = `/studentPetitionDetail.html?id=${id}`;
-        }
+      function viewPetition(id) {
+        window.location.href = `/studentPetitionDetail.html?id=${id}`;
+      }
     </script>
-</body>
+    <script src="/js/sessionTimeout.js"></script>
+  </body>
 </html>
