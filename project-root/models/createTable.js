@@ -37,6 +37,20 @@ BEGIN
 END;
 `;
 
+const createAttachmentInfoTable = `
+IF OBJECT_ID('attachment_info', 'U') IS NULL 
+BEGIN
+    CREATE TABLE attachment_info (
+        id INT IDENTITY(1,1) PRIMARY KEY,
+        petition_id INT,
+        file_extension VARCHAR(255),
+        file_name VARCHAR(255),
+        file_description TEXT,
+        file_path VARCHAR(255)
+        );
+END;
+`;
+
 const initializeTables = async () => {
     try {
         // สร้างการเชื่อมต่อกับฐานข้อมูล
@@ -49,6 +63,9 @@ const initializeTables = async () => {
         // สร้างตาราง advisor_info
         await pool.request().query(createAdvisorInfoTable);
         console.log('Advisor info table created successfully or already exists.');
+
+        await pool.request().query(createAttachmentInfoTable);
+        console.log('Attachment info table created successfully or already exists.');
     } catch (err) {
         console.error('Error creating tables:', err);
     } finally {

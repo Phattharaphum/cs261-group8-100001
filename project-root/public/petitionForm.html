@@ -1,126 +1,152 @@
-<!-- project-root/public/petitionForm.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Petition Form</title>
 </head>
 <body>
     <h1>Petition Form</h1>
-    <form id="petitionForm">
-        <label for="student_id">Student ID:</label>
-        <input type="text" id="student_id" name="student_id" readonly><br>
-
-        <label for="student_name">Student Name:</label>
-        <input type="text" id="student_name" name="student_name" readonly><br>
-
-        <label for="major">Major:</label>
-        <input type="text" id="major" name="major" required><br>
-
-        <label for="year">Year:</label>
-        <input type="number" id="year" name="year" required><br>
-
-        <label for="address">Address:</label>
-        <textarea id="address" name="address" required></textarea><br>
-
-        <label for="student_phone">Student Phone:</label>
-        <input type="tel" id="student_phone" name="student_phone" required><br>
-
-        <label for="guardian_phone">Guardian Phone:</label>
-        <input type="tel" id="guardian_phone" name="guardian_phone" required><br>
-
-        <label for="petition_type">Petition Type:</label>
-        <input type="text" id="petition_type" name="petition_type" required><br>
-
-        <label for="semester">Semester:</label>
-        <input type="text" id="semester" name="semester" required><br>
-
-        <label for="subject_code">Subject Code:</label>
-        <input type="text" id="subject_code" name="subject_code"><br>
-
-        <label for="subject_name">Subject Name:</label>
-        <input type="text" id="subject_name" name="subject_name"><br>
-
-        <label for="section">Section:</label>
-        <input type="text" id="section" name="section"><br>
-
-        <!-- Hidden field for petition_id and status -->
-        <input type="hidden" id="petition_id" name="petition_id">
-        <input type="hidden" id="status" name="status" value="1">
-
-        <!-- Buttons for saving as draft and submitting -->
-        <button type="button" onclick="submitForm(1)">Save as Draft</button>
-        <button type="button" onclick="submitForm(2)">Submit Petition</button>
+    <form id="petitionForm" action="/submit-petition" method="post" enctype="multipart/form-data">
+        <label for="student_id">รหัสนักศึกษา:</label>
+        <input type="text" id="student_id" name="student_id" autocomplete="off" required><br>
+    
+        <label for="student_name">ชื่อนักศึกษา:</label>
+        <input type="text" id="student_name" name="student_name" autocomplete="name" required><br>
+    
+        <label for="major">สาขาวิชา:</label>
+        <input type="text" id="major" name="major" autocomplete="organization" required><br>
+    
+        <label for="year">ปีการศึกษา:</label>
+        <input type="number" id="year" name="year" autocomplete="off" required><br>
+    
+        <label for="address">ที่อยู่:</label>
+        <textarea id="address" name="address" autocomplete="street-address" required></textarea><br>
+    
+        <label for="student_phone">เบอร์โทรนักศึกษา:</label>
+        <input type="tel" id="student_phone" name="student_phone" autocomplete="tel" required><br>
+    
+        <label for="guardian_phone">เบอร์โทรผู้ปกครอง:</label>
+        <input type="tel" id="guardian_phone" name="guardian_phone" autocomplete="tel" required><br>
+    
+        <label for="petition_type">ประเภทคำร้อง:</label>
+        <input type="text" id="petition_type" name="petition_type" autocomplete="off" required><br>
+    
+        <label for="semester">ภาคการศึกษา:</label>
+        <input type="text" id="semester" name="semester" autocomplete="off" required><br>
+    
+        <label for="subject_code">รหัสวิชา:</label>
+        <input type="text" id="subject_code" name="subject_code" autocomplete="off"><br>
+    
+        <label for="subject_name">ชื่อวิชา:</label>
+        <input type="text" id="subject_name" name="subject_name" autocomplete="off"><br>
+    
+        <label for="section">ตอนเรียน:</label>
+        <input type="text" id="section" name="section" autocomplete="off"><br>
+    
+        <!-- ส่วนไฟล์แนบที่เพิ่มการเข้าถึง -->
+        <div class="document-section">
+            <h3>ไฟล์แนบ 1</h3>
+            <input type="file" id="file1" name="file1" title="อัปโหลดไฟล์ของคุณ">
+            <input type="text" id="filename1" name="filename1" placeholder="ใส่ชื่อไฟล์">
+            <input type="text" id="desc1" name="desc1" placeholder="ใส่คำอธิบาย">
+            <button type="button" onclick="uploadFile('file1')">บันทึกไฟล์</button>
+        </div>
+        
+        <!-- ไฟล์แนบ 2 -->
+        <div class="document-section">
+            <h3>ไฟล์แนบ 2</h3>
+            <input type="file" id="file2" name="file2" title="อัปโหลดไฟล์ของคุณ">
+            <input type="text" id="filename2" name="filename2" placeholder="ใส่ชื่อไฟล์">
+            <input type="text" id="desc2" name="desc2" placeholder="ใส่คำอธิบาย">
+            <button type="button" onclick="uploadFile('file2')">บันทึกไฟล์</button>
+        </div>
+        
+        <!-- ไฟล์แนบ 3 -->
+        <div class="document-section">
+            <h3>ไฟล์แนบ 3</h3>
+            <input type="file" id="file3" name="file3" title="อัปโหลดไฟล์ของคุณ">
+            <input type="text" id="filename3" name="filename3" placeholder="ใส่ชื่อไฟล์">
+            <input type="text" id="desc3" name="desc3" placeholder="ใส่คำอธิบาย">
+            <button type="button" onclick="uploadFile('file3')">บันทึกไฟล์</button>
+        </div>
+        <p id="message"></p>
+        <button type="button" onclick="submitForm(1)">บันทึกเป็นฉบับร่าง</button>
+        <button type="button" onclick="submitForm(2)">ส่งคำร้อง</button>
     </form>
+    
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const petitionId = urlParams.get('petition_id'); // Get petition_id from query parameters
+    async function submitForm(status) {
+    console.log('Submitting form with status:', status);
+    const formData = new FormData(document.getElementById('petitionForm'));
+    formData.append('status', status);
 
-        // Fetch session data to populate form fields if available
-        fetch('/get-session-data')
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('student_id').value = data.student_id || '';
-                document.getElementById('student_name').value = data.student_name || '';
-                document.getElementById('major').value = data.department || '';
-            })
-            .catch(error => console.error('Error fetching session data:', error));
+    const url = '/submit-petition';
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: formData
+        });
 
-        // If a petition_id is present, load the draft data for editing
-        if (petitionId) {
-            fetch(`/draft-petitions/${petitionId}`)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('petition_id').value = petitionId;
-                    document.getElementById('year').value = data.year || '';
-                    document.getElementById('address').value = data.address || '';
-                    document.getElementById('student_phone').value = data.student_phone || '';
-                    document.getElementById('guardian_phone').value = data.guardian_phone || '';
-                    document.getElementById('petition_type').value = data.petition_type || '';
-                    document.getElementById('semester').value = data.semester || '';
-                    document.getElementById('subject_code').value = data.subject_code || '';
-                    document.getElementById('subject_name').value = data.subject_name || '';
-                    document.getElementById('section').value = data.section || '';
-                })
-                .catch(error => console.error('Error fetching draft petition data:', error));
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status}`);
         }
 
-        function submitForm(status) {
-            const petitionId = document.getElementById('petition_id').value;
-            const formData = new FormData(document.getElementById('petitionForm'));
-            const data = Object.fromEntries(formData.entries());
-            data.status = status; // Set status for draft or submit
+        const result = await response.json();
+        console.log('Server response:', result);
 
-            // If petition_id is present, update the petition; otherwise, create a new one
-            const url = petitionId ? `/update-petition/${petitionId}` : '/submit-petition';
-            const method = petitionId ? 'PUT' : 'POST';
+        if (result.success) {
+            window.location.href = status === 1 ? '/draft-petitions-page' : '/studentPetitions';
+        } else {
+            alert('Error: ' + result.message);
+        }
+    } catch (error) {
+        console.error('Error submitting form:', error);
+    }
+}
+//มันไม่เชิงอัปโหลดอะมันเหมือนปุ่มไว้กดเพื่อเช็คความถูกต้องของไฟล์แถนทำงานผิด
 
-            fetch(url, {
-                method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    // Redirect based on action
-                    if (status === 1) {
-                        window.location.href = '/draft-petitions-page'; // Redirect after saving as draft
-                    } else if (status === 2) {
-                        window.location.href = '/studentPetitions'; // Redirect after submitting petition
-                    }
-                } else {
-                    alert('Error: ' + result.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error submitting form:', error);
+/*async function uploadFile(fileInputId) {
+    const fileInput = document.getElementById(fileInputId);
+    const file = fileInput.files[0];
+    const formData = new FormData();
+
+    if (file) {
+        formData.append(fileInputId, file);
+        formData.append("filename", document.getElementById(`filename${fileInputId.slice(-1)}`).value);
+        formData.append("description", document.getElementById(`desc${fileInputId.slice(-1)}`).value);
+
+        try {
+            const response = await fetch('/upload-file', {
+                method: 'POST',
+                body: formData
             });
+
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+                const result = await response.json();
+                if (result.success) {
+                    alert(result.message);
+                } else {
+                    alert("ข้อผิดพลาดในการอัปโหลดไฟล์: " + result.message);
+                    fileInput.value = ""; // ลบไฟล์ที่ไม่ผ่านเงื่อนไขออกจากช่องไฟล์
+                }
+            } else {
+                // ถ้าประเภทเนื้อหาไม่ใช่ JSON อาจเป็น HTML ซึ่งแสดงถึงข้อผิดพลาดบางอย่าง
+                const errorText = await response.text();
+                console.error('Unexpected response:', errorText);
+                alert('เกิดข้อผิดพลาด: ไม่สามารถอัปโหลดไฟล์ได้');
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            alert('ไม่สามารถอัปโหลดไฟล์ได้: ' + error.message);
         }
+    } else {
+        alert("กรุณาเลือกไฟล์ก่อนอัปโหลด");
+    }
+}*/
     </script>
 </body>
 </html>

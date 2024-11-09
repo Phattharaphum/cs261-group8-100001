@@ -17,6 +17,61 @@ dotenv.config(); // โหลด environment variables จาก .env
 app.use(express.json());
 app.use(express.static('public'));
 
+const fs = require('fs');
+const multer = require('multer');
+
+// สร้างโฟลเดอร์สำหรับเก็บไฟล์ถ้าไม่มีโฟลเดอร์
+const uploadFolder = path.join(__dirname, 'attachments');
+if (!fs.existsSync(uploadFolder)) {
+    fs.mkdirSync(uploadFolder, { recursive: true });
+}
+
+// กำหนดค่า multer สำหรับจัดการการอัปโหลดไฟล์
+const allowedTypes = [
+    'application/pdf', 
+    'application/msword', 
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+    'image/jpeg', 
+    'image/png'
+];
+
+const upload = multer({
+    storage: multer.diskStorage({
+        destination: (req, file, cb) => cb(null, uploadFolder),
+        filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
+    }),
+    limits: { fileSize: 1 * 1024 * 1024 }, // กำหนดขนาดไฟล์สูงสุด 1MB
+    fileFilter: (req, file, cb) => {
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true); // ประเภทไฟล์ถูกต้อง
+        } else {
+            cb(new Error('ประเภทไฟล์ไม่ถูกต้อง กรุณาเลือกไฟล์ที่เป็น PDF, DOC, DOCX, JPG หรือ PNG')); // ประเภทไฟล์ไม่ถูกต้อง
+        }
+    }
+}).fields([{ name: 'file1' }, { name: 'file2' }, { name: 'file3' }]);
+
+// Route สำหรับอัปโหลดไฟล์และแจ้งเตือนกรณีไฟล์ไม่ผ่านเงื่อนไข
+/*app.post('/upload-file', (req, res) => {
+    upload(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            return res.status(400).json({
+                success: false,
+                message: 'ไฟล์มีขนาดเกิน 1MB กรุณาอัปโหลดไฟล์ที่เล็กกว่า'
+            });
+        } else if (err) {
+            return res.status(400).json({ success: false, message: err.message });
+        }
+
+        if (!req.files || Object.keys(req.files).length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: 'กรุณาเลือกไฟล์ก่อนอัปโหลด'
+            });
+        }
+
+        res.json({ success: true, message: 'ไฟล์อัปโหลดสำเร็จ' });
+    });
+});*/
 // ใช้งาน session
 app.use(session({
     secret: 'your_secret_key', // คีย์สำหรับเข้ารหัส session
@@ -137,7 +192,7 @@ app.get('/get-session-data', (req, res) => {
 });
 
 // Route สำหรับ submit คำร้อง
-app.post('/submit-petition', express.json(), async (req, res) => {
+/*app.post('/submit-petition', express.json(), async (req, res) => {
     const {
         student_id, student_name, major, year, address,
         student_phone, guardian_phone, petition_type, semester,
@@ -178,7 +233,89 @@ app.post('/submit-petition', express.json(), async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to submit petition' });
     }
 });
+*/
+async function saveFileData(pool, petitionId, file, filename, description) {
+    const filePath = file.path;
+    const fileExtension = path.extname(file.originalname);
+    const fileName = filename || file.originalname;
 
+    try {
+        await pool.request()
+            .input('petition_id', sql.Int, petitionId)
+            .input('file_extension', sql.NVarChar, fileExtension)
+            .input('file_name', sql.NVarChar, fileName)
+            .input('file_description', sql.NVarChar, description)
+            .input('file_path', sql.NVarChar, filePath)
+            .query(`
+                INSERT INTO attachment_info (petition_id, file_extension, file_name, file_description, file_path)
+                VALUES (@petition_id, @file_extension, @file_name, @file_description, @file_path)
+            `);
+        console.log("File data saved successfully.");
+    } catch (error) {
+        console.error('Error saving file data:', error);
+        throw error; // ส่ง error กลับไปยังฟังก์ชันหลัก
+    }
+}
+
+// Route สำหรับการส่งคำร้องพร้อมไฟล์แนบ
+app.post('/submit-petition', upload.fields([{ name: 'file1' }, { name: 'file2' }, { name: 'file3' }]), async (req, res) => {
+    try {
+        // ตรวจสอบการอัปโหลดไฟล์
+        if (!req.files) {
+            return res.status(400).json({ success: false, message: 'No files uploaded.' });
+        }
+
+        // ดึงข้อมูลคำร้องจาก body ของ request
+        const {
+            student_id, student_name, major, year, address,
+            student_phone, guardian_phone, petition_type, semester,
+            subject_code, subject_name, section, status, filename1, desc1, filename2, desc2, filename3, desc3
+        } = req.body;
+
+        // เชื่อมต่อกับฐานข้อมูล
+        const pool = await sql.connect();
+        
+        // บันทึกข้อมูลคำร้องในตาราง petition
+        const result = await pool.request()
+            .input('student_id', sql.NVarChar, student_id)
+            .input('student_name', sql.NVarChar, student_name)
+            .input('major', sql.NVarChar, major)
+            .input('year', sql.Int, year)
+            .input('address', sql.NVarChar, address)
+            .input('student_phone', sql.NVarChar, student_phone)
+            .input('guardian_phone', sql.NVarChar, guardian_phone)
+            .input('petition_type', sql.NVarChar, petition_type)
+            .input('semester', sql.NVarChar, semester)
+            .input('subject_code', sql.NVarChar, subject_code)
+            .input('subject_name', sql.NVarChar, subject_name)
+            .input('section', sql.NVarChar, section)
+            .input('status', sql.TinyInt, status)
+            .query(`
+                INSERT INTO petition (student_id, student_name, major, year, address, student_phone, guardian_phone, petition_type, semester, subject_code, subject_name, section, status) 
+                OUTPUT INSERTED.petition_id 
+                VALUES (@student_id, @student_name, @major, @year, @address, @student_phone, @guardian_phone, @petition_type, @semester, @subject_code, @subject_name, @section, @status)
+            `);
+
+        const petitionId = result.recordset[0].petition_id;
+
+        // ตรวจสอบและบันทึกข้อมูลไฟล์แนบเฉพาะที่มีการอัปโหลดจริง ๆ
+        if (req.files.file1) await saveFileData(pool, petitionId, req.files.file1[0], filename1, desc1);
+        if (req.files.file2) await saveFileData(pool, petitionId, req.files.file2[0], filename2, desc2);
+        if (req.files.file3) await saveFileData(pool, petitionId, req.files.file3[0], filename3, desc3);
+
+        // ส่งสถานะสำเร็จกลับไปยัง client
+        res.json({ success: true, message: 'Petition submitted successfully' });
+    } catch (error) {
+        if (error instanceof multer.MulterError) {
+            // ข้อผิดพลาดจาก multer (เช่น ขนาดไฟล์เกิน)
+            res.status(400).json({ success: false, message: error.message });
+        } else {
+            // ข้อผิดพลาดอื่นๆ
+            console.error('Error submitting petition:', error);
+            res.status(500).json({ success: false, message: 'Failed to submit petition' });
+        }
+    }
+});
 
 app.put('/update-petition/:id', express.json(), async (req, res) => {
     const { id } = req.params;
@@ -460,6 +597,7 @@ app.get('/logout', (req, res) => {
         res.redirect('/index.html');
     });
 });
+
 
 
 
