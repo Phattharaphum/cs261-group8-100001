@@ -8,7 +8,6 @@
   </head>
   <body>
     <h1>Petition Form</h1>
-<<<<<<< HEAD
     <form id="petitionForm" action="/submit-petition" method="post" enctype="multipart/form-data">
     
 
@@ -54,68 +53,6 @@
     <button type="button" onclick="submitForm(1)">Save as Draft</button>
     <button type="button" onclick="submitForm(2)">Submit Petition</button>
 </form>
-=======
-    <form id="petitionForm">
-      <label for="student_id">Student ID:</label>
-      <input type="text" id="student_id" name="student_id" readonly /><br />
-
-      <label for="student_name">Student Name:</label>
-      <input type="text" id="student_name" name="student_name" readonly /><br />
-
-      <label for="major">Major:</label>
-      <input type="text" id="major" name="major" required /><br />
-
-      <label for="year">Year:</label>
-      <input type="number" id="year" name="year" required /><br />
-
-      <label for="address">Address:</label>
-      <textarea id="address" name="address" required></textarea><br />
-
-      <label for="student_phone">Student Phone:</label>
-      <input
-        type="tel"
-        id="student_phone"
-        name="student_phone"
-        required
-      /><br />
-
-      <label for="guardian_phone">Guardian Phone:</label>
-      <input
-        type="tel"
-        id="guardian_phone"
-        name="guardian_phone"
-        required
-      /><br />
-
-      <label for="petition_type">Petition Type:</label>
-      <input
-        type="text"
-        id="petition_type"
-        name="petition_type"
-        required
-      /><br />
-
-      <label for="semester">Semester:</label>
-      <input type="text" id="semester" name="semester" required /><br />
-
-      <label for="subject_code">Subject Code:</label>
-      <input type="text" id="subject_code" name="subject_code" /><br />
-
-      <label for="subject_name">Subject Name:</label>
-      <input type="text" id="subject_name" name="subject_name" /><br />
-
-      <label for="section">Section:</label>
-      <input type="text" id="section" name="section" /><br />
-
-      <!-- Hidden field for petition_id and status -->
-      <input type="hidden" id="petition_id" name="petition_id" />
-      <input type="hidden" id="status" name="status" value="1" />
-
-      <!-- Buttons for saving as draft and submitting -->
-      <button type="button" onclick="submitForm(1)">Save as Draft</button>
-      <button type="button" onclick="submitForm(2)">Submit Petition</button>
-    </form>
->>>>>>> 2e31e443629e8af50a29ee2dbf6c61968aa67dd0
 
     <script>
       const urlParams = new URLSearchParams(window.location.search);
@@ -158,7 +95,6 @@
           );
       }
 
-<<<<<<< HEAD
         function submitForm(status) {
             const petitionId = document.getElementById('petition_id').value;
             const formData = new FormData(document.getElementById('petitionForm'));
@@ -166,13 +102,6 @@
             const fileInput = document.getElementsByName("attachments[]")[0];
          const limit_file_message = document.getElementById('limit_file_message');
             data.status = status; // Set status for draft or submit
-=======
-      function submitForm(status) {
-        const petitionId = document.getElementById("petition_id").value;
-        const formData = new FormData(document.getElementById("petitionForm"));
-        const data = Object.fromEntries(formData.entries());
-        data.status = status; // Set status for draft or submit
->>>>>>> 2e31e443629e8af50a29ee2dbf6c61968aa67dd0
 
         // If petition_id is present, update the petition; otherwise, create a new one
         const url = petitionId
@@ -180,7 +109,6 @@
           : "/submit-petition";
         const method = petitionId ? "PUT" : "POST";
 
-<<<<<<< HEAD
             fetch(url, {
                 method: method,
                 headers: {
@@ -246,32 +174,6 @@ formData.append('status', status);  // append status to FormData
         console.error('Error submitting form:', error);
     });
          }
-=======
-        fetch(url, {
-          method: method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        })
-          .then((response) => response.json())
-          .then((result) => {
-            if (result.success) {
-              // Redirect based on action
-              if (status === 1) {
-                window.location.href = "/draft-petitions-page"; // Redirect after saving as draft
-              } else if (status === 2) {
-                window.location.href = "/studentPetitions"; // Redirect after submitting petition
-              }
-            } else {
-              alert("Error: " + result.message);
-            }
-          })
-          .catch((error) => {
-            console.error("Error submitting form:", error);
-          });
-      }
->>>>>>> 2e31e443629e8af50a29ee2dbf6c61968aa67dd0
     </script>
     <script src="/js/sessionTimeout.js"></script>
   </body>

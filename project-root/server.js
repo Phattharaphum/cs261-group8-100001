@@ -172,6 +172,24 @@ app.post('/submit-petition', express.json(), async (req, res) => {
                 )
             `);
 
+            const petitionId = result.recordset[0].petition_id;
+
+            if (attachments && attachments.length > 0) {
+                for (const attachment of attachments) {
+                    await pool.request()
+                        .input('petition_id', sql.Int, petitionId) 
+                        .input('file_extension', sql.NVarChar, attachment.file_extension)
+                        .input('file_name', sql.NVarChar, attachment.file_name)
+                        .input('file_description', sql.Text, attachment.file_description)
+                        .input('file_path', sql.NVarChar, attachment.file_path)
+                        .query(`
+                            INSERT INTO attachment_info (petition_id, file_extension, file_name, file_description, file_path)
+                            VALUES (@petition_id, @file_extension, @file_name, @file_description, @file_path)
+                        `);
+                }
+            }
+
+
         res.json({ success: true });
     } catch (err) {
         console.error('Error inserting petition:', err);
@@ -204,6 +222,7 @@ app.put('/update-petition/:id', express.json(), async (req, res) => {
             .input('subject_code', sql.NVarChar, subject_code)
             .input('subject_name', sql.NVarChar, subject_name)
             .input('section', sql.NVarChar, section)
+            .input('attachments', sql.NVarChar, attachments.join(','))
             .input('status', sql.TinyInt, status)
             .query(`
                 UPDATE petition SET
