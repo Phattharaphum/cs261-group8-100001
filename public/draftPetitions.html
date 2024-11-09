@@ -1,0 +1,105 @@
+<!-- project-root/public/draftPetitions.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draft Petitions</title>
+    <style>
+        /* Basic layout and styling */
+        body {
+            display: flex;
+            font-family: Arial, sans-serif;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin-bottom: 10px;
+            color: black;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .sidebar a.active {
+            background-color: #ccc;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        .button-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .drafts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+        .draft-card {
+            padding: 20px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            text-align: center;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar with navigation -->
+    <div class="sidebar">
+        <a href="#" class="active">เขียนคำร้อง</a>
+        <a href="/studentPetitions.html">สถานะคำร้อง</a>
+        <a href="/logout">ออกจากระบบ</a>
+    </div>
+
+    <!-- Main content area -->
+    <div class="content">
+        <h1>เขียนคำร้อง</h1>
+
+        <!-- Buttons for new petition -->
+        <div class="button-container">
+            <button onclick="window.location.href='/petitionForm.html'">เขียนคำร้องใหม่</button>
+        </div>
+
+        <!-- Section for drafts -->
+        <h2>แบบร่าง</h2>
+        <div class="drafts-container" id="draftsContainer">
+            <!-- Draft cards will be populated here by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Fetch draft petitions and populate the draftsContainer
+        fetch('/draft-petitions')
+            .then(response => response.json())
+            .then(data => {
+                const draftsContainer = document.getElementById('draftsContainer');
+                data.forEach(petition => {
+                    const draftCard = document.createElement('div');
+                    draftCard.className = 'draft-card';
+                    draftCard.innerHTML = `
+                        <p>ประเภท: ${petition.petition_type}</p>
+                        <p>รหัสวิชา: ${petition.subject_code}</p>
+                        <p>ชื่อวิชา: ${petition.subject_name}</p>
+                        <p>ภาคการศึกษา: ${petition.semester}</p>
+                        <p>วันที่: ${new Date(petition.submit_time).toLocaleDateString()}</p>
+                    `;
+                    draftCard.onclick = () => {
+                        // Navigate to petitionForm.html with the petition ID for editing
+                        window.location.href = `/petitionForm.html?petition_id=${petition.petition_id}`;
+                    };
+                    draftsContainer.appendChild(draftCard);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching draft petitions:', error);
+            });
+    </script>
+</body>
+</html>
