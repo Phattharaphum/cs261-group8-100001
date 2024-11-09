@@ -10,6 +10,9 @@ const userRoutes = require('./routes/userRoutes');
 const { isAuthenticated, isStudent, isTeacher } = require('./middleware/authMiddleware');
 const loggerMiddleware = require('./middleware/loggerMiddleware');
 const errorHandler = require('./middleware/errorHandler');
+const multer = require('multer');
+const fs = require('fs');
+const uploadDir = path.join(__dirname, 'uploads');
 
 dotenv.config(); // โหลด environment variables จาก .env
 
@@ -137,7 +140,7 @@ app.get('/get-session-data', (req, res) => {
 });
 
 // Route สำหรับ submit คำร้อง
-app.post('/submit-petition', express.json(), async (req, res) => {
+/*app.post('/submit-petition', express.json(), async (req, res) => {
     const {
         student_id, student_name, major, year, address,
         student_phone, guardian_phone, petition_type, semester,
@@ -178,7 +181,7 @@ app.post('/submit-petition', express.json(), async (req, res) => {
         res.status(500).json({ success: false, message: 'Failed to submit petition' });
     }
 });
-
+*/
 
 app.put('/update-petition/:id', express.json(), async (req, res) => {
     const { id } = req.params;
@@ -461,8 +464,100 @@ app.get('/logout', (req, res) => {
     });
 });
 
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+    console.log('uploads directory created.');
+}
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, uploadDir);
+    },
+    filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix  + path.extname(file.originalname));
+    }
+});
 
 
+const upload = multer({ 
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+      const allowedTypes = /pdf|doc|docx|jpg|jpeg|png/; // เพิ่ม png
+      if (!allowedTypes.test(file.mimetype)) {
+        return cb(new Error('Invalid file type.'));
+      }
+      cb(null, true);
+    },
+    limits: { fileSize: 10 * 1024 * 1024, files : 10 } // Limit each file to 10 MB, 10 files each time
+});
+
+
+
+
+// Route สำหรับอัปโหลดไฟล์และบันทึกข้อมูลคำร้อง
+app.post('/submit-petition', upload.array('attachments', 10), async (req, res) => {
+    try {
+        // รับค่าจาก body ของฟอร์ม
+        const {
+            student_id,
+            student_name,
+            major,
+            year,
+            address,
+            student_phone,
+            guardian_phone,
+            petition_type,
+            semester,
+            subject_code,
+            subject_name,
+            section,
+            status // รับค่า status จากฟอร์มด้วย
+        } = req.body;
+
+        // ตรวจสอบไฟล์ที่อัปโหลด (ใช้ Multer จัดการให้แล้ว)
+        const attachments = req.files ? req.files.map(file => file.filename) : [];  // ตรวจสอบว่าไฟล์มีอยู่ไหม ถ้ามีให้ดึงชื่อไฟล์
+
+        // เชื่อมต่อกับฐานข้อมูล
+        const pool = await sql.connect();
+
+        // สร้างคำสั่ง SQL ที่จะบันทึกข้อมูล
+        const result = await pool.request()
+            .input('student_id', sql.NVarChar, student_id)
+            .input('student_name', sql.NVarChar, student_name)
+            .input('major', sql.NVarChar, major)
+            .input('year', sql.Int, year)
+            .input('address', sql.NVarChar, address)
+            .input('student_phone', sql.NVarChar, student_phone)
+            .input('guardian_phone', sql.NVarChar, guardian_phone)
+            .input('petition_type', sql.NVarChar, petition_type)
+            .input('semester', sql.NVarChar, semester)
+            .input('subject_code', sql.NVarChar, subject_code)
+            .input('subject_name', sql.NVarChar, subject_name)
+            .input('section', sql.NVarChar, section)
+            .input('attachments', sql.NVarChar, attachments.join(','))  // แปลงเป็นสตริงที่คั่นด้วยจุลภาค
+            .input('status', sql.Int, status) // เพิ่ม status ใน query
+            .query(`
+                INSERT INTO petition (
+                    student_id, student_name, major, year, address, student_phone, 
+                    guardian_phone, petition_type, semester, subject_code, 
+                    subject_name, section, attachments, status
+                ) 
+                VALUES (
+                    @student_id, @student_name, @major, @year, @address, @student_phone, 
+                    @guardian_phone, @petition_type, @semester, @subject_code, 
+                    @subject_name, @section, @attachments, @status
+                )
+            `);
+
+        // ส่ง response หากการบันทึกข้อมูลสำเร็จ
+        res.json({ success: true });
+
+    } catch (err) {
+        console.error('Error submitting petition:', err);
+        res.status(500).json({ success: false, message: 'Failed to submit petition', error: err.message });
+    }
+});
 
 
 
