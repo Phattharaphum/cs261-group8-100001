@@ -1,0 +1,131 @@
+
+body {
+    font-family: 'Bai Jamjuree', sans-serif;  
+}
+
+.container {
+    display: flex;
+    
+}
+  
+.left {
+    width: 20%;
+    background-color: #ffffff;
+    padding: 20px;
+}
+  
+.middle {
+    width: 80%;
+    background-color: #F4F4F4;
+    padding: 20px;
+}
+
+.right {
+    width: 30%;
+    background-color: #F4F4F4;
+    padding: 20px;
+    position: fixed;   
+    bottom: 0;          
+    right: 0;  
+    padding: 20px;      
+    text-align: center; 
+    
+}
+
+.rounded-border {
+    border: 2px solid #A70C0C;     
+    border-radius: 20px;       
+    padding: 5px 30px;        
+    background-color: #A70C0C;
+    display: inline-block;    
+    color: #FFFFFF;              
+}
+
+.rounded-border2 {
+    border: 2px solid #FFFFFF;     
+    border-radius: 20px;       
+    padding: 5px 30px;        
+    background-color: #FFFFFF;
+    display: inline-block;    
+    color: #000000;
+    font-weight: bold;
+}
+
+#personalInfo {
+    font-weight: bold;
+}
+
+#subjectInfo {
+    font-weight: bold; 
+}
+
+#fileInfo {
+    font-weight: bold;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+hr {
+    width: 50%; 
+    height: 3px; 
+    border: none; 
+    background-color: #BFBFBF; 
+    margin: 0;
+    margin-left: 0;
+}
+
+.file {
+    display: flex;
+    gap: 20px;
+}
+
+.box-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top, .bottom {
+    text-align: center;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.box {
+    width: 200px;
+    height: 200px;
+    background-color: #BFBFBF;
+    border: 1px solid #BFBFBF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px; 
+}
+
+.content {
+    text-align: center;
+}
+
+.back-botton {
+    padding: 20px 30px;
+    font-size: 22px;
+    border: 3px solid #023047; 
+    background-color: #F4F4F4;
+    color: #023047;
+    cursor: pointer;
+    border-radius: 16px; 
+    transition: background-color 0.3s ease, color 0.3s ease;  
+    position: fixed; 
+    bottom: 0px;  
+    right: 150px;   
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin-top: auto;
+}
+
+.back-botton:hover {
+    background-color: lightblue; 
+    color: #023047; 
+}
