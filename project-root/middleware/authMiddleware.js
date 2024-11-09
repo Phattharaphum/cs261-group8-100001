@@ -1,18 +1,13 @@
-const SESSION_TIMEOUT = 5 * 60 * 1000; // Session timeout of 5 minutes
+// authMiddleware.js
 
-// Middleware to check if the user is authenticated and if the session is still valid
+const SESSION_TIMEOUT = 5 * 60 * 1000; // Example: 15 minutes
+
+// Middleware to check if the user is authenticated
 function isAuthenticated(req, res, next) {
   if (req.session && req.session.user) {
     const now = Date.now();
+    const sessionAge = now - (req.session.createdAt || now);
 
-    // Set `createdAt` if it doesn't exist
-    if (!req.session.createdAt) {
-      req.session.createdAt = now;
-    }
-
-    const sessionAge = now - req.session.createdAt;
-
-    // Check if session has expired
     if (sessionAge > SESSION_TIMEOUT) {
       req.session.destroy((err) => {
         if (err) {
@@ -24,8 +19,7 @@ function isAuthenticated(req, res, next) {
           .json({ message: "Session expired. Please log in again." });
       });
     } else {
-      // Update session timestamp for active session
-      req.session.createdAt = now;
+      req.session.createdAt = now; // Refresh session time
       next();
     }
   } else {
@@ -42,7 +36,7 @@ function isStudent(req, res, next) {
   ) {
     return next();
   } else {
-    res.status(403).json({ message: "Access restricted to students only." });
+    res.status(403).json({ message: "Access restricted to students only" });
   }
 }
 
@@ -55,7 +49,7 @@ function isTeacher(req, res, next) {
   ) {
     return next();
   } else {
-    res.status(403).json({ message: "Access restricted to teachers only." });
+    res.status(403).json({ message: "Access restricted to teachers only" });
   }
 }
 

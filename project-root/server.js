@@ -48,13 +48,11 @@ app.get("/session-info", (req, res) => {
   if (!req.session || !req.session.user) {
     return res.status(401).json({ message: "Session expired" });
   }
-
   const expiresIn = SESSION_TIMEOUT - (Date.now() - req.session.createdAt);
   if (expiresIn <= 0) {
     req.session.destroy();
     return res.status(401).json({ message: "Session expired" });
   }
-
   res.json({ expiresIn });
 });
 
@@ -108,12 +106,43 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Student-specific routes
+// Define a route for serving the draftPetitions HTML page
+// Serve the HTML page for draft petitions
 app.get("/draft-petitions", isAuthenticated, isStudent, (req, res) => {
-  console.log("[Route] /draft-petitions accessed by:", req.session.user);
+  console.log("[Route] Serving draftPetitions HTML page");
   res.sendFile(path.join(__dirname, "public", "draftPetitions.html"));
 });
 
+// Define a separate route to provide the draft petitions data as JSON
+// Serve JSON data for draft petitions on a separate route
+app.get(
+  "/api/draft-petitions",
+  isAuthenticated,
+  isStudent,
+  async (req, res) => {
+    try {
+      const studentId = req.session.user.username;
+      const pool = await sql.connect();
+      const result = await pool
+        .request()
+        .input("studentId", sql.NVarChar, studentId)
+        .query(
+          "SELECT * FROM petition WHERE student_id = @studentId AND status = 1"
+        );
+
+      console.log(
+        "[Route] Sending draft petitions data as JSON:",
+        result.recordset
+      );
+      res.json(result.recordset); // Send JSON data for petitions
+    } catch (error) {
+      console.error("Error fetching draft petitions:", error);
+      res.status(500).json({ error: "Failed to fetch draft petitions" });
+    }
+  }
+);
+
+// Add the /student/petitions route with JSON response
 app.get("/student/petitions", isAuthenticated, isStudent, async (req, res) => {
   try {
     const studentId = req.session.user.username;
@@ -124,38 +153,54 @@ app.get("/student/petitions", isAuthenticated, isStudent, async (req, res) => {
       .query(
         "SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5)"
       );
-    res.json(result.recordset);
+    res.json(result.recordset); // Return JSON response
   } catch (err) {
     console.error("Error fetching petitions:", err);
     res.status(500).json({ error: "Failed to fetch petitions" });
   }
 });
 
-// Advisor (teacher) specific routes
+// Advisor-specific routes
 app.get("/advisor-petitions", isAuthenticated, isTeacher, (req, res) => {
   console.log("[Route] /advisor-petitions accessed by:", req.session.user);
   res.sendFile(path.join(__dirname, "public", "advisorPetitions.html"));
 });
 
-app.get("/advisor/petitions", isAuthenticated, isTeacher, async (req, res) => {
-  const advisorId = req.session.user.username;
-  try {
-    const query = `
-      SELECT p.* FROM petition p
-      JOIN advisor_info a ON p.student_id = a.student_id
-      WHERE a.advisor_id = @advisorId AND p.status = 2
-    `;
-    const pool = await sql.connect();
-    const result = await pool
-      .request()
-      .input("advisorId", sql.NVarChar, advisorId)
-      .query(query);
-    res.json(result.recordset);
-  } catch (error) {
-    console.error("Error fetching petitions:", error);
-    res.status(500).json({ error: "Failed to fetch petitions" });
+app.get(
+  "/advisor/pending-petitions",
+  isAuthenticated,
+  isTeacher,
+  async (req, res) => {
+    try {
+      const advisorId = req.session.user.username;
+      const pool = await sql.connect();
+
+      const pendingResult = await pool
+        .request()
+        .input("advisorId", sql.NVarChar, advisorId).query(`
+        SELECT * FROM petition 
+        WHERE status = 2 
+        AND student_id IN (SELECT student_id FROM advisor_info WHERE advisor_id = @advisorId)
+      `);
+
+      const reviewedResult = await pool
+        .request()
+        .input("advisorId", sql.NVarChar, advisorId).query(`
+        SELECT * FROM petition 
+        WHERE status IN (3, 4, 5) 
+        AND student_id IN (SELECT student_id FROM advisor_info WHERE advisor_id = @advisorId)
+      `);
+
+      res.json({
+        pending: pendingResult.recordset,
+        reviewed: reviewedResult.recordset,
+      });
+    } catch (err) {
+      console.error("Error fetching petitions:", err);
+      res.status(500).json({ error: "Failed to fetch petitions" });
+    }
   }
-});
+);
 
 // Logout route
 app.get("/logout", (req, res) => {

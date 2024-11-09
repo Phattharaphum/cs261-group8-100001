@@ -78,24 +78,29 @@
 
     <script>
       // Fetch draft petitions and populate the draftsContainer
-      fetch("/draft-petitions")
-        .then((response) => response.json())
+      fetch("/api/draft-petitions")
+        .then((response) => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              window.location.href = "/index.html"; // Redirect to login page
+            }
+            throw new Error("Failed to fetch draft petitions");
+          }
+          return response.json();
+        })
         .then((data) => {
           const draftsContainer = document.getElementById("draftsContainer");
           data.forEach((petition) => {
             const draftCard = document.createElement("div");
             draftCard.className = "draft-card";
             draftCard.innerHTML = `
-                        <p>ประเภท: ${petition.petition_type}</p>
-                        <p>รหัสวิชา: ${petition.subject_code}</p>
-                        <p>ชื่อวิชา: ${petition.subject_name}</p>
-                        <p>ภาคการศึกษา: ${petition.semester}</p>
-                        <p>วันที่: ${new Date(
-                          petition.submit_time
-                        ).toLocaleDateString()}</p>
-                    `;
+          <p>ประเภท: ${petition.petition_type}</p>
+          <p>รหัสวิชา: ${petition.subject_code}</p>
+          <p>ชื่อวิชา: ${petition.subject_name}</p>
+          <p>ภาคการศึกษา: ${petition.semester}</p>
+          <p>วันที่: ${new Date(petition.submit_time).toLocaleDateString()}</p>
+        `;
             draftCard.onclick = () => {
-              // Navigate to petitionForm.html with the petition ID for editing
               window.location.href = `/petitionForm.html?petition_id=${petition.petition_id}`;
             };
             draftsContainer.appendChild(draftCard);
@@ -105,6 +110,7 @@
           console.error("Error fetching draft petitions:", error);
         });
     </script>
+
     <script src="/js/sessionTimeout.js"></script>
   </body>
 </html>
