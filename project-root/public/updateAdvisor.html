@@ -1,51 +1,64 @@
 <!-- project-root/public/updateAdvisor.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Update Advisor</title>
-</head>
-<body>
+  </head>
+  <body>
     <h1>Update Advisor Information</h1>
     <form id="updateAdvisorForm">
-        <label for="student_id">Student ID:</label>
-        <input type="text" id="student_id" name="student_id" required><br><br>
+      <label for="student_id">Student ID:</label>
+      <input
+        type="text"
+        id="student_id"
+        name="student_id"
+        required
+      /><br /><br />
 
-        <label for="advisor_id">Advisor ID:</label>
-        <input type="text" id="advisor_id" name="advisor_id" required><br><br>
+      <label for="advisor_id">Advisor ID:</label>
+      <input
+        type="text"
+        id="advisor_id"
+        name="advisor_id"
+        required
+      /><br /><br />
 
-        <button type="submit">Update Advisor</button>
+      <button type="submit">Update Advisor</button>
     </form>
 
     <script>
-        // ฟังก์ชันสำหรับส่งข้อมูลไปยังเซิร์ฟเวอร์
-        document.getElementById('updateAdvisorForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const student_id = document.getElementById('student_id').value;
-            const advisor_id = document.getElementById('advisor_id').value;
+      // ฟังก์ชันสำหรับส่งข้อมูลไปยังเซิร์ฟเวอร์
+      document
+        .getElementById("updateAdvisorForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
 
-            try {
-                const response = await fetch('/update-advisor', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ student_id, advisor_id })
-                });
+          const student_id = document.getElementById("student_id").value;
+          const advisor_id = document.getElementById("advisor_id").value;
 
-                const result = await response.json();
-                if (response.ok) {
-                    alert('Advisor updated successfully!');
-                } else {
-                    alert('Failed to update advisor: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Error:', error);
-                alert('Error updating advisor');
+          try {
+            const response = await fetch("/update-advisor", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ student_id, advisor_id }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+              alert("Advisor updated successfully!");
+            } else {
+              alert("Failed to update advisor: " + result.message);
             }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("Error updating advisor");
+          }
         });
     </script>
-</body>
+    <script src="/js/sessionTimeout.js"></script>
+  </body>
 </html>
