@@ -1,119 +1,131 @@
 <!-- project-root/public/advisorPetitions.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>รายการคำร้อง</title>
     <style>
-        /* General styling */
-        body {
-            display: flex;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #f9f9f9;
-        }
+      /* General styling */
+      body {
+        display: flex;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f9f9f9;
+      }
 
-        /* Sidebar styling */
-        .sidebar {
-            width: 200px;
-            background-color: #333;
-            color: white;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding-top: 20px;
-        }
+      /* Sidebar styling */
+      .sidebar {
+        width: 200px;
+        background-color: #333;
+        color: white;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        padding-top: 20px;
+      }
 
-        .sidebar a {
-            color: white;
-            text-decoration: none;
-            padding: 15px;
-            text-align: center;
-            display: block;
-            transition: background-color 0.3s;
-        }
+      .sidebar a {
+        color: white;
+        text-decoration: none;
+        padding: 15px;
+        text-align: center;
+        display: block;
+        transition: background-color 0.3s;
+      }
 
-        .sidebar a:hover {
-            background-color: #555;
-        }
+      .sidebar a:hover {
+        background-color: #555;
+      }
 
-        .sidebar a.active {
-            background-color: #666;
-            font-weight: bold;
-        }
+      .sidebar a.active {
+        background-color: #666;
+        font-weight: bold;
+      }
 
-        /* Content area styling */
-        .content {
-            flex: 1;
-            padding: 20px;
-        }
+      /* Content area styling */
+      .content {
+        flex: 1;
+        padding: 20px;
+      }
 
-        /* Petition list styling */
-        .petition-list {
-            padding: 10px;
-        }
+      /* Petition list styling */
+      .petition-list {
+        padding: 10px;
+      }
 
-        .petition-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px;
-            background-color: #f3f3f3;
-            margin-bottom: 5px;
-            cursor: pointer;
-        }
+      .petition-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px;
+        background-color: #f3f3f3;
+        margin-bottom: 5px;
+        cursor: pointer;
+      }
 
-        .petition-item:hover {
-            background-color: #e0e0e0;
-        }
+      .petition-item:hover {
+        background-color: #e0e0e0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Sidebar -->
     <div class="sidebar">
-        <a href="/advisorPetitions" class="active">รายการคำร้อง</a>
-        <a href="/logout">ออกจากระบบ</a>
+      <a href="/advisorPetitions" class="active">รายการคำร้อง</a>
+      <a href="/logout">ออกจากระบบ</a>
     </div>
 
     <!-- Main Content -->
     <div class="content">
-        <h1>รายการคำร้อง</h1>
-        <div class="petition-list">
-            <h2>ยังไม่ได้ตรวจสอบ</h2>
-            <div id="pending-petitions"></div>
+      <h1>รายการคำร้อง</h1>
+      <div class="petition-list">
+        <h2>ยังไม่ได้ตรวจสอบ</h2>
+        <div id="pending-petitions"></div>
 
-            <h2>ตรวจสอบแล้ว</h2>
-            <div id="reviewed-petitions"></div>
-        </div>
+        <h2>ตรวจสอบแล้ว</h2>
+        <div id="reviewed-petitions"></div>
+      </div>
     </div>
 
     <script>
-        // Fetch petitions data from server
-        fetch('/advisor/pending-petitions')
-            .then(response => response.json())
-            .then(data => {
-                const pendingContainer = document.getElementById('pending-petitions');
-                const reviewedContainer = document.getElementById('reviewed-petitions');
+      // Fetch petitions data from server
+      fetch("/advisor/pending-petitions")
+        .then((response) => response.json())
+        .then((data) => {
+          const pendingContainer = document.getElementById("pending-petitions");
+          const reviewedContainer =
+            document.getElementById("reviewed-petitions");
 
-                // Populate pending petitions
-                data.pending.forEach(petition => {
-                    const item = document.createElement('div');
-                    item.className = 'petition-item';
-                    item.textContent = `${new Date(petition.submit_time).toLocaleDateString()} - ${petition.petition_type} - ${petition.student_id} - ${petition.student_name}`;
-                    item.onclick = () => window.location.href = `/advisor/petition/${petition.petition_id}`;
-                    pendingContainer.appendChild(item);
-                });
+          // Populate pending petitions
+          data.pending.forEach((petition) => {
+            const item = document.createElement("div");
+            item.className = "petition-item";
+            item.textContent = `${new Date(
+              petition.submit_time
+            ).toLocaleDateString()} - ${petition.petition_type} - ${
+              petition.student_id
+            } - ${petition.student_name}`;
+            item.onclick = () =>
+              (window.location.href = `/advisor/petition/${petition.petition_id}`);
+            pendingContainer.appendChild(item);
+          });
 
-                // Populate reviewed petitions
-                data.reviewed.forEach(petition => {
-                    const item = document.createElement('div');
-                    item.className = 'petition-item';
-                    item.textContent = `${new Date(petition.submit_time).toLocaleDateString()} - ${petition.petition_type} - ${petition.student_id} - ${petition.student_name}`;
-                    item.onclick = () => window.location.href = `/advisor/petition/${petition.petition_id}`;
-                    reviewedContainer.appendChild(item);
-                });
-            })
-            .catch(error => console.error('Error fetching petitions:', error));
+          // Populate reviewed petitions
+          data.reviewed.forEach((petition) => {
+            const item = document.createElement("div");
+            item.className = "petition-item";
+            item.textContent = `${new Date(
+              petition.submit_time
+            ).toLocaleDateString()} - ${petition.petition_type} - ${
+              petition.student_id
+            } - ${petition.student_name}`;
+            item.onclick = () =>
+              (window.location.href = `/advisor/petition/${petition.petition_id}`);
+            reviewedContainer.appendChild(item);
+          });
+        })
+        .catch((error) => console.error("Error fetching petitions:", error));
     </script>
-</body>
+    <script src="/js/sessionTimeout.js"></script>
+  </body>
 </html>

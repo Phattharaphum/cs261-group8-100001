@@ -1,28 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ตรวจสอบคำร้อง</title>
-</head>
-<body>
+  </head>
+  <body>
     <div>
-        <h1>ตรวจสอบคำร้อง</h1>
-        <div id="petition-details"></div>
+      <h1>ตรวจสอบคำร้อง</h1>
+      <div id="petition-details"></div>
     </div>
 
     <button onclick="goBack()">ย้อนกลับ</button>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const petitionId = urlParams.get('id');
+      const urlParams = new URLSearchParams(window.location.search);
+      const petitionId = urlParams.get("id");
 
-        // Fetch petition details
-        fetch(`/student/petition-details/${petitionId}`)
-            .then(response => response.json())
-            .then(data => {
-                const detailsContainer = document.getElementById('petition-details');
-                detailsContainer.innerHTML = `
+      // Fetch petition details
+      fetch(`/student/petition-details/${petitionId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const detailsContainer = document.getElementById("petition-details");
+          detailsContainer.innerHTML = `
                     <p>วันที่: ${data.submit_time}</p>
                     <p>ประเภท: ${data.petition_type}</p>
                     <p>รหัสนักศึกษา: ${data.student_id}</p>
@@ -30,12 +30,15 @@
                     <p>สถานะ: ${data.status}</p>
                     <p>รายละเอียดเพิ่มเติม: ${data.address}</p>
                 `;
-            })
-            .catch(error => console.error('Error fetching petition details:', error));
+        })
+        .catch((error) =>
+          console.error("Error fetching petition details:", error)
+        );
 
-        function goBack() {
-            window.location.href = '/studentPetitions.html';
-        }
+      function goBack() {
+        window.location.href = "/studentPetitions.html";
+      }
     </script>
-</body>
+    <script src="/js/sessionTimeout.js"></script>
+  </body>
 </html>
