@@ -127,12 +127,13 @@ h2 {
 }
 
 .attachFile-form01 label, .attachFile-form02 label {
-    background-color: #D9D9D9;;
+    background-color: #D9D9D9;
     border-radius: 15px;
     padding: 5px 60px;
     margin-left: 10px;
     cursor: pointer;
-    color: #333;
+    color: #444444;
+    border-color: #444444;
     font-size: small;
 }
 
@@ -189,4 +190,25 @@ h2 {
     color: black;
     border-radius: 15px;
     padding: 10px 30px;
+}
+
+.save-file:hover{
+    background-color:#444444 ;
+    color:#D9D9D9 ;
+}
+
+.button-delete-draft:hover {
+    background-color: #A70C0C;
+    color: #F4F4F4;
+    border-color: #F4F4F4;
+}
+
+.button-save-draft:hover {
+    background-color: black;
+    color: #F4F4F4;
+}
+
+.button-submit:hover {
+    background-color: black;
+    color: #F4F4F4;
 }
