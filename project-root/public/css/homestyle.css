@@ -65,10 +65,11 @@ body {
     margin-top: auto;
 }
 
-.logout{
+.logout {
     text-align: center;
     justify-content: center;
 }
+
 .logout a {
     display: flex;
     align-items: center;
@@ -76,28 +77,31 @@ body {
     padding: 10px 15px;
     text-decoration: none;
     color: #EC6868;
-;
+    ;
     font-weight: bold;
     border-radius: 20px;
     transition: background-color 0.3s;
 }
+
 .logout img {
     width: 40px;
     height: 40px;
     margin-right: 20px;
-    
+
 }
 
 
 .sidebar .logout a:hover {
     background-color: #EEBBBA;
 }
+
 .image-sidebar {
     width: 100px;
     height: 100px;
     border-radius: 10px;
     margin-right: 10px;
 }
+
 /* sidebar */
 
 /* content */
@@ -134,7 +138,7 @@ body {
     color: #ffffff;
     background-color: #A70C0C;
     border-radius: 15px;
-    
+
 }
 
 .draft-section {
@@ -155,37 +159,38 @@ body {
     color: #333;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     display: flex;
-    flex-direction: column;  
-    align-items: center;     
-    justify-content: center; 
-    width: 150px;            
-    height: 150px;           
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 150px;
     text-align: center;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
-    padding: 10px;          
+    padding: 10px;
 }
 
 .draft-card:hover {
-    transform: scale(1.05);     
+    transform: scale(1.05);
 }
 
 .draft-card img {
-    width: 60px; 
+    width: 60px;
     height: 60px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 .draft-card p {
     font-weight: bold;
     color: #333;
 }
+
 .draft-card a {
     text-decoration: none;
-    color: inherit;         
-    display: block;         
-    width: 100%;            
-    height: 100%;           
+    color: inherit;
+    display: block;
+    width: 100%;
+    height: 100%;
     text-align: center;
     box-sizing: border-box;
 }
@@ -203,7 +208,7 @@ body {
     color: #ffffff;
     background-color: #A70C0C;
     border-radius: 15px;
-    
+
 }
 
 .draftlist-section {
@@ -215,6 +220,7 @@ body {
     gap: 100px;
     justify-content: center;
 }
+
 .draftlist-card img {
     width: 30px;
     height: 30px;
@@ -231,6 +237,40 @@ body {
     width: 150px;
     color: #333;
 }
+
+/* ------------------------------------ */
+.flex-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.draftcard {
+    width: 190px;
+    height: 254px;
+    margin-left: 20pxs;
+    background-color: #ffffff;
+    border-radius: 20px;
+    z-index: 1;
+}
+
+.head {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    padding: 9px;
+    color: rgb(0, 0, 0);
+}
+/* .card-cocntent{
+    display: flex;
+    align-items: center;
+    justify-self: center;
+    padding: 9px;
+    color: white;
+} */
+/* ------------------------------------ */
+
+
 
 .not-found {
     margin-top: 100px;
@@ -281,6 +321,7 @@ body {
     width: 50px;
     height: 50px;
 }
+
 .card-sidebar {
     display: flex;
     align-items: center;
@@ -305,4 +346,5 @@ body {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+
 /* content */
