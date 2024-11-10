@@ -16,7 +16,7 @@ body {
 .sidebar {
     width: 20%;
     background-color: #ffffff;
-    padding: 20px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -34,8 +34,8 @@ body {
 }
 
 .menu-item img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     margin-right: 20px;
 }
 
@@ -65,22 +65,28 @@ body {
     margin-top: auto;
 }
 
-.sidebar .logout a {
-    color: #939393;
+.logout{
     text-align: center;
     justify-content: center;
+}
+.logout a {
     display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 10px 15px;
+    text-decoration: none;
+    color: #939393;
     font-weight: bold;
     border-radius: 20px;
     transition: background-color 0.3s;
-    text-decoration: none;
 }
 .logout img {
     width: 40px;
     height: 40px;
+    margin-right: 20px;
     
 }
+
 
 .sidebar .logout a:hover {
     background-color: #EEBBBA;
@@ -235,14 +241,12 @@ body {
 .logo-container {
     display: flex;
     align-items: center;
-    justify-content: center;
 }
 
 .logo {
-    width: 70px;
-    height: 70px;
-    margin-right: 20px;
-    justify-content: left;
+    width: 100px;
+    height: 100px;
+    margin-right: px;
 }
 
 .text-container {
