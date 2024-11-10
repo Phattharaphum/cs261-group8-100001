@@ -100,3 +100,68 @@ form button:hover {
     border-top-right-radius: 80px;
     border-bottom-right-radius: 80px;
 }
+
+/* Styles for the modal backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+    z-index: 1000; /* above other content */
+    display: none; /* hidden by default */
+}
+
+/* Styles for the modal box */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    z-index: 1001; /* above the backdrop */
+    display: none; /* hidden by default */
+    text-align: center;
+}
+
+/* Modal content styling */
+.modal-content {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Close button styling */
+#closeModal {
+    background-color: #A93535;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#closeModal:hover {
+    background-color: #7E1515;
+}
+
+/* Custom styling for error messages */
+.login-failed {
+    font-weight: bold;
+    font-size: 18px;
+    color: #A93535; /* Red color for error */
+    margin-bottom: 10px;
+}
+
+.login-failed-message {
+    font-size: 16px;
+    color: #666;
+}

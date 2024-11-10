@@ -39,6 +39,10 @@
     background-color: #f2f2f2;
     text-align: left;
 }
+
+.highlight {
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -51,26 +55,26 @@
             <h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
             <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
             <dd>
-                <p>ผู้ยื่น :<span id="student_name"> </span></p>
-                <p>เลขทะเบียน :<span id="student_id"> </span></p>
-                <p>ชั้นปีที่ :<span id="year"> </span></p>
-                <p>สาขาวิชา :<span id="major"> </span></p>
-                <p>ที่อยู่ที่ติดต่อได้ :<span id="house_number"> </span></p>
-                <p>แขวง/ตำบล :<span id="sub_district"> </span></p>
-                <p>เขต/อำเภอ :<span id="district"> </span></p>
-                <p>จังหวัด :<span id="province"> </span></p>
-                <p>รหัสไปรษณีย์ :<span id="postcode"> </span></p>
-                <p>โทรศัพท์ติดต่อกับนักศึกษา :<span id="student_phone"> </span></p>
-                <p>ติดต่อผู้ปกครอง :<span id="guardian_phone"> </span></p>
+                <p>ผู้ยื่น : <span class="highlight" id="student_name"></span></p>
+                <p>เลขทะเบียน : <span class="highlight" id="student_id"></span></p>
+                <p>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
+                <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
+                <p>ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number"></span></p>
+                <p>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
+                <p>เขต/อำเภอ : <span class="highlight" id="district"></span></p>
+                <p>จังหวัด : <span class="highlight" id="province"></span></p>
+                <p>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
+                <p>โทรศัพท์ติดต่อกับนักศึกษา : <span class="highlight" id="student_phone"></span></p>
+                <p>ติดต่อผู้ปกครอง : <span class="highlight" id="guardian_phone"></span></p>
             </dd>
             <hr>
             <h3 class="bold-text">คำร้อง</h3>
             <dd>
-                <p>ประเภท :<span id="petition_type"> </span></p>
-                <p>รหัสวิชา :<span id="subject_code"> </span></p>
-                <p>ชื่อวิชา :<span id="subject_name"> </span></p>
-                <p>กลุ่มเรียน :<span id="section"> </span></p>
-                <p>เหตุผลในการยื่นคำร้อง :<span id="reason"> </span></p> <!-- เพิ่มส่วนนี้ -->
+                <p>ประเภท : <span class="highlight" id="petition_type"></span></p>
+                <p>รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
+                <p>ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
+                <p>กลุ่มเรียน : <span class="highlight" id="section"></span></p>
+                <p>เหตุผลในการยื่นคำร้อง : <span class="highlight" id="reason"></span></p>
             </dd>
             <hr>
             <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
@@ -79,7 +83,6 @@
                     <thead>
                         <tr>
                             <th>ชื่อไฟล์</th>
-                            <th>คำอธิบาย</th>
                             <th>ดาวน์โหลด</th>
                         </tr>
                     </thead>
@@ -92,8 +95,9 @@
         <div class="right">
             <h3 style="text-align: left;">สถานะคำร้อง</h3>
             <div class="rounded-border2">
-                <p>ยื่นคำร้องไปแล้วเมื่อ: <span id="submit_time"> </span></p>
-                <p><span id="status"> </span></p>
+                <p>ยื่นคำร้องเมื่อ: <span id="submit_time"></span></p>
+                <p id="reviewTimeText" style="display: none;"><span id="reviewLabel"></span> <span id="review_time"></span></p>
+                <p><span id="status"></span></p>
             </div>
         </div>
 
@@ -162,6 +166,23 @@
                     document.getElementById('cancelButton').style.display = 'none';
                 }
 
+                // ตรวจสอบสถานะและอัปเดตการแสดงผล review_time
+        const reviewTimeText = document.getElementById('reviewTimeText');
+        const reviewLabel = document.getElementById('reviewLabel');
+        
+        if (data.status === 3) {
+            reviewLabel.textContent = 'อ่านแล้วเมื่อ:';
+            reviewTimeText.style.display = 'block';
+            document.getElementById('review_time').textContent = new Date(data.review_time).toLocaleString() || '';
+        } else if (data.status === 4 || data.status === 5) {
+            reviewLabel.textContent = 'พิจารณาเมื่อ:';
+            reviewTimeText.style.display = 'block';
+            document.getElementById('review_time').textContent = new Date(data.review_time).toLocaleString() || '';
+        } else {
+            reviewTimeText.style.display = 'none'; // ซ่อนเมื่อสถานะอื่น
+        }
+
+
 
                 // Display attached files
 
@@ -171,7 +192,6 @@ if (data.attachedFiles && data.attachedFiles.length > 0) {
 
         row.innerHTML = `
             <td>${file.file_name}</td>
-            <td>${file.description || ''}</td>
             <td><a href="/student/download-file/${file.file_id}" target="_blank">ดาวน์โหลด</a></td>
         `;
 

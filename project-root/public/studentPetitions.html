@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สถานะคำร้อง</title>
     <link rel="stylesheet" href="css/styleListofPetitionAdvisor.css">
+    <link rel="stylesheet" href="css/stylesidebar.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
@@ -33,9 +34,41 @@
 <body>
     <div class="wrapper">
         <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.svg" alt="University Logo" class="logo">
+                <div class="tops">
+                 <p class="hasd">ระบบยื่นคำร้อง</p>
+                <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+               
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/draftPetitions.html" class="menu-item">
+                    <img src="img/Artboard1.svg" alt="Write Icon" id="iconA">
+                    <span class="tee">เขียนคำร้อง</span>
+                </a>
+                <a href="" class="menu-item active">
+                    <img src="img/Artboard2.svg" alt="Status Icon">
+                    <span class="tee">สถานะคำร้อง</span>
+                </a>
+            </nav>
+            <div class="logout-section">
+                <a href="/logout" class="menu-item">
+                    <img src="img/Artboard3.svg" alt="Logout Icon">
+                    <span class="tee">ออกจากระบบ</span>
+                </a>
+                <div class="user-info">
+                    <div class="asee"></div>
+                    <div class="user-details">
+                        <p class="name" id="barname">ชื่อจริง นามสกุล</p>
+                        <p class="idd" id="barid">6600812160</p> 
+                    </div>
+                </div>
+            </div>
+            <!-- 
             <a href="/draftPetitions.html">เขียนคำร้อง</a>
             <a href="#" class="active">สถานะคำร้อง</a>
-            <a href="/logout">ออกจากระบบ</a>
+            <a href="/logout">ออกจากระบบ</a>-->
         </div>
 
         <div class="container">
@@ -160,6 +193,18 @@
         function viewPetition(id) {
             window.location.href = `/studentPetitionDetail.html?id=${id}`;
         }
+
+
+        document.addEventListener("DOMContentLoaded", () => {
+    fetch('/api/session-student-info')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('barname').textContent = data.student_name || 'ไม่ทราบชื่อ';
+            document.getElementById('barid').textContent = data.student_id || 'ไม่ทราบรหัส';
+        })
+        .catch(error => console.error('Error fetching student info:', error));
+});
+
     </script>
 </body>
 </html>

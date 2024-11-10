@@ -142,6 +142,65 @@ app.get('/get-session-data', (req, res) => {
     }
 });
 
+// Endpoint สำหรับอัปเดตสถานะเป็น "อ่านแล้ว" และตั้งค่า review_time
+app.post('/advisor/auto-update-status/:id', async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+        const pool = await sql.connect();
+        await pool.request()
+            .input('id', sql.Int, id)
+            .input('status', sql.TinyInt, status)
+            .query(`
+                UPDATE petition 
+                SET status = @status, review_time = GETDATE()
+                WHERE petition_id = @id
+            `);
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error updating petition status and review time:', err);
+        res.status(500).json({ success: false, message: 'Failed to update petition status' });
+    }
+});
+
+// Endpoint สำหรับอัปเดตสถานะคำร้องพร้อมอัปเดต review_time
+app.post('/advisor/update-petition/:id', async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+        const pool = await sql.connect();
+        
+        await pool.request()
+            .input('id', sql.Int, id)
+            .input('status', sql.TinyInt, status)
+            .query(`
+                UPDATE petition 
+                SET status = @status, review_time = GETDATE()
+                WHERE petition_id = @id
+            `);
+        
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error updating petition status and review time:', err);
+        res.status(500).json({ success: false, error: 'Failed to update petition status' });
+    }
+});
+
+// Endpoint สำหรับดึงข้อมูล student_name และ student_id จากเซสชัน
+app.get('/api/session-student-info', (req, res) => {
+    if (req.session.user) {
+        
+        res.json({
+            student_name: req.session.user.displayname_th,
+            student_id: req.session.user.username
+        });
+    } else {
+        res.status(401).json({ error: 'User not logged in' });
+    }
+});
 
 // Route สำหรับ submit คำร้อง
 // การตั้งค่า multer สำหรับอัปโหลดไฟล์
@@ -264,6 +323,7 @@ app.post('/submit-petition', upload.fields([
 
 
 // Endpoint สำหรับอัปเดตคำร้องพร้อมกับไฟล์แนบใหม่และเหตุผลในการยื่นคำร้อง
+// Endpoint สำหรับอัปเดตคำร้องพร้อมกับไฟล์แนบใหม่และเหตุผลในการยื่นคำร้อง
 app.put('/update-petition/:id', upload.fields([
     { name: 'attachFile01', maxCount: 1 },
     { name: 'attachFile02', maxCount: 1 }
@@ -328,7 +388,8 @@ app.put('/update-petition/:id', upload.fields([
                     subject_name = @subject_name,
                     section = @section,
                     status = @status,
-                    reason = @reason
+                    reason = @reason,
+                    submit_time = GETDATE() -- อัปเดตเวลาส่งคำร้องเป็นเวลาปัจจุบัน
                 WHERE petition_id = @id
             `);
 
@@ -383,6 +444,7 @@ app.put('/update-petition/:id', upload.fields([
         res.status(500).json({ success: false, message: 'Failed to update petition' });
     }
 });
+
 
 
 
