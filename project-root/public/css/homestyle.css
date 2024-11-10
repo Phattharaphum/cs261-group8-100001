@@ -197,6 +197,11 @@ body {
     text-align: center;
     box-sizing: border-box;
 }
+.edit-icon {
+    bottom: 15px;
+    left: 15px;
+    font-size: 18px;
+}
 
 /* แบบร่าง */
 .flex-container {
@@ -235,22 +240,14 @@ body {
   font-weight: bold;
 }
 
-.edit-icon {
-  position: absolute;
-  bottom: 15px;
-  left: 15px;
-  font-size: 18px;
-  color: #ff9c68;
-}
-
 .date-time {
   font-size: 12px;
   color: #aaa;
   margin-top: 10px;
   padding-top: 10px;
 }
-.header{
-    margin-top: 10px;
+.header h2{
+    padding-top: 20px;
 }
 
 .not-found {
