@@ -41,6 +41,9 @@ app.get('/api/get-api-key', (req, res) => {
 app.use('/api', userRoutes);
 
 // Route สำหรับการล็อกอิน
+app.get('/index.html', (req, res) => {
+    res.sendFile(__dirname + '/index.html');
+});
 
 app.post('/login', async (req, res) => {
     const { username, password } = req.body;
@@ -135,6 +138,7 @@ app.get('/get-session-data', (req, res) => {
         });
     }
 });
+
 
 // Route สำหรับ submit คำร้อง
 app.post('/submit-petition', express.json(), async (req, res) => {

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Kanit&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styleRegistrationform.css">
+<title>แบบคำร้องการขอลาออก</title>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="header">แบบคำร้องการขอลาออก</div>
+    <h2>ข้อมูลส่วนตัว</h2>
+    <div class="information-form">
+        <div class = prefix-form>
+            <p>คำนำหน้า</p>
+            <input class="prefix" id="prefix" type="text">
+        </div>
+        <div class = firstname-form>                
+            <p>ชื่อ</p>
+            <input class="firstname" id="firstname" type="text">
+        </div>
+        <div class = surename-form>
+            <p>นามสกุล</p>
+            <input class="surename" id="surename" type="text">
+        </div>
+        <div class = studentID-form>
+            <p>รหัสนักศึกษา</p>
+            <input class="studentID" id="studentID" type="text">
+        </div>
+    </div>
+
+    <div class="number-form">   
+        <div class = years-form>
+            <p>ชั้นปีที่</p>
+            <input class="years" id="years" type="text">
+        </div>
+        <div class = field-form>
+            <p>สาขาวิชา</p>
+            <input class="field" id="file" type="text">
+        </div>
+        <div class = stuNumber-form>
+            <p>เบอร์ติดต่อนักศึกษา</p>
+            <input class="stuNumber" id="stuNumber" type="text">
+        </div>
+        <div class = parNumber-form>
+            <p>เบอร์ติดต่อผู้ปกครอง</p>
+            <input class="parNumber" id="parNumber" type="text">
+        </div>
+    </div>
+<p>ที่อยู่ที่สามารถติดต่อได้</p>
+<div class="address-form01"> 
+    <div class = houseNumber-form>
+        <p>บ้านเลขที่</p>
+        <input class="houseNumber" id="houseNumber" type="text">
+    </div>
+    <div class = no-form>
+        <p>หมู่</p>
+        <input class="no" id="no" type="text">
+    </div>
+    <div class = subDistrict-form>
+        <p>แขวง/ตำบล</p>
+        <input class="subDistrict" id="subDistrict" type="text">
+    </div>
+    <div class = district-form>
+        <p>เขต/อำเภอ</p>
+        <input class="district" id="district" type="text">
+    </div>
+        <div class = province-form>
+        <p>จังหวัด</p>
+        <input class="province" id="province" type="text">
+    </div>
+</div>
+<div class="address-form02"> 
+    <div class = postcode-form>
+        <p>รหัสไปรษณีย์</p>
+        <input class="postcode" id="postcode" type="text">
+    </div>
+</div>
+<h2>คำร้อง</h2>
+<div class="petition">
+    <div class="petition-form01">
+        <div class = petitionType-form>
+            <p>ประเภทคำร้อง</p>
+            <input class="petitionType" id="petitionType" type="text">
+        </div>
+        <div class = semester-form>
+            <p>ภาคการศึกษา</p>
+            <input class="semester" id="semester" type="text">                
+        </div>
+    </div>
+    <div class="petition-form02">
+        <div class = courseCode-form>
+            <p>รหัสวิชา</p>
+            <input class="courseCode" id="courseCode" type="text">
+        </div>
+        <div class = courseName-form>
+            <p>ชื่อวิชา</p>
+            <input class="courseName" id="courseName" type="text">
+        </div>
+        <div class = section-form>
+            <p>กลุ่มเรียน</p>
+            <input class="section" id="section" type="text">
+        </div>
+    </div>
+</div>
+<h2>แนบเอกสาร</h2>
+<div class="file">
+    <p>เอกสารแนบที่ 1</p>
+    <div class="file-form01">
+        <div class="attachFile-form01">
+            <input class="attachFile01" id="attachFile01" type="file">
+            <label for="attachFile01">เลือกไฟล์</label>
+        </div>
+        <div class="fileName-form">
+            <p>ชื่อไฟล์</p>
+            <!--ชื่อไฟล์จะถูกแสดงตรงนี้-->
+            <p class="fileName" id="fileName"></p>
+        </div>
+        <div class="description-form">
+            <p>คำอธิบาย</p>
+            <input class="description" id="description" type="text">
+        </div>
+        <button class="save-file">บันทึกไฟล์</button>
+    </div>
+    <p>เอกสารแนบที่ 2</p>
+    <div class="file-form02">
+        <div class="attachFile-form02">
+            <input class="attachFile02" id="attachFile02" type="file">
+            <label for="attachFile02">เลือกไฟล์</label>
+        </div>
+        <div class="fileName-form02">
+            <p>ชื่อไฟล์</p>
+            <!--ชื่อไฟล์จะถูกแสดงตรงนี้-->
+            <p class="fileName02" id="fileName02"></p>
+        </div>
+        <div class="description-form02">
+            <p>คำอธิบาย</p>
+            <input class="description02" id="description02" type="text">
+        </div>
+        <button class="save-file">บันทึกไฟล์</button>
+    </div>
+</div>
+<div class="button-group">
+    <button class="button-delete-draft">ลบแบบร่าง</button>
+    <button class="button-save-draft">บันทึกแบบร่าง</button>
+    <button class="button-submit">ยื่นคำร้อง</button>
+</div>
+
+<script>
+    document.getElementById("attachFile01").addEventListener("change", function() {
+        const fileName = document.getElementById("attachFile01").files[0]?.name || "ยังไม่ได้เลือกไฟล์";
+        document.getElementById("fileName").textContent = fileName;
+    });
+
+    document.getElementById("attachFile02").addEventListener("change", function() {
+        const fileName = document.getElementById("attachFile02").files[0]?.name || "ยังไม่ได้เลือกไฟล์";
+        document.getElementById("fileName02").textContent = fileName;
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,214 @@
+* {
+    box-sizing: border-box;
+    font-family: "Bai Jamjuree";
+}
+
+/*กรอบพื้นหลังการเขีบยคำร้อง*/
+.container {
+    background-color: #F4F4F4;
+    width: 80vw;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: 0;
+}
+
+/*กรอบหัวข้อ*/
+.header {
+    font-weight: 600;
+    background-color: #A70C0C ;
+    color: white;
+    text-align: center;
+    padding: 10px 25px;
+    border-radius: 30px;
+    display: inline-block;
+}
+
+h2 {
+    margin-bottom: 5px;
+}
+
+/*การกำหนดความหนา text*/
+.container p {
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+/*การกำหนดขนาดช่อง text*/
+.container input[type="text"] {
+    background-color: #D9D9D9;
+    border: none;
+    border-radius: 15px;
+    height: 25px;
+    padding-left: 10px;
+}
+
+/*จัดเรียงช่องคำนำหน้า -> เบอร์ติดต่อ*/
+.information-form, .number-form{
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-left: 60px;
+}
+
+.prefix, .years {
+    width: 100px;
+}
+
+.firstname, .surename, .studentID, .field, .stuNumber, .parNumber {
+    width: 150px;
+}
+
+/*จัดเรียงช่องบ้านเลขที่ -> รหัสไปรษณีย์*/
+.address-form01, .address-form02 {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-left: 60px;
+}
+
+.houseNumber, .no, .subDistrict, .district{
+    width: 100px;
+}
+
+.province {
+    width: 150px;
+}
+
+.postcode {
+    width: 150px;
+}
+
+/*จัดเรียงช่องประเภทคำร้อง -> กลุ่มเรียน*/
+.petition-form01, .petition-form02 {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-left: 60px;
+}
+
+.petitionType, .courseName {
+    width: 300px;
+}
+
+.semester {
+    width: 150px;
+}
+
+.courseCode, .section {
+    width: 100px;
+}
+/*จัดเรียงช่องไฟล์แนบที่ 1 -> ไฟล์แนบที่ 2*/
+.file {
+    margin-top: 20px;
+}
+
+.file-form01 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.file-form02 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.attachFile-form01, .fileName-form, .description-form {
+    margin-right: 20px;
+}
+
+.attachFile-form02, .fileName-form02, .description-form02 {
+    margin-right: 20px;
+}
+
+.attachFile-form01 input, .attachFile-form02 input {
+    display: none;
+}
+
+.attachFile-form01 label, .attachFile-form02 label {
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    padding: 5px 60px;
+    margin-left: 60px;
+    cursor: pointer;
+    color: #444444;
+    border-color: #444444;
+    font-size: small;
+}
+
+.fileName-form p, .description-form p {
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+.fileName-form02 p, .description-form02 p {
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+.description-form input {
+    padding: 5px;
+}
+
+.description-form02 input {
+    padding: 5px;
+}
+
+.save-file {
+    background-color: #F4F4F4;
+    color: #444444;
+    border-radius: 30px;
+    padding: 7px 10px;
+    font-size: small;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button-delete-draft {
+    background-color: #F4F4F4;
+    color: #A70C0C;
+    border-color: #A70C0C;
+    border-radius: 15px;
+    padding: 10px 30px;
+}
+
+.button-save-draft {
+    background-color: #F4F4F4;
+    color: black;
+    border-radius: 15px;
+    padding: 10px 30px;
+}
+
+.button-submit {
+    background-color: #F4F4F4;
+    color: black;
+    border-radius: 15px;
+    padding: 10px 30px;
+}
+
+.save-file:hover{
+    background-color:#444444 ;
+    color:#D9D9D9 ;
+}
+
+.button-delete-draft:hover {
+    background-color: #A70C0C;
+    color: #F4F4F4;
+    border-color: #F4F4F4;
+}
+
+.button-save-draft:hover {
+    background-color: black;
+    color: #F4F4F4;
+}
+
+.button-submit:hover {
+    background-color: black;
+    color: #F4F4F4;
+}

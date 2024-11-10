@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการคำร้อง</title>
+    <link rel="stylesheet" href="css/styleListofPetitionAdvisor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar Section (20%) -->
+        <div class="sidebar"></div>
+
+        <!-- Main Content Section (80%) -->
+        <div class="container">
+            <div class="header">
+                <div class="header-button">รายการคำร้อง</div>
+                  
+            </div>
+
+			<div class="sss">
+            <div class="tab">
+                <div id="tab1">
+                    <button class="tab Ncheck">ยังไม่ถูกพิจารณา</button>
+                </div>
+                <div id="tab2">
+                    <button class="tab Check" type="button">พิจารณาแล้ว</button>
+                </div>
+                    
+				
+            </div>
+				  <div class="search-filter"> 
+                        <input type="text" placeholder="ค้นหา">
+                 
+                  </div>
+              </div>  
+			
+            <table class="table">
+                    <tr class="table-header">
+                        <th>ประเภท</th>
+                        <th>ชื่อวิชา</th>
+                        <th>รหัสวิชา(ID)</th>
+                        <th>Section</th>
+          
+                        <th>วันที่</th>
+                        <th>เวลา</th>
+						<th>สถานะ</th>
+                        <th>ตรวจสอบ</th>
+                    </tr>
+                <!-- Example Row Data -->
+                    <tr class="table-row">
+                        <td>ถอนรายวิชา</td>
+                        <td>Data Structures</td>
+                        <td>CS213</td>
+                        <td>780015</td>
+                
+                        <td>12/04/2015</td>
+                        <td>09:12 AM</td>
+						<td>ตรวจสอบแล้ว</td>
+                        <td><button class="verify-button">ตรวจสอบ</button></td>
+                    </tr>
+                    <tr class="table-row">
+                        <td>จดทะเบียนศึกษา
+รายวิชาข้ามหลักสูตร</td>
+                        <td>Data Structures</td>
+                        <td>CS213</td>
+                        <td>780015</td>
+                
+                        <td>12/04/2015</td>
+                        <td>09:12 AM</td>
+						<td>ตรวจสอบแล้ว</td>
+                        <td><button class="verify-button">ตรวจสอบ</button></td>
+                    </tr>
+                    <tr class="table-row">
+                        <td>ถอนรายวิชา</td>
+                        <td>Data Structures</td>
+                        <td>CS213</td>
+                        <td>780015</td>
+                    
+                        <td>12/04/2015</td>
+                        <td>09:12 AM</td>
+						<td>ตรวจสอบแล้ว</td>
+                        <td><button class="verify-button">ตรวจสอบ</button></td>
+                    </tr>
+
+            </table>
+            
+        </div>
+	</div>
+</body>
+</html>
