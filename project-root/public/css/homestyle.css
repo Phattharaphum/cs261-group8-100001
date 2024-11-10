@@ -89,6 +89,10 @@ body {
     margin-right: 20px;
 
 }
+.not-found {
+    margin-top: 100px;
+    text-align: center;
+}
 
 
 .sidebar .logout a:hover {
@@ -97,7 +101,7 @@ body {
 
 .image-sidebar {
     width: 100px;
-    height: 100px;
+    /* height: 100px; */
     border-radius: 10px;
     margin-right: 10px;
 }
@@ -138,7 +142,6 @@ body {
     color: #ffffff;
     background-color: #A70C0C;
     border-radius: 15px;
-
 }
 
 .draft-section {
@@ -196,7 +199,6 @@ body {
 }
 
 /* แบบร่าง */
-/* ------------------------------------ */
 .flex-container {
     display: flex;
     gap: 20px;
@@ -227,17 +229,6 @@ body {
 .container {
   text-align: center;
 }
-
-/* .card {
-  background-color: #fff;
-  border-radius: 20px;
-  width: 300px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  position: relative; 
-  text-align: center;
-} */
-
 .course-info h2 {
   margin-top: 50px;
   font-size: 32px;
