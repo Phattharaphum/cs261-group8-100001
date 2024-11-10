@@ -75,7 +75,8 @@ body {
     justify-content: center;
     padding: 10px 15px;
     text-decoration: none;
-    color: #939393;
+    color: #EC6868;
+;
     font-weight: bold;
     border-radius: 20px;
     transition: background-color 0.3s;
@@ -90,7 +91,6 @@ body {
 
 .sidebar .logout a:hover {
     background-color: #EEBBBA;
-    color: #81171B;
 }
 .image-sidebar {
     width: 100px;
@@ -284,7 +284,8 @@ body {
 .card-sidebar {
     display: flex;
     align-items: center;
-    flex-flow: row wrap;
+    /* flex-flow: row wrap; */
+    /* gap: 25%; */
     border-radius: 10px;
     padding: 10px;
     justify-content: center;
@@ -294,6 +295,7 @@ body {
 .text-sidebar {
     text-align: right;
     color: #939393;
+    width: 50%;
 }
 
 .card {
