@@ -196,52 +196,11 @@ body {
 }
 
 /* แบบร่าง */
-.draftlist-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.draftlist-header h1 {
-    margin: 10px 10px 10px 10px;
-    padding: 10px 10px 10px 10px;
-    color: #ffffff;
-    background-color: #A70C0C;
-    border-radius: 15px;
-
-}
-
-.draftlist-section {
-    margin-top: 30px;
-}
-
-.draftlist-cards {
-    display: flex;
-    gap: 100px;
-    justify-content: center;
-}
-
-.draftlist-card img {
-    width: 30px;
-    height: 30px;
-    justify-content: right;
-}
-
-.draftlist-card {
-    background-color: #fff;
-    border: 1px solid #e6e6e6;
-    border-radius: 8px;
-    text-align: center;
-    padding: 20px;
-    margin-bottom: 20px;
-    width: 150px;
-    color: #333;
-}
-
 /* ------------------------------------ */
 .flex-container {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
     justify-content: center;
 }
 
@@ -254,23 +213,54 @@ body {
     z-index: 1;
 }
 
-.head {
+.card-img {
     display: flex;
-    align-items: center;
-    justify-self: center;
-    padding: 9px;
-    color: rgb(0, 0, 0);
+    justify-content: right;
 }
-/* .card-cocntent{
-    display: flex;
-    align-items: center;
-    justify-self: center;
-    padding: 9px;
-    color: white;
+
+.card-img img {
+    width: 50px;
+    height: 50px;
+}
+
+
+.container {
+  text-align: center;
+}
+
+/* .card {
+  background-color: #fff;
+  border-radius: 20px;
+  width: 300px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: relative; 
+  text-align: center;
 } */
-/* ------------------------------------ */
 
+.course-info h2 {
+  margin-top: 50px;
+  font-size: 32px;
+  font-weight: bold;
+}
 
+.edit-icon {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  font-size: 18px;
+  color: #ff9c68;
+}
+
+.date-time {
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 10px;
+  padding-top: 10px;
+}
+.header{
+    margin-top: 10px;
+}
 
 .not-found {
     margin-top: 100px;
