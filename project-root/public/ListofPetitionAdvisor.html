@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการคำร้อง</title>
+    <link rel="stylesheet" href="styleListofPetitionAdvisor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar Section (20%) -->
+        <div class="sidebar"></div>
+
+        <!-- Main Content Section (80%) -->
+        <div class="container">
+            <div class="header">
+                <div class="header-button">รายการคำร้อง</div>
+                    <div class="search-filter"> 
+                        <input type="text" placeholder="ค้นหา">
+                     
+                    <button class="filter-button"><img src="Gong.png" width="20px" height=20px alt="กรอง" class="icon">กรอง</button>
+                    </div>
+            </div>
+
+            <div class="tab">
+                <div id="tab1">
+                    <button class="tab Ncheck">ยังไม่ได้ตรวจสอบ</button>
+                </div>
+                <div id="tab2">
+                    <button class="tab Check" type="button">ตรวจสอบแล้ว</button>
+                </div>
+                    
+            </div>
+                      
+            <table class="table">
+                    <tr class="table-header">
+                        <th>ประเภท</th>
+                        <th>ชื่อวิชา</th>
+                        <th>รหัสวิชา(ID)</th>
+                        <th>Section</th>
+                        <th>ชื่อนักศึกษา</th>
+                        <th>รหัสนักศึกษา</th>
+                        <th>วันที่</th>
+                        <th>เวลา</th>
+                        <th>ตรวจสอบ</th>
+                    </tr>
+                <!-- Example Row Data -->
+                    <tr class="table-row">
+                        <td>ถอนรายวิชา</td>
+                        <td>Data Structures</td>
+                        <td>CS213</td>
+                        <td>780015</td>
+                        <td>นางสาวเอมบีบี ลีโอเฟ</td>
+                        <td>660581234</td>
+                        <td>12/04/2015</td>
+                        <td>09:12 AM</td>
+                        <td><button class="verify-button">ตรวจสอบ</button></td>
+                    </tr>
+                    <tr class="table-row">
+                        <td>ถอนรายวิชา</td>
+                        <td>Data Structures</td>
+                        <td>CS213</td>
+                        <td>780015</td>
+                        <td>นางสาวเอมบีบี ลีโอเฟ</td>
+                        <td>660581234</td>
+                        <td>12/04/2015</td>
+                        <td>09:12 AM</td>
+                        <td><button class="verify-button">ตรวจสอบ</button></td>
+                    </tr>
+                    <tr class="table-row">
+                        <td>ถอนรายวิชา</td>
+                        <td>Data Structures</td>
+                        <td>CS213</td>
+                        <td>780015</td>
+                        <td>นางสาวเอมบีบี ลีโอเฟ</td>
+                        <td>660581234</td>
+                        <td>12/04/2015</td>
+                        <td>09:12 AM</td>
+                        <td><button class="verify-button">ตรวจสอบ</button></td>
+                    </tr>
+            </table>
+            
+        </div>
+</body>
+</html>
