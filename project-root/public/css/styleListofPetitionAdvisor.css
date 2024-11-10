@@ -48,6 +48,8 @@ body, html {
     border-radius: 20px;
     font-size: 25px;
     cursor: pointer;
+    margin-top: 50px;
+    margin-left: 60px;;
 }
 
 .search-filter { 

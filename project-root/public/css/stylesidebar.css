@@ -8,9 +8,9 @@
 body, html {
     font-family: Arial, sans-serif;
     height: 100%;
-    background-color: #f0f0f0;
-}
 
+    background-color: #EDEDED;
+}
 .container {
     display: flex;
     height: 100vh;
@@ -115,7 +115,6 @@ body, html {
 
 .main-content {
     flex-grow: 1;
-    background-color: #EDEDED;
     padding: 20px;
 }
 

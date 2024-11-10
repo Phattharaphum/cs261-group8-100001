@@ -2,8 +2,8 @@
 body {
     font-family: 'Bai Jamjuree', sans-serif;  
 	margin: 0;
+   background-color: #EDEDED;
 }
-
 .container {
     display: flex;
     margin: 0;
@@ -18,13 +18,11 @@ body {
 .middle {
 	flex: 1;
     width: 100%;
-    background-color: #F4F4F4;
     padding: 20px;
 }
 
 .right {
     width: 30%;
-    background-color: #F4F4F4;
     padding: 20px;
     position: fixed;   
     bottom: 0;          
@@ -124,6 +122,8 @@ hr {
     right: 150px;   
     padding-top: 0%;
     padding-bottom: 0%;
+    margin-left:60px ;
+    
     margin-top: auto;
 }
 

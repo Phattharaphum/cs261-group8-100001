@@ -18,7 +18,7 @@
                 <p id="topmain">แบบคำร้อง</p>
             </div>
 
-            <form>
+            <form enctype="multipart/form-data">
                 <input type="hidden" id="petition_id">
 
                 <h2>ข้อมูลส่วนตัว</h2>
@@ -141,22 +141,33 @@
                         </div>
                     </div>
                 </div>
+                <h2>เหตุผลในการยื่นคำร้อง</h2>
+<div class="reason-form">
+    <p>เหตุผลในการยื่นคำร้อง</p>
+    <textarea class="reason" id="reason" placeholder="กรุณากรอกเหตุผลในการยื่นคำร้อง" rows="4" required></textarea>
+</div>
 
                 <h2>แนบเอกสาร</h2>
                 <div class="file">
                     <p>เอกสารแนบที่ 1</p>
                     <div class="file-form01">
-                        <input class="attachFile01" id="attachFile01" type="file">
+                        <!-- Existing file input -->
+                        <input class="attachFile01" id="attachFile01" name="attachFile01" type="file" style="display:none;">
                         <label for="attachFile01">เลือกไฟล์</label>
                         <p class="fileName02" id="fileName">ยังไม่ได้เลือกไฟล์</p>
                         <input class="description" id="description" type="text" placeholder="คำอธิบาย">
+                        <!-- Placeholder for existing attached file -->
+                        <div id="existingFile1"></div>
                     </div>
                     <p>เอกสารแนบที่ 2</p>
                     <div class="file-form02">
-                        <input class="attachFile02" id="attachFile02" type="file">
+                        <!-- Existing file input -->
+                        <input class="attachFile02" id="attachFile02" name="attachFile02" type="file" style="display:none;">
                         <label for="attachFile02">เลือกไฟล์</label>
                         <p class="fileName02" id="fileName02">ยังไม่ได้เลือกไฟล์</p>
                         <input class="description02" id="description02" type="text" placeholder="คำอธิบาย">
+                        <!-- Placeholder for existing attached file -->
+                        <div id="existingFile2"></div>
                     </div>
                 </div>
 
@@ -173,7 +184,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const petitionId = urlParams.get('petition_id');
         const initialPetitionType = urlParams.get("petition_type");
-
+        let removedFilesArray = [];
 
         function getPetitionType(type) {
             switch(parseInt(type)) {
@@ -239,6 +250,7 @@
                     document.getElementById('subject_code').value = data.subject_code || '';
                     document.getElementById('subject_name').value = data.subject_name || '';
                     document.getElementById('section').value = data.section || '';
+                    document.getElementById('reason').value = data.reason || '';
 
                     const isResignation = data.petition_type === "4";
                         document.getElementById("subject_code").style.display = isResignation ? "none" : "block";
@@ -249,44 +261,91 @@
                       if(isResignation){
                         document.getElementById("academic_year").value = data.subject_code;     
                       }  
-                })
+
+
+                      if (data.attachedFiles && data.attachedFiles.length > 0) {
+                data.attachedFiles.forEach((file, index) => {
+                    const fileNumber = index + 1;
+                    const existingFileDiv = document.getElementById(`existingFile${fileNumber}`);
+                    if (existingFileDiv) {
+                        existingFileDiv.innerHTML = `
+                            <p>ไฟล์ที่แนบไว้: ${file.file_name}</p>
+                            <button type="button" onclick="removeAttachedFile(${file.file_id}, ${fileNumber})">ลบไฟล์นี้</button>
+                            <a href="/download-file/${file.file_id}">ดาวน์โหลด</a>
+                        `;
+                    }
+                });
+            }
+
+            // สำหรับเอกสารแนบที่ 1
+        if (data.attachedFiles && data.attachedFiles.length > 0) {
+            // ถ้ามีไฟล์แนบ
+            const file1 = data.attachedFiles[0];
+            document.getElementById('fileName').textContent = 'ไฟล์ที่แนบไว้: ' + file1.file_name;
+            document.getElementById('attachFile01').style.display = 'none';  // ซ่อน input
+            document.getElementById('existingFile1').innerHTML = `
+                <p>ไฟล์ที่แนบไว้: ${file1.file_name}</p>
+                <button type="button" onclick="removeAttachedFile(${file1.file_id}, 1)">ลบไฟล์นี้</button>
+                <a href="/download-file/${file1.file_id}">ดาวน์โหลด</a>
+            `;
+        }
+
+        // สำหรับเอกสารแนบที่ 2
+        if (data.attachedFiles && data.attachedFiles.length > 1) {
+            const file2 = data.attachedFiles[1];
+            document.getElementById('fileName02').textContent = 'ไฟล์ที่แนบไว้: ' + file2.file_name;
+            document.getElementById('attachFile02').style.display = 'none';  // ซ่อน input
+            document.getElementById('existingFile2').innerHTML = `
+                <p>ไฟล์ที่แนบไว้: ${file2.file_name}</p>
+                <button type="button" onclick="removeAttachedFile(${file2.file_id}, 2)">ลบไฟล์นี้</button>
+                <a href="/download-file/${file2.file_id}">ดาวน์โหลด</a>
+            `;
+        }
+    })
                 .catch(error => console.error('Error fetching draft petition data:', error));
         }
 
         function submitForm(status) {
             const petitionId = document.getElementById('petition_id').value;
             const isResignation = document.getElementById("petition_type").value === "4";
-            const data = {
-                student_id: document.getElementById('student_id').value,
-                student_name: document.getElementById('prefix').value + ' ' + document.getElementById('student_name').value + ' ' + document.getElementById('student_surname').value,
-                major: document.getElementById('major').value,
-                year: document.getElementById('year').value,
-                house_number: document.getElementById('house_number').value,
-                moo: document.getElementById('no').value,
-                sub_district: document.getElementById('subDistrict').value,
-                district: document.getElementById('district').value,
-                province: document.getElementById('province').value,
-                postcode: document.getElementById('postcode').value,
-                student_phone: document.getElementById('student_phone').value,
-                guardian_phone: document.getElementById('guardian_phone').value,
-                petition_type: document.getElementById('petition_type').value,
-                semester: document.getElementById('semester').value,
-                subject_code: isResignation ? document.getElementById('academic_year').value : document.getElementById('subject_code').value,
-                subject_name: document.getElementById('subject_name').value,
-                section: document.getElementById('section').value,
-                status: status
-            };
+            const formData = new FormData();
 
+            formData.append('student_id', document.getElementById('student_id').value);
+            formData.append('student_name', document.getElementById('prefix').value + ' ' + document.getElementById('student_name').value + ' ' + document.getElementById('student_surname').value);
+            formData.append('major', document.getElementById('major').value);
+            formData.append('year', document.getElementById('year').value);
+            formData.append('house_number', document.getElementById('house_number').value);
+            formData.append('moo', document.getElementById('no').value);
+            formData.append('sub_district', document.getElementById('subDistrict').value);
+            formData.append('district', document.getElementById('district').value);
+            formData.append('province', document.getElementById('province').value);
+            formData.append('postcode', document.getElementById('postcode').value);
+            formData.append('student_phone', document.getElementById('student_phone').value);
+            formData.append('guardian_phone', document.getElementById('guardian_phone').value);
+            formData.append('petition_type', document.getElementById('petition_type').value);
+            formData.append('semester', document.getElementById('semester').value);
+            formData.append('subject_code', isResignation ? document.getElementById('academic_year').value : document.getElementById('subject_code').value);
+            formData.append('subject_name', document.getElementById('subject_name').value);
+            formData.append('section', document.getElementById('section').value);
+            formData.append('status', status);
+            formData.append('reason', document.getElementById('reason').value); // เพิ่มเหตุผลในการยื่นคำร้อง
+
+            // เพิ่มไฟล์ลงใน FormData
+            const file1 = document.getElementById('attachFile01').files[0];
+            const file2 = document.getElementById('attachFile02').files[0];
+            if (file1) formData.append('attachFile01', file1); // Changed 'file1' to 'attachFile01'
+            if (file2) formData.append('attachFile02', file2); // Changed 'file2' to 'attachFile02'
+
+
+    // Add information about removed files (if any)
+    formData.append('removedFiles', JSON.stringify(removedFilesArray));
 
             const url = petitionId ? `/update-petition/${petitionId}` : '/submit-petition';
             const method = petitionId ? 'PUT' : 'POST';
 
             fetch(url, {
                 method: method,
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+                body: formData
             })
             .then(response => response.json())
             .then(result => {
@@ -300,6 +359,7 @@
                 console.error('Error submitting form:', error);
             });
         }
+
         // ฟังก์ชันดึงข้อมูล session
         window.addEventListener("load", function() {
             const petitionTypeElement = document.getElementById("petition_type");
@@ -351,6 +411,64 @@
             const fileName = document.getElementById("attachFile02").files[0]?.name || "ยังไม่ได้เลือกไฟล์";
             document.getElementById("fileName02").textContent = fileName;
         });
+
+
+        function removeAttachedFile(fileId, fileNumber) {
+    if (confirm("คุณต้องการลบไฟล์นี้หรือไม่?")) {
+        fetch(`/remove-file/${fileId}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('ลบไฟล์เรียบร้อย');
+                // Remove the file display
+                document.getElementById(`existingFile${fileNumber}`).innerHTML = '';
+            } else {
+                alert('ไม่สามารถลบไฟล์ได้');
+            }
+        })
+        .catch(error => {
+            console.error('Error removing file:', error);
+        });
+    }
+}
+
+function removeAttachedFile(fileId, fileNumber) {
+    if (confirm("คุณต้องการลบไฟล์นี้หรือไม่?")) {
+        fetch(`/remove-file/${fileId}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('ลบไฟล์เรียบร้อย');
+                // ลบไฟล์ที่แสดงอยู่
+                document.getElementById(`existingFile${fileNumber}`).innerHTML = '';
+                // แสดง input สำหรับเลือกไฟล์ใหม่
+                document.getElementById(`attachFile0${fileNumber}`).style.display = 'block';
+                document.getElementById(`fileName${fileNumber === 1 ? '' : '02'}`).textContent = 'ยังไม่ได้เลือกไฟล์';
+            } else {
+                alert('ไม่สามารถลบไฟล์ได้');
+            }
+        })
+        .catch(error => {
+            console.error('Error removing file:', error);
+        });
+    }
+}
+
+// เมื่อมีการเลือกไฟล์ใหม่
+document.getElementById("attachFile01").addEventListener("change", function() {
+    const fileName = document.getElementById("attachFile01").files[0]?.name || "ยังไม่ได้เลือกไฟล์";
+    document.getElementById("fileName").textContent = fileName;
+});
+
+document.getElementById("attachFile02").addEventListener("change", function() {
+    const fileName = document.getElementById("attachFile02").files[0]?.name || "ยังไม่ได้เลือกไฟล์";
+    document.getElementById("fileName02").textContent = fileName;
+});
+
     </script>
     
 </body>

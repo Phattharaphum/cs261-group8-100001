@@ -54,23 +54,24 @@
                 <p>รหัสวิชา :<span id="subject_code"></span></p>
                 <p>ชื่อวิชา :<span id="subject_name"></span></p>
                 <p>กลุ่มเรียน :<span id="section"></span></p>
+                <p>เหตุผลในการยื่นคำร้อง :<span id="reason"></span></p> <!-- เพิ่มส่วนนี้ -->
             </dd>
             <hr>
             <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
             <div class="file">
-                <div class="box-container">
-                    <div class="top">เอกสารแนบที่ 1</div>
-                    <div class="box"></div>
-                    <div class="bottom"><span id="file1_name">ชื่อไฟล์</span></div>
-                    <div class="bottom"><p style="color: #464646;">คำอธิบาย</p></div>
-                </div>
-                <div class="box-container">
-                    <div class="top">เอกสารแนบที่ 2</div>
-                    <div class="box"></div>
-                    <div class="bottom"><span id="file2_name">ชื่อไฟล์</span></div>
-                    <div class="bottom"><p style="color: #464646;">คำอธิบาย</p></div>
-                </div>
-            </div>
+                <table id="attachedFilesTable">
+                    <thead>
+                        <tr>
+                            <th>ชื่อไฟล์</th>
+                            <th>คำอธิบาย</th>
+                            <th>ดาวน์โหลด</th>
+                        </tr>
+                    </thead>
+                    <tbody id="attachedFilesBody">
+                        <!-- ไฟล์แนบจะถูกเพิ่มที่นี่โดย JavaScript -->
+                    </tbody>
+                </table>
+            </div><br><br>
         </div>
 
         <!-- Status and Action Buttons -->
@@ -136,6 +137,7 @@
                 document.getElementById('section').textContent = data.section || '';
                 document.getElementById('submit_time').textContent = new Date(data.submit_time).toLocaleString() || '';
                 document.getElementById('status').innerHTML = getStatusText(data.status);
+                document.getElementById('reason').textContent = data.reason || 'ไม่มีเหตุผลระบุไว้'; // เพิ่มการแสดงเหตุผล
 
                 document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(data.petition_type);
                 // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 4 หรือ 5
@@ -144,8 +146,26 @@
                     document.querySelector('.approve-button').style.display = 'none';
                 }
 
-                document.getElementById('file1_name').textContent = data.file1_name || 'ไม่มีไฟล์แนบ';
-                document.getElementById('file2_name').textContent = data.file2_name || 'ไม่มีไฟล์แนบ';
+
+
+
+                // แสดงไฟล์แนบในรูปแบบตาราง
+        const attachedFilesBody = document.getElementById('attachedFilesBody');
+        if (data.attachedFiles && data.attachedFiles.length > 0) {
+            data.attachedFiles.forEach((file) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${file.file_name}</td>
+                    <td>${file.description || ''}</td>
+                    <td><a href="/student/download-file/${file.file_id}" target="_blank">ดาวน์โหลด</a></td>
+                `;
+                attachedFilesBody.appendChild(row);
+            });
+        } else {
+            attachedFilesBody.innerHTML = '<tr><td colspan="3">ไม่มีไฟล์แนบ</td></tr>';
+        }
+
+        
             })
             .catch(error => console.error('Error fetching petition details:', error));
 

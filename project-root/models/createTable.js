@@ -1,5 +1,3 @@
-// project-root/models/createTable.js
-
 const sql = require('../config/db.config');
 
 const createPetitionTable = `
@@ -24,12 +22,12 @@ BEGIN
         subject_code NVARCHAR(20),
         subject_name NVARCHAR(100),
         section NVARCHAR(10),
+        reason NVARCHAR(MAX),                -- เหตุผลในการยื่นคำร้อง
         status TINYINT NOT NULL DEFAULT 1,
         submit_time DATETIME DEFAULT GETDATE(),
         review_time DATETIME
     );
 END;
-
 `;
 
 const createAdvisorInfoTable = `
@@ -39,6 +37,21 @@ BEGIN
         id INT IDENTITY(1,1) PRIMARY KEY,
         student_id NVARCHAR(20) NOT NULL,
         advisor_id NVARCHAR(20) NOT NULL
+    );
+END;
+`;
+
+const createFileTable = `
+IF OBJECT_ID('localdoc', 'U') IS NULL 
+BEGIN
+    CREATE TABLE localdoc (
+        file_id INT IDENTITY(1,1) PRIMARY KEY,       -- id ไฟล์
+        petition_id INT NOT NULL,                    -- petition id
+        file_type NVARCHAR(50),                      -- สกุลไฟล์
+        file_name NVARCHAR(100) NOT NULL,            -- ชื่อไฟล์
+        description NVARCHAR(255),                   -- คำอธิบาย
+        file_path NVARCHAR(255) NOT NULL,            -- ที่อยู่
+        FOREIGN KEY (petition_id) REFERENCES petition(petition_id) -- เชื่อมโยงกับ petition
     );
 END;
 `;
@@ -55,6 +68,10 @@ const initializeTables = async () => {
         // สร้างตาราง advisor_info
         await pool.request().query(createAdvisorInfoTable);
         console.log('Advisor info table created successfully or already exists.');
+        
+        // สร้างตาราง file
+        await pool.request().query(createFileTable);
+        console.log('File table created successfully or already exists.');
     } catch (err) {
         console.error('Error creating tables:', err);
     } finally {

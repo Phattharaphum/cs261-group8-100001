@@ -22,6 +22,23 @@
         .status-rejected { background-color: #FFCDD2; color: #C62828; }
         .status-approved { background-color: #A5D6A7; color: #2E7D32; }
         .status-canceled { background-color: #BBDEFB; color: #1565C0; }
+
+        /* Style the attached files table */
+#attachedFilesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#attachedFilesTable th, #attachedFilesTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#attachedFilesTable th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
     </style>
 </head>
 <body>
@@ -53,23 +70,22 @@
                 <p>รหัสวิชา :<span id="subject_code"> </span></p>
                 <p>ชื่อวิชา :<span id="subject_name"> </span></p>
                 <p>กลุ่มเรียน :<span id="section"> </span></p>
+                <p>เหตุผลในการยื่นคำร้อง :<span id="reason"> </span></p> <!-- เพิ่มส่วนนี้ -->
             </dd>
             <hr>
             <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
             <div class="file">
-                <div class="box-container">
-                    <div class="top">เอกสารแนบที่ 1</div>
-                    <div class="box"></div>
-                    <div class="bottom"><span id="file1_name">ชื่อไฟล์</span></div>
-                    <div class="bottom"><p style="color: #464646;">คำอธิบาย</p></div>
-                </div>
-                <div class="box-container">
-                    <div class="top">เอกสารแนบที่ 2</div>
-                    <div class="box"></div>
-                    <div class="bottom"><span id="file2_name">ชื่อไฟล์</span></div>
-                    <div class="bottom"><p style="color: #464646;">คำอธิบาย</p></div>
-                </div>
-            </div>
+                <table id="attachedFilesBody">
+                    <thead>
+                        <tr>
+                            <th>ชื่อไฟล์</th>
+                            <th>คำอธิบาย</th>
+                            <th>ดาวน์โหลด</th>
+                        </tr>
+                    </thead>
+ 
+                </table>
+            </div><br><br><br><br><br>
         </div>
 
         <!-- Status Section -->
@@ -83,11 +99,13 @@
 
         <!-- Back Button -->
         <button class="back-botton" onclick="goBack()">ย้อนกลับ</button>
+        <button class="back-button" id="cancelButton" onclick="updateStatus(6)" style="display: none;">ยกเลิก</button>
     </div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
         const petitionId = urlParams.get('id');
+        const attachedFilesBody = document.getElementById('attachedFilesBody');
                 // ฟังก์ชันแสดงสถานะพร้อมแถบสี
                 function getStatusText(status) {
             switch(status) {
@@ -133,17 +151,62 @@
                 document.getElementById('section').textContent = data.section || '';
                 document.getElementById('submit_time').textContent = new Date(data.submit_time).toLocaleString() || '';
                 document.getElementById('status').innerHTML = getStatusText(data.status);
+                document.getElementById('reason').textContent = data.reason || 'ไม่มีเหตุผลระบุไว้'; // เพิ่มการแสดงเหตุผล
 
                 document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(data.petition_type);
 
-                document.getElementById('file1_name').textContent = data.file1_name || 'ไม่มีไฟล์แนบ';
-                document.getElementById('file2_name').textContent = data.file2_name || 'ไม่มีไฟล์แนบ';
+  
+                if (data.status === 2) {
+                    document.getElementById('cancelButton').style.display = 'block';
+                } else {
+                    document.getElementById('cancelButton').style.display = 'none';
+                }
+
+
+                // Display attached files
+
+if (data.attachedFiles && data.attachedFiles.length > 0) {
+    data.attachedFiles.forEach((file, index) => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${file.file_name}</td>
+            <td>${file.description || ''}</td>
+            <td><a href="/student/download-file/${file.file_id}" target="_blank">ดาวน์โหลด</a></td>
+        `;
+
+        attachedFilesBody.appendChild(row);
+    });
+} else {
+    attachedFilesBody.innerHTML = '<tr><td colspan="3">ไม่มีไฟล์แนบ</td></tr>';
+}
+        
             })
             .catch(error => console.error('Error fetching petition details:', error));
 
         function goBack() {
             window.location.href = '/studentPetitions.html';
         }
+        function updateStatus(newStatus) {
+            fetch(`/advisor/update-petition/${petitionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('อัปเดตสถานะสำเร็จ');
+                    window.location.href = '/studentPetitions';
+                } else {
+                    alert('ไม่สามารถอัปเดตสถานะได้');
+                }
+            })
+            .catch(error => console.error('Error updating petition status:', error));
+        }
+
     </script>
 </body>
 </html>

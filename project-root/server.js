@@ -11,7 +11,8 @@ const { isAuthenticated, isStudent, isTeacher } = require('./middleware/authMidd
 const loggerMiddleware = require('./middleware/loggerMiddleware');
 const errorHandler = require('./middleware/errorHandler');
 const multer = require('multer');
-const upload = multer(); // สร้าง middleware สำหรับจัดการ FormData
+const router = express.Router();
+const fs = require('fs');
 
 dotenv.config(); // โหลด environment variables จาก .env
 
@@ -143,65 +144,140 @@ app.get('/get-session-data', (req, res) => {
 
 
 // Route สำหรับ submit คำร้อง
-app.post('/submit-petition', express.json(), async (req, res) => {
-    const {
-        student_id, student_name, major, year, house_number, moo,
-        sub_district, district, province, postcode, student_phone,
-        guardian_phone, petition_type, semester, subject_code, 
-        subject_name, section, status
-    } = req.body;
-
-    try {
-        const pool = await sql.connect();
-        await pool.request()
-            .input('student_id', sql.NVarChar, student_id)
-            .input('student_name', sql.NVarChar, student_name)
-            .input('major', sql.NVarChar, major)
-            .input('year', sql.Int, year)
-            .input('house_number', sql.NVarChar, house_number)
-            .input('moo', sql.NVarChar, moo)
-            .input('sub_district', sql.NVarChar, sub_district)
-            .input('district', sql.NVarChar, district)
-            .input('province', sql.NVarChar, province)
-            .input('postcode', sql.NVarChar, postcode)
-            .input('student_phone', sql.NVarChar, student_phone)
-            .input('guardian_phone', sql.NVarChar, guardian_phone)
-            .input('petition_type', sql.NVarChar, petition_type)
-            .input('semester', sql.NVarChar, semester)
-            .input('subject_code', sql.NVarChar, subject_code)
-            .input('subject_name', sql.NVarChar, subject_name)
-            .input('section', sql.NVarChar, section)
-            .input('status', sql.TinyInt, status || 1)  // กำหนดค่าเริ่มต้นให้ status เป็น 1
-            .query(`
-                INSERT INTO petition (
-                    student_id, student_name, major, year, house_number, moo,
-                    sub_district, district, province, postcode, student_phone,
-                    guardian_phone, petition_type, semester, subject_code, 
-                    subject_name, section, status
-                ) VALUES (
-                    @student_id, @student_name, @major, @year, @house_number, @moo,
-                    @sub_district, @district, @province, @postcode, @student_phone,
-                    @guardian_phone, @petition_type, @semester, @subject_code,
-                    @subject_name, @section, @status
-                )
-            `);
-
-        res.json({ success: true });
-    } catch (err) {
-        console.error('Error inserting petition:', err);
-        res.status(500).json({ success: false, message: 'Failed to submit petition' });
+// การตั้งค่า multer สำหรับอัปโหลดไฟล์
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'uploads/'); // โฟลเดอร์สำหรับเก็บไฟล์ที่อัปโหลด
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname));
     }
 });
 
+const upload = multer({ storage: storage });
 
-app.put('/update-petition/:id', upload.none(), async (req, res) => {
+// Endpoint for submitting a new petition with files
+// Endpoint สำหรับ submit คำร้องใหม่พร้อมไฟล์แนบและเหตุผลในการยื่นคำร้อง
+app.post('/submit-petition', upload.fields([
+    { name: 'attachFile01', maxCount: 1 },
+    { name: 'attachFile02', maxCount: 1 }
+]), async (req, res) => {
+    const {
+        student_id, student_name, major, year, house_number, moo, sub_district, district,
+        province, postcode, student_phone, guardian_phone, petition_type, semester,
+        subject_code, subject_name, section, status, reason
+    } = req.body;
+    const files = req.files;
+
+    try {
+        const pool = await sql.connect();
+
+        // Start a transaction to ensure data integrity
+        const transaction = new sql.Transaction(pool);
+
+        await transaction.begin();
+
+        // Insert the petition into the database and get the new petition_id
+        const petitionRequest = new sql.Request(transaction);
+        petitionRequest.input('student_id', sql.NVarChar, student_id);
+        petitionRequest.input('student_name', sql.NVarChar, student_name);
+        petitionRequest.input('major', sql.NVarChar, major);
+        petitionRequest.input('year', sql.Int, year);
+        petitionRequest.input('house_number', sql.NVarChar, house_number);
+        petitionRequest.input('moo', sql.NVarChar, moo);
+        petitionRequest.input('sub_district', sql.NVarChar, sub_district);
+        petitionRequest.input('district', sql.NVarChar, district);
+        petitionRequest.input('province', sql.NVarChar, province);
+        petitionRequest.input('postcode', sql.NVarChar, postcode);
+        petitionRequest.input('student_phone', sql.NVarChar, student_phone);
+        petitionRequest.input('guardian_phone', sql.NVarChar, guardian_phone);
+        petitionRequest.input('petition_type', sql.NVarChar, petition_type);
+        petitionRequest.input('semester', sql.NVarChar, semester);
+        petitionRequest.input('subject_code', sql.NVarChar, subject_code);
+        petitionRequest.input('subject_name', sql.NVarChar, subject_name);
+        petitionRequest.input('section', sql.NVarChar, section);
+        petitionRequest.input('status', sql.TinyInt, status);
+        petitionRequest.input('reason', sql.NVarChar, reason || ''); // เพิ่ม reason
+
+        const petitionResult = await petitionRequest.query(`
+            INSERT INTO petition (
+                student_id, student_name, major, year, house_number, moo, sub_district, district,
+                province, postcode, student_phone, guardian_phone, petition_type, semester,
+                subject_code, subject_name, section, status, reason
+            )
+            VALUES (
+                @student_id, @student_name, @major, @year, @house_number, @moo, @sub_district, @district,
+                @province, @postcode, @student_phone, @guardian_phone, @petition_type, @semester,
+                @subject_code, @subject_name, @section, @status, @reason
+            );
+            SELECT SCOPE_IDENTITY() AS petition_id;
+        `);
+
+        const petitionId = petitionResult.recordset[0].petition_id;
+
+        // Insert uploaded files into localdoc table
+        if (files && files.attachFile01) {
+            const file1 = files.attachFile01[0];
+            const fileRequest1 = new sql.Request(transaction);
+            fileRequest1.input('petition_id', sql.Int, petitionId);
+            fileRequest1.input('file_type', sql.NVarChar, file1.mimetype);
+            fileRequest1.input('file_name', sql.NVarChar, file1.originalname);
+            fileRequest1.input('description', sql.NVarChar, req.body.description || '');
+            fileRequest1.input('file_path', sql.NVarChar, file1.path);
+
+            await fileRequest1.query(`
+                INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
+                VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
+            `);
+        }
+
+        if (files && files.attachFile02) {
+            const file2 = files.attachFile02[0];
+            const fileRequest2 = new sql.Request(transaction);
+            fileRequest2.input('petition_id', sql.Int, petitionId);
+            fileRequest2.input('file_type', sql.NVarChar, file2.mimetype);
+            fileRequest2.input('file_name', sql.NVarChar, file2.originalname);
+            fileRequest2.input('description', sql.NVarChar, req.body.description02 || '');
+            fileRequest2.input('file_path', sql.NVarChar, file2.path);
+
+            await fileRequest2.query(`
+                INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
+                VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
+            `);
+        }
+
+        // Commit the transaction
+        await transaction.commit();
+
+        res.json({ success: true, message: 'Petition submitted successfully with files.' });
+    } catch (error) {
+        console.error('Error saving petition:', error);
+
+        // Rollback the transaction in case of error
+        if (transaction) await transaction.rollback();
+
+        res.status(500).json({ success: false, message: 'Error saving petition' });
+    } 
+});
+
+
+
+
+// Endpoint สำหรับอัปเดตคำร้องพร้อมกับไฟล์แนบใหม่และเหตุผลในการยื่นคำร้อง
+app.put('/update-petition/:id', upload.fields([
+    { name: 'attachFile01', maxCount: 1 },
+    { name: 'attachFile02', maxCount: 1 }
+]), async (req, res) => {
     const { id } = req.params;
     const {
         student_id, student_name, major, year, house_number, moo,
         sub_district, district, province, postcode, student_phone,
-        guardian_phone, petition_type, semester, subject_code, 
-        subject_name, section, status
+        guardian_phone, petition_type, semester, subject_code,
+        subject_name, section, status, reason
     } = req.body;
+
+    const removedFiles = JSON.parse(req.body.removedFiles || '[]');
+    const files = req.files;
 
     if (!student_id) {
         return res.status(400).json({ success: false, message: 'student_id is required' });
@@ -210,6 +286,7 @@ app.put('/update-petition/:id', upload.none(), async (req, res) => {
     try {
         const pool = await sql.connect();
 
+        // Update the petition in the database
         await pool.request()
             .input('id', sql.Int, id)
             .input('student_id', sql.NVarChar, student_id)
@@ -230,6 +307,7 @@ app.put('/update-petition/:id', upload.none(), async (req, res) => {
             .input('subject_name', sql.NVarChar, subject_name || '')
             .input('section', sql.NVarChar, section || '')
             .input('status', sql.TinyInt, status || 0)
+            .input('reason', sql.NVarChar, reason || '') // เพิ่ม reason
             .query(`
                 UPDATE petition SET
                     student_id = @student_id,
@@ -249,16 +327,63 @@ app.put('/update-petition/:id', upload.none(), async (req, res) => {
                     subject_code = @subject_code,
                     subject_name = @subject_name,
                     section = @section,
-                    status = @status
+                    status = @status,
+                    reason = @reason
                 WHERE petition_id = @id
             `);
+
+        // Handle removed files
+        for (const fileId of removedFiles) {
+            const fileResult = await pool.request()
+                .input('fileId', sql.Int, fileId)
+                .query('SELECT file_path FROM localdoc WHERE file_id = @fileId');
+
+            const file = fileResult.recordset[0];
+            if (file) {
+                await pool.request()
+                    .input('fileId', sql.Int, fileId)
+                    .query('DELETE FROM localdoc WHERE file_id = @fileId');
+
+                fs.unlinkSync(path.resolve(file.file_path));
+            }
+        }
+
+        // Handle new file uploads
+        if (files && files.attachFile01) {
+            const file1 = files.attachFile01[0];
+            await pool.request()
+                .input('petition_id', sql.Int, id)
+                .input('file_type', sql.NVarChar, file1.mimetype)
+                .input('file_name', sql.NVarChar, file1.originalname)
+                .input('description', sql.NVarChar, req.body.description || '')
+                .input('file_path', sql.NVarChar, file1.path)
+                .query(`
+                    INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
+                    VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
+                `);
+        }
+
+        if (files && files.attachFile02) {
+            const file2 = files.attachFile02[0];
+            await pool.request()
+                .input('petition_id', sql.Int, id)
+                .input('file_type', sql.NVarChar, file2.mimetype)
+                .input('file_name', sql.NVarChar, file2.originalname)
+                .input('description', sql.NVarChar, req.body.description02 || '')
+                .input('file_path', sql.NVarChar, file2.path)
+                .query(`
+                    INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
+                    VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
+                `);
+        }
 
         res.json({ success: true });
     } catch (err) {
         console.error('Error updating petition:', err);
         res.status(500).json({ success: false, message: 'Failed to update petition' });
-    } 
+    }
 });
+
 
 
 // Route สำหรับดึง draft petitions
@@ -385,17 +510,32 @@ app.get('/advisor/petition-details/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const pool = await sql.connect();
-        
+
+        // ดึงข้อมูลคำร้อง
         const petitionResult = await pool.request()
             .input('id', sql.Int, id)
             .query('SELECT * FROM petition WHERE petition_id = @id');
-        
-        res.json(petitionResult.recordset[0]);
+
+        const petition = petitionResult.recordset[0];
+
+        if (!petition) {
+            return res.status(404).json({ error: 'Petition not found' });
+        }
+
+        // ดึงข้อมูลไฟล์แนบจากตาราง localdoc
+        const filesResult = await pool.request()
+            .input('petition_id', sql.Int, id)
+            .query('SELECT file_id, file_name, description FROM localdoc WHERE petition_id = @petition_id');
+
+        petition.attachedFiles = filesResult.recordset;
+
+        res.json(petition);
     } catch (err) {
-        console.error(err);
+        console.error('Error fetching petition details:', err);
         res.status(500).json({ error: 'Failed to fetch petition details' });
     }
 });
+
 
 app.post('/advisor/update-petition/:id', async (req, res) => {
     const { id } = req.params;
@@ -440,7 +580,7 @@ app.get('/student/petitions', async (req, res) => {
         const pool = await sql.connect();
         const result = await pool.request()
             .input('studentId', sql.NVarChar, studentId)
-            .query('SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5)');
+            .query('SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5, 6)');
         
         res.json(result.recordset);
     } catch (err) {
@@ -454,29 +594,140 @@ app.get('/student/petition-details/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const pool = await sql.connect();
-        const result = await pool.request()
+
+        // Fetch the petition details
+        const petitionResult = await pool.request()
             .input('id', sql.Int, id)
             .query('SELECT * FROM petition WHERE petition_id = @id');
-        
-        res.json(result.recordset[0]);
+
+        const petition = petitionResult.recordset[0];
+
+        if (!petition) {
+            return res.status(404).json({ error: 'Petition not found' });
+        }
+
+        // Fetch attached files from localdoc table
+        const filesResult = await pool.request()
+            .input('petition_id', sql.Int, id)
+            .query('SELECT file_id, file_name, description FROM localdoc WHERE petition_id = @petition_id');
+
+        petition.attachedFiles = filesResult.recordset;
+
+        res.json(petition);
     } catch (err) {
         console.error('Error fetching petition details:', err);
         res.status(500).json({ error: 'Failed to fetch petition details' });
     }
 });
 
+// Endpoint to download attached file
+app.get('/student/download-file/:fileId', async (req, res) => {
+    const { fileId } = req.params;
+
+    try {
+        const pool = await sql.connect();
+
+        // Fetch the file information from the database
+        const fileResult = await pool.request()
+            .input('fileId', sql.Int, fileId)
+            .query('SELECT file_name, file_path FROM localdoc WHERE file_id = @fileId');
+
+        const file = fileResult.recordset[0];
+
+        if (!file) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        // Send the file for download
+        res.download(path.resolve(file.file_path), file.file_name);
+    } catch (err) {
+        console.error('Error downloading file:', err);
+        res.status(500).json({ error: 'Failed to download file' });
+    }
+});
+
+
 // Fetch specific draft petition details by ID
 app.get('/draft-petitions/:id', async (req, res) => {
     const { id } = req.params;
     try {
         const pool = await sql.connect();
-        const result = await pool.request()
+
+        // Fetch the petition
+        const petitionResult = await pool.request()
             .input('id', sql.Int, id)
             .query('SELECT * FROM petition WHERE petition_id = @id AND status = 1'); // Ensure it's a draft
-        res.json(result.recordset[0]);
+
+        const petition = petitionResult.recordset[0];
+
+        if (!petition) {
+            return res.status(404).json({ error: 'Draft petition not found' });
+        }
+
+        // Fetch attached files from localdoc table
+        const filesResult = await pool.request()
+            .input('petition_id', sql.Int, id)
+            .query('SELECT file_id, file_name, description FROM localdoc WHERE petition_id = @petition_id');
+
+        petition.attachedFiles = filesResult.recordset;
+
+        res.json(petition);
     } catch (err) {
         console.error('Error fetching draft petition details:', err);
         res.status(500).json({ error: 'Failed to fetch draft petition details' });
+    }
+});
+
+
+// Endpoint to download attached file
+app.get('/download-file/:fileId', async (req, res) => {
+    const { fileId } = req.params;
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('fileId', sql.Int, fileId)
+            .query('SELECT file_name, file_path FROM localdoc WHERE file_id = @fileId');
+
+        const file = result.recordset[0];
+        if (!file) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        res.download(path.resolve(file.file_path), file.file_name);
+    } catch (err) {
+        console.error('Error downloading file:', err);
+        res.status(500).json({ error: 'Failed to download file' });
+    }
+});
+
+// Endpoint to remove attached file
+app.delete('/remove-file/:fileId', async (req, res) => {
+    const { fileId } = req.params;
+    try {
+        const pool = await sql.connect();
+
+        // Get file info to delete the physical file
+        const fileResult = await pool.request()
+            .input('fileId', sql.Int, fileId)
+            .query('SELECT file_path FROM localdoc WHERE file_id = @fileId');
+
+        const file = fileResult.recordset[0];
+        if (!file) {
+            return res.status(404).json({ error: 'File not found' });
+        }
+
+        // Delete the record from the database
+        await pool.request()
+            .input('fileId', sql.Int, fileId)
+            .query('DELETE FROM localdoc WHERE file_id = @fileId');
+
+        // Delete the physical file
+        fs.unlinkSync(path.resolve(file.file_path));
+
+        res.json({ success: true });
+    } catch (err) {
+        console.error('Error removing file:', err);
+        res.status(500).json({ error: 'Failed to remove file' });
     }
 });
 

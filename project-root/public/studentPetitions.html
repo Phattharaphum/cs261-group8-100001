@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
     <style>
-        /* สไตล์สำหรับสถานะ */
+        /* Status label styling */
         .status-label {
             display: inline-block;
             padding: 5px 10px;
@@ -43,20 +43,17 @@
                 <div class="header-button">รายการคำร้อง</div>
             </div>
 
-            <div class="search-filter">
-                <input type="text" placeholder="ค้นหา">
-            </div>
 
             <table class="table">
                 <thead>
                     <tr class="table-header">
-                        <th>ประเภท</th>
-                        <th>ชื่อวิชา</th>
-                        <th>รหัสวิชา</th>
+                        <th onclick="sortTable('petition_type')">ประเภท <span class="sort-icon" id="sort-icon-petition_type">▲▼</span></th>
+                        <th onclick="sortTable('subject_name')">ชื่อวิชา <span class="sort-icon" id="sort-icon-subject_name">▲▼</span></th>
+                        <th onclick="sortTable('subject_code')">รหัสวิชา <span class="sort-icon" id="sort-icon-subject_code">▲▼</span></th>
                         <th>Section</th>
-                        <th>วันที่</th>
+                        <th onclick="sortTable('submit_time')">วันที่ <span class="sort-icon" id="sort-icon-submit_time">▲▼</span></th>
                         <th>เวลา</th>
-                        <th>สถานะ</th>
+                        <th onclick="sortTable('status')">สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span></th>
                         <th>ตรวจสอบ</th>
                     </tr>
                 </thead>
@@ -66,7 +63,10 @@
     </div>
 
     <script>
-        // ฟังก์ชันแสดงประเภทคำร้อง
+        let petitions = [];
+        let sortDirection = 'desc';
+        let sortColumn = 'submit_time';
+
         function getPetitionType(type) {
             switch(type) {
                 case 1: return 'จดทะเบียนล่าช้า';
@@ -77,7 +77,6 @@
             }
         }
 
-        // ฟังก์ชันแสดงสถานะพร้อมแถบสี
         function getStatusLabel(status) {
             switch(status) {
                 case 2: return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
@@ -89,31 +88,74 @@
             }
         }
 
-        // Fetch the list of petitions for the student
         fetch('/student/petitions')
             .then(response => response.json())
             .then(data => {
-                const petitionList = document.getElementById('petition-list');
-                data.forEach(petition => {
-                    const row = document.createElement('tr');
-                    row.classList.add('table-row');
-
-                    const submitDate = new Date(petition.submit_time);
-
-                    row.innerHTML = `
-                        <td>${getPetitionType(parseInt(petition.petition_type))}</td>
-                        <td>${petition.subject_name}</td>
-                        <td>${petition.subject_code}</td>
-                        <td>${petition.section}</td>
-                        <td>${submitDate.toLocaleDateString()}</td>
-                        <td>${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-                        <td>${getStatusLabel(petition.status)}</td>
-                        <td><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
-                    `;
-                    petitionList.appendChild(row);
-                });
+                petitions = data;
+                renderPetitions();
             })
             .catch(error => console.error('Error fetching petitions:', error));
+
+        function renderPetitions() {
+            const petitionList = document.getElementById('petition-list');
+            petitionList.innerHTML = '';
+
+            petitions.forEach(petition => {
+                const row = document.createElement('tr');
+                row.classList.add('table-row');
+
+                const submitDate = new Date(petition.submit_time);
+
+                row.innerHTML = `
+                    <td>${getPetitionType(parseInt(petition.petition_type))}</td>
+                    <td>${petition.subject_name || 'N/A'}</td>
+                    <td>${petition.subject_code || 'N/A'}</td>
+                    <td>${petition.section || 'N/A'}</td>
+                    <td>${submitDate.toLocaleDateString()}</td>
+                    <td>${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                    <td>${getStatusLabel(petition.status)}</td>
+                    <td><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
+                `;
+                petitionList.appendChild(row);
+            });
+        }
+
+        function sortTable(column) {
+            if (sortColumn === column) {
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortDirection = 'desc';
+                sortColumn = column;
+            }
+
+            petitions.sort((a, b) => {
+                let aValue = a[column] || '';
+                let bValue = b[column] || '';
+
+                if (column === 'submit_time') {
+                    return sortDirection === 'asc' ? new Date(aValue) - new Date(bValue) : new Date(bValue) - new Date(aValue);
+                } else {
+                    if (typeof aValue === 'string') aValue = aValue.toLowerCase();
+                    if (typeof bValue === 'string') bValue = bValue.toLowerCase();
+                    
+                    if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+                    if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+                    return 0;
+                }
+            });
+
+            updateSortIcons();
+            renderPetitions();
+        }
+
+        function updateSortIcons() {
+            document.querySelectorAll('.sort-icon').forEach(icon => icon.textContent = '▲▼');
+            const activeIcon = document.getElementById(`sort-icon-${sortColumn}`);
+            if (activeIcon) {
+                activeIcon.textContent = sortDirection === 'asc' ? '▲' : '▼';
+            }
+        }
+
 
         function viewPetition(id) {
             window.location.href = `/studentPetitionDetail.html?id=${id}`;
