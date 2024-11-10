@@ -77,7 +77,6 @@ body {
     padding: 10px 15px;
     text-decoration: none;
     color: #EC6868;
-    ;
     font-weight: bold;
     border-radius: 20px;
     transition: background-color 0.3s;
@@ -89,6 +88,7 @@ body {
     margin-right: 20px;
 
 }
+
 .not-found {
     margin-top: 100px;
     text-align: center;
@@ -197,11 +197,7 @@ body {
     text-align: center;
     box-sizing: border-box;
 }
-.edit-icon {
-    bottom: 15px;
-    left: 15px;
-    font-size: 18px;
-}
+
 
 /* แบบร่าง */
 .flex-container {
@@ -214,6 +210,8 @@ body {
 .draftcard {
     width: 190px;
     height: 254px;
+    display: flex;
+    flex-direction: column;
     margin-left: 20pxs;
     background-color: #ffffff;
     border-radius: 20px;
@@ -232,24 +230,41 @@ body {
 
 
 .container {
-  text-align: center;
+    text-align: center;
+}
+
+.course-info{
+    margin-top: auto;
+    margin-bottom: auto;
 }
 .course-info h2 {
-  margin-top: 50px;
-  font-size: 32px;
-  color: black;
-  font-weight: bold;
+    margin-top: 20px;
+    font-size: 32px;
+    color: black;
+    font-weight: bold;
+}
+.edit-icon {
+    display: flex;
+    justify-content: right;
+    margin-top: auto;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    bottom: 15px;
+    left: 15px;
+    font-size: 18px;
 }
 
 .date-time {
-  font-size: 12px;
-  color: #aaa;
-  margin-top: 10px;
-  padding-top: 10px;
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 10px;
+    padding-top: 10px;
 }
+
 .header {
     padding-top: 20px;
     color: black;
+    margin-bottom: auto;
 }
 
 .not-found {
@@ -305,8 +320,6 @@ body {
 .card-sidebar {
     display: flex;
     align-items: center;
-    /* flex-flow: row wrap; */
-    /* gap: 25%; */
     border-radius: 10px;
     padding: 10px;
     justify-content: center;
