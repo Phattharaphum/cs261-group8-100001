@@ -3,7 +3,7 @@
 const sql = require('../config/db.config');
 
 const createPetitionTable = `
-IF OBJECT_ID('petition', 'U') IS NULL 
+IF OBJECT_ID('petition', 'U') IS NULL
 BEGIN
     CREATE TABLE petition (
         petition_id INT IDENTITY(1,1) PRIMARY KEY,
@@ -11,7 +11,12 @@ BEGIN
         student_name NVARCHAR(100) NOT NULL,
         major NVARCHAR(50),
         year INT,
-        address NVARCHAR(255),
+        house_number NVARCHAR(50),           -- บ้านเลขที่
+        moo NVARCHAR(50),                    -- หมู่
+        sub_district NVARCHAR(100),          -- แขวง/ตำบล
+        district NVARCHAR(100),              -- เขต/อำเภอ
+        province NVARCHAR(100),              -- จังหวัด
+        postcode NVARCHAR(10),               -- รหัสไปรษณีย์
         student_phone NVARCHAR(15),
         guardian_phone NVARCHAR(15),
         petition_type NVARCHAR(50),
@@ -24,6 +29,7 @@ BEGIN
         review_time DATETIME
     );
 END;
+
 `;
 
 const createAdvisorInfoTable = `

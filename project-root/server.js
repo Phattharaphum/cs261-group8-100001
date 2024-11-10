@@ -10,6 +10,8 @@ const userRoutes = require('./routes/userRoutes');
 const { isAuthenticated, isStudent, isTeacher } = require('./middleware/authMiddleware');
 const loggerMiddleware = require('./middleware/loggerMiddleware');
 const errorHandler = require('./middleware/errorHandler');
+const multer = require('multer');
+const upload = multer(); // สร้าง middleware สำหรับจัดการ FormData
 
 dotenv.config(); // โหลด environment variables จาก .env
 
@@ -143,9 +145,10 @@ app.get('/get-session-data', (req, res) => {
 // Route สำหรับ submit คำร้อง
 app.post('/submit-petition', express.json(), async (req, res) => {
     const {
-        student_id, student_name, major, year, address,
-        student_phone, guardian_phone, petition_type, semester,
-        subject_code, subject_name, section, status
+        student_id, student_name, major, year, house_number, moo,
+        sub_district, district, province, postcode, student_phone,
+        guardian_phone, petition_type, semester, subject_code, 
+        subject_name, section, status
     } = req.body;
 
     try {
@@ -155,7 +158,12 @@ app.post('/submit-petition', express.json(), async (req, res) => {
             .input('student_name', sql.NVarChar, student_name)
             .input('major', sql.NVarChar, major)
             .input('year', sql.Int, year)
-            .input('address', sql.NVarChar, address)
+            .input('house_number', sql.NVarChar, house_number)
+            .input('moo', sql.NVarChar, moo)
+            .input('sub_district', sql.NVarChar, sub_district)
+            .input('district', sql.NVarChar, district)
+            .input('province', sql.NVarChar, province)
+            .input('postcode', sql.NVarChar, postcode)
             .input('student_phone', sql.NVarChar, student_phone)
             .input('guardian_phone', sql.NVarChar, guardian_phone)
             .input('petition_type', sql.NVarChar, petition_type)
@@ -163,16 +171,18 @@ app.post('/submit-petition', express.json(), async (req, res) => {
             .input('subject_code', sql.NVarChar, subject_code)
             .input('subject_name', sql.NVarChar, subject_name)
             .input('section', sql.NVarChar, section)
-            .input('status', sql.TinyInt, status)
+            .input('status', sql.TinyInt, status || 1)  // กำหนดค่าเริ่มต้นให้ status เป็น 1
             .query(`
                 INSERT INTO petition (
-                    student_id, student_name, major, year, address,
-                    student_phone, guardian_phone, petition_type, semester,
-                    subject_code, subject_name, section, status
+                    student_id, student_name, major, year, house_number, moo,
+                    sub_district, district, province, postcode, student_phone,
+                    guardian_phone, petition_type, semester, subject_code, 
+                    subject_name, section, status
                 ) VALUES (
-                    @student_id, @student_name, @major, @year, @address,
-                    @student_phone, @guardian_phone, @petition_type, @semester,
-                    @subject_code, @subject_name, @section, @status
+                    @student_id, @student_name, @major, @year, @house_number, @moo,
+                    @sub_district, @district, @province, @postcode, @student_phone,
+                    @guardian_phone, @petition_type, @semester, @subject_code,
+                    @subject_name, @section, @status
                 )
             `);
 
@@ -184,38 +194,54 @@ app.post('/submit-petition', express.json(), async (req, res) => {
 });
 
 
-app.put('/update-petition/:id', express.json(), async (req, res) => {
+app.put('/update-petition/:id', upload.none(), async (req, res) => {
     const { id } = req.params;
     const {
-        student_id, student_name, major, year, address,
-        student_phone, guardian_phone, petition_type, semester,
-        subject_code, subject_name, section, status
+        student_id, student_name, major, year, house_number, moo,
+        sub_district, district, province, postcode, student_phone,
+        guardian_phone, petition_type, semester, subject_code, 
+        subject_name, section, status
     } = req.body;
+
+    if (!student_id) {
+        return res.status(400).json({ success: false, message: 'student_id is required' });
+    }
 
     try {
         const pool = await sql.connect();
+
         await pool.request()
             .input('id', sql.Int, id)
             .input('student_id', sql.NVarChar, student_id)
-            .input('student_name', sql.NVarChar, student_name)
-            .input('major', sql.NVarChar, major)
-            .input('year', sql.Int, year)
-            .input('address', sql.NVarChar, address)
-            .input('student_phone', sql.NVarChar, student_phone)
-            .input('guardian_phone', sql.NVarChar, guardian_phone)
-            .input('petition_type', sql.NVarChar, petition_type)
-            .input('semester', sql.NVarChar, semester)
-            .input('subject_code', sql.NVarChar, subject_code)
-            .input('subject_name', sql.NVarChar, subject_name)
-            .input('section', sql.NVarChar, section)
-            .input('status', sql.TinyInt, status)
+            .input('student_name', sql.NVarChar, student_name || '')
+            .input('major', sql.NVarChar, major || '')
+            .input('year', sql.Int, year || 0)
+            .input('house_number', sql.NVarChar, house_number || '')
+            .input('moo', sql.NVarChar, moo || '')
+            .input('sub_district', sql.NVarChar, sub_district || '')
+            .input('district', sql.NVarChar, district || '')
+            .input('province', sql.NVarChar, province || '')
+            .input('postcode', sql.NVarChar, postcode || '')
+            .input('student_phone', sql.NVarChar, student_phone || '')
+            .input('guardian_phone', sql.NVarChar, guardian_phone || '')
+            .input('petition_type', sql.NVarChar, petition_type || '')
+            .input('semester', sql.NVarChar, semester || '')
+            .input('subject_code', sql.NVarChar, subject_code || '')
+            .input('subject_name', sql.NVarChar, subject_name || '')
+            .input('section', sql.NVarChar, section || '')
+            .input('status', sql.TinyInt, status || 0)
             .query(`
                 UPDATE petition SET
                     student_id = @student_id,
                     student_name = @student_name,
                     major = @major,
                     year = @year,
-                    address = @address,
+                    house_number = @house_number,
+                    moo = @moo,
+                    sub_district = @sub_district,
+                    district = @district,
+                    province = @province,
+                    postcode = @postcode,
                     student_phone = @student_phone,
                     guardian_phone = @guardian_phone,
                     petition_type = @petition_type,
@@ -231,8 +257,9 @@ app.put('/update-petition/:id', express.json(), async (req, res) => {
     } catch (err) {
         console.error('Error updating petition:', err);
         res.status(500).json({ success: false, message: 'Failed to update petition' });
-    }
+    } 
 });
+
 
 // Route สำหรับดึง draft petitions
 app.get('/draft-petitions', async (req, res) => {
@@ -242,9 +269,10 @@ app.get('/draft-petitions', async (req, res) => {
 
     const student_id = req.session.user.username;
     const query = `
-        SELECT petition_id, student_id, student_name, major, year, address,
-               student_phone, guardian_phone, petition_type, semester,
-               subject_code, subject_name, section, status, submit_time
+        SELECT petition_id, student_id, student_name, major, year, house_number, moo, 
+               sub_district, district, province, postcode, student_phone, 
+               guardian_phone, petition_type, semester, subject_code, 
+               subject_name, section, status, submit_time
         FROM petition
         WHERE student_id = @student_id AND status = 1
     `;
@@ -261,6 +289,7 @@ app.get('/draft-petitions', async (req, res) => {
         res.status(500).json({ error: 'Failed to fetch draft petitions' });
     }
 });
+
 
 // Route สำหรับแสดงหน้า draft petitions
 app.get('/draft-petitions-page', (req, res) => {
@@ -465,7 +494,26 @@ app.get('/logout', (req, res) => {
     });
 });
 
+// Route สำหรับลบแบบร่าง
+app.delete('/delete-petition/:id', async (req, res) => {
+    const { id } = req.params;
 
+    try {
+        const pool = await sql.connect();
+        const result = await pool.request()
+            .input('id', sql.Int, id)
+            .query('DELETE FROM petition WHERE petition_id = @id AND status = 1'); // Ensure it's a draft before deleting
+
+        if (result.rowsAffected[0] > 0) {
+            res.json({ success: true, message: 'Draft deleted successfully' });
+        } else {
+            res.status(404).json({ success: false, message: 'Draft not found or cannot delete non-draft petitions' });
+        }
+    } catch (err) {
+        console.error('Error deleting draft petition:', err);
+        res.status(500).json({ success: false, message: 'Failed to delete draft petition' });
+    }
+});
 
 
 

@@ -1,81 +1,237 @@
-<!-- project-root/public/petitionForm.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&family=Kanit&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styleLateRegisterForm.css">
     <title>Petition Form</title>
 </head>
+
 <body>
-    <h1>Petition Form</h1>
-    <form id="petitionForm">
-        <label for="student_id">Student ID:</label>
-        <input type="text" id="student_id" name="student_id" readonly><br>
+    <div class="sidebar">
+        <!-- Optional sidebar content -->
+    </div>
+    <div class="content">
+        <div class="container">
+            <div class="header">
+                <p id="topmain">แบบคำร้อง</p>
+            </div>
 
-        <label for="student_name">Student Name:</label>
-        <input type="text" id="student_name" name="student_name" readonly><br>
+            <form>
+                <input type="hidden" id="petition_id">
 
-        <label for="major">Major:</label>
-        <input type="text" id="major" name="major" required><br>
+                <h2>ข้อมูลส่วนตัว</h2>
+                <div class="information-form">
+                    <div class="prefix-form">
+                        <p class="aaa">คำนำหน้า</p>
+                        <select class="prefix" id="prefix">
+                            <option value="นาย">นาย</option>
+                            <option value="นางสาว">นางสาว</option>
+                        </select>
+                    </div>
+                    <div class="firstname-form">
+                        <p>ชื่อ</p>
+                        <input class="firstname" id="student_name" type="text" readonly>
+                    </div>
+                    <div class="surename-form">
+                        <p>นามสกุล</p>
+                        <input class="surename" id="student_surname" type="text" readonly>
+                    </div>
+                    <div class="studentID-form">
+                        <p>รหัสนักศึกษา</p>
+                        <input class="studentID" id="student_id" type="text" readonly>
+                    </div>
+                </div>
 
-        <label for="year">Year:</label>
-        <input type="number" id="year" name="year" required><br>
+                <div class="number-form">
+                    <div class="years-form">
+                        <p>ชั้นปีที่</p>
+                        <input class="years" id="year" type="number" required>
+                    </div>
+                    <div class="field-form">
+                        <p>สาขาวิชา</p>
+                        <input class="field" id="major" type="text" required>
+                    </div>
+                    <div class="stuNumber-form">
+                        <p>เบอร์ติดต่อ</p>
+                        <input class="stuNumber" id="student_phone" type="text" required>
+                    </div>
+                    <div class="parNumber-form">
+                        <p>เบอร์ติดต่อผู้ปกครอง</p>
+                        <input class="parNumber" id="guardian_phone" type="text" required>
+                    </div>
+                </div>
 
-        <label for="address">Address:</label>
-        <textarea id="address" name="address" required></textarea><br>
+                <p>ที่อยู่ที่สามารถติดต่อได้</p>
+                <div class="address-form01">
+                    <div class="houseNumber-form">
+                        <p>บ้านเลขที่</p>
+                        <input class="houseNumber" id="house_number" type="text" required>
+                    </div>
+                    <div class="no-form">
+                        <p>หมู่</p>
+                        <input class="no" id="no" type="text">
+                    </div>
+                    <div class="subDistrict-form">
+                        <p>แขวง/ตำบล</p>
+                        <input class="subDistrict" id="subDistrict" type="text">
+                    </div>
+                    <div class="district-form">
+                        <p>เขต/อำเภอ</p>
+                        <input class="district" id="district" type="text">
+                    </div>
+                </div>
 
-        <label for="student_phone">Student Phone:</label>
-        <input type="tel" id="student_phone" name="student_phone" required><br>
+                <div class="address-form02">
+                    <div class="province-form">
+                        <p>จังหวัด</p>
+                        <input class="province" id="province" type="text">
+                    </div>
+                    <div class="postcode-form">
+                        <p>รหัสไปรษณีย์</p>
+                        <input class="postcode" id="postcode" type="text">
+                    </div>
+                </div>
 
-        <label for="guardian_phone">Guardian Phone:</label>
-        <input type="tel" id="guardian_phone" name="guardian_phone" required><br>
+                <h2>คำร้อง</h2>
+                <div class="petition">
+                    <div class="petition-form01">
+                        <div class="petitionType-form">
+                            <p>ประเภทคำร้อง</p>
+                            <select class="petitionType" id="petition_type" required disabled> 
+                                <option value="1">จดทะเบียนล่าช้า</option>
+                                <option value="2">ถอนรายวิชา</option>
+                                <option value="3">จดทะเบียนศึกษารายวิชาข้ามหลักสูตร</option>
+                                <option value="4">ลาออก</option>
+                            </select>
+                        </div>
+                        <div class="semester-form">
+                            <p>ภาคการศึกษา</p>
+                            <select class="semester" id="semester" required>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        
+                    </div>
+                    <div class="petition-form02">
+                        <div class="academic-year-form" style="display: none;">
+                            <p>ปีการศึกษา</p>
+                            <select class="academicYear" id="academic_year">
+                                <option value="2567">2567</option>
+                                <option value="2568">2568</option>
+                                <option value="2569">2569</option>
+                                <option value="2570">2570</option>
+                            </select>
+                        </div>
+                        <div class="courseCode-form">
+                            <p>รหัสวิชา</p>
+                            <input class="courseCode" id="subject_code" type="text">
+                        </div>
+                        <div class="courseName-form">
+                            <p>ชื่อวิชา</p>
+                            <input class="courseName" id="subject_name" type="text">
+                        </div>
+                        <div class="section-form">
+                            <p>กลุ่มเรียน</p>
+                            <input class="section" id="section" type="text">
+                        </div>
+                    </div>
+                </div>
 
-        <label for="petition_type">Petition Type:</label>
-        <input type="text" id="petition_type" name="petition_type" required><br>
+                <h2>แนบเอกสาร</h2>
+                <div class="file">
+                    <p>เอกสารแนบที่ 1</p>
+                    <div class="file-form01">
+                        <input class="attachFile01" id="attachFile01" type="file">
+                        <label for="attachFile01">เลือกไฟล์</label>
+                        <p class="fileName02" id="fileName">ยังไม่ได้เลือกไฟล์</p>
+                        <input class="description" id="description" type="text" placeholder="คำอธิบาย">
+                    </div>
+                    <p>เอกสารแนบที่ 2</p>
+                    <div class="file-form02">
+                        <input class="attachFile02" id="attachFile02" type="file">
+                        <label for="attachFile02">เลือกไฟล์</label>
+                        <p class="fileName02" id="fileName02">ยังไม่ได้เลือกไฟล์</p>
+                        <input class="description02" id="description02" type="text" placeholder="คำอธิบาย">
+                    </div>
+                </div>
 
-        <label for="semester">Semester:</label>
-        <input type="text" id="semester" name="semester" required><br>
-
-        <label for="subject_code">Subject Code:</label>
-        <input type="text" id="subject_code" name="subject_code"><br>
-
-        <label for="subject_name">Subject Name:</label>
-        <input type="text" id="subject_name" name="subject_name"><br>
-
-        <label for="section">Section:</label>
-        <input type="text" id="section" name="section"><br>
-
-        <!-- Hidden field for petition_id and status -->
-        <input type="hidden" id="petition_id" name="petition_id">
-        <input type="hidden" id="status" name="status" value="1">
-
-        <!-- Buttons for saving as draft and submitting -->
-        <button type="button" onclick="submitForm(1)">Save as Draft</button>
-        <button type="button" onclick="submitForm(2)">Submit Petition</button>
-    </form>
+                <div class="button-group">
+                    <button type="button" class="button-save-draft" onclick="submitForm(1)">บันทึกแบบร่าง</button>
+                    <button type="button" class="button-submit" onclick="submitForm(2)">ยื่นคำร้อง</button>
+                    <button type="button" id="delete-button" onclick="deleteDraft()" style="display: none;">ลบแบบร่าง</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <script>
         const urlParams = new URLSearchParams(window.location.search);
-        const petitionId = urlParams.get('petition_id'); // Get petition_id from query parameters
+        const petitionId = urlParams.get('petition_id');
+        const initialPetitionType = urlParams.get("petition_type");
 
-        // Fetch session data to populate form fields if available
+
+        function getPetitionType(type) {
+            switch(parseInt(type)) {
+                case 1: return 'จดทะเบียนล่าช้า';
+                case 2: return 'ถอนรายวิชา';
+                case 3: return 'จดทะเบียนศึกษารายวิชาข้ามหลักสูตร';
+                case 4: return 'ลาออก';
+                default: return 'ไม่ทราบประเภท';
+            }
+        }
+
+
+        if (initialPetitionType) {
+            document.getElementById("petition_type").value = initialPetitionType;
+            document.getElementById("petition_type").dispatchEvent(new Event("change"));
+            document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(initialPetitionType);
+        }
+
+
+
         fetch('/get-session-data')
             .then(response => response.json())
             .then(data => {
+                const fullName = data.student_name || '';
+                const nameParts = fullName.split(' ');
+                
+                const student_name = nameParts[0] || ''; // ชื่อ
+                const student_surname = nameParts[1] || ''; // นามสกุล
+
+                document.getElementById('student_name').value = student_name;
+                document.getElementById('student_surname').value = student_surname;
                 document.getElementById('student_id').value = data.student_id || '';
-                document.getElementById('student_name').value = data.student_name || '';
                 document.getElementById('major').value = data.department || '';
             })
             .catch(error => console.error('Error fetching session data:', error));
 
-        // If a petition_id is present, load the draft data for editing
         if (petitionId) {
+            document.getElementById('petition_id').value = petitionId;
+            document.getElementById('delete-button').style.display = 'inline'; // แสดงปุ่มลบแบบร่าง
             fetch(`/draft-petitions/${petitionId}`)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('petition_id').value = petitionId;
+                    const fullName = data.student_name || '';
+                    const nameParts = fullName.split(' ');
+
+                    // ตั้งค่า prefix เป็นคำแรก
+                    document.getElementById('prefix').value = nameParts[0] || '';
+                    // ตั้งค่า student_name เป็นชื่อถัดจากคำนำหน้า
+                    document.getElementById('student_name').value = nameParts[1] || '';
+                    // ตั้งค่า student_surname เป็นนามสกุลถัดจากชื่อ
+                    document.getElementById('student_surname').value = nameParts.slice(2).join(' ') || '';
                     document.getElementById('year').value = data.year || '';
-                    document.getElementById('address').value = data.address || '';
+                    document.getElementById('house_number').value = data.house_number || '';
+                    document.getElementById('no').value = data.moo || '';
+                    document.getElementById('subDistrict').value = data.sub_district || '';
+                    document.getElementById('district').value = data.district || '';
+                    document.getElementById('province').value = data.province || '';
+                    document.getElementById('postcode').value = data.postcode || '';
                     document.getElementById('student_phone').value = data.student_phone || '';
                     document.getElementById('guardian_phone').value = data.guardian_phone || '';
                     document.getElementById('petition_type').value = data.petition_type || '';
@@ -83,17 +239,45 @@
                     document.getElementById('subject_code').value = data.subject_code || '';
                     document.getElementById('subject_name').value = data.subject_name || '';
                     document.getElementById('section').value = data.section || '';
+
+                    const isResignation = data.petition_type === "4";
+                        document.getElementById("subject_code").style.display = isResignation ? "none" : "block";
+                        document.getElementById("subject_name").style.display = isResignation ? "none" : "block";
+                        document.getElementById("section").style.display = isResignation ? "none" : "block";
+                        document.querySelector(".academic-year-form").style.display = isResignation ? "block" : "none";
+                        document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(data.petition_type);
+                      if(isResignation){
+                        document.getElementById("academic_year").value = data.subject_code;     
+                      }  
                 })
                 .catch(error => console.error('Error fetching draft petition data:', error));
         }
 
         function submitForm(status) {
             const petitionId = document.getElementById('petition_id').value;
-            const formData = new FormData(document.getElementById('petitionForm'));
-            const data = Object.fromEntries(formData.entries());
-            data.status = status; // Set status for draft or submit
+            const isResignation = document.getElementById("petition_type").value === "4";
+            const data = {
+                student_id: document.getElementById('student_id').value,
+                student_name: document.getElementById('prefix').value + ' ' + document.getElementById('student_name').value + ' ' + document.getElementById('student_surname').value,
+                major: document.getElementById('major').value,
+                year: document.getElementById('year').value,
+                house_number: document.getElementById('house_number').value,
+                moo: document.getElementById('no').value,
+                sub_district: document.getElementById('subDistrict').value,
+                district: document.getElementById('district').value,
+                province: document.getElementById('province').value,
+                postcode: document.getElementById('postcode').value,
+                student_phone: document.getElementById('student_phone').value,
+                guardian_phone: document.getElementById('guardian_phone').value,
+                petition_type: document.getElementById('petition_type').value,
+                semester: document.getElementById('semester').value,
+                subject_code: isResignation ? document.getElementById('academic_year').value : document.getElementById('subject_code').value,
+                subject_name: document.getElementById('subject_name').value,
+                section: document.getElementById('section').value,
+                status: status
+            };
 
-            // If petition_id is present, update the petition; otherwise, create a new one
+
             const url = petitionId ? `/update-petition/${petitionId}` : '/submit-petition';
             const method = petitionId ? 'PUT' : 'POST';
 
@@ -107,12 +291,7 @@
             .then(response => response.json())
             .then(result => {
                 if (result.success) {
-                    // Redirect based on action
-                    if (status === 1) {
-                        window.location.href = '/draft-petitions-page'; // Redirect after saving as draft
-                    } else if (status === 2) {
-                        window.location.href = '/studentPetitions'; // Redirect after submitting petition
-                    }
+                    window.location.href = status === 1 ? '/draft-petitions-page' : '/studentPetitions';
                 } else {
                     alert('Error: ' + result.message);
                 }
@@ -121,6 +300,58 @@
                 console.error('Error submitting form:', error);
             });
         }
+        // ฟังก์ชันดึงข้อมูล session
+        window.addEventListener("load", function() {
+            const petitionTypeElement = document.getElementById("petition_type");
+            const isResignation = petitionTypeElement.value === "4";
+
+            // ซ่อนหรือแสดงฟิลด์ตามประเภทคำร้อง
+            document.getElementById("subject_code").style.display = isResignation ? "none" : "block";
+            document.getElementById("subject_name").style.display = isResignation ? "none" : "block";
+            document.getElementById("section").style.display = isResignation ? "none" : "block";
+            document.querySelector(".academic-year-form").style.display = isResignation ? "block" : "none";
+
+            // ตั้งค่าให้ฟังก์ชันนี้ทำงานอีกครั้งเมื่อเปลี่ยนค่า petition_type
+            petitionTypeElement.addEventListener("change", function() {
+                const isResignation = this.value === "4";
+                document.getElementById("subject_code").style.display = isResignation ? "none" : "block";
+                document.getElementById("subject_name").style.display = isResignation ? "none" : "block";
+                document.getElementById("section").style.display = isResignation ? "none" : "block";
+                document.querySelector(".academic-year-form").style.display = isResignation ? "block" : "none";
+            });
+        });
+        function deleteDraft() {
+            const petitionId = document.getElementById('petition_id').value;
+
+            if (confirm("คุณต้องการลบแบบร่างนี้หรือไม่?")) {
+                fetch(`/delete-petition/${petitionId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        alert('ลบแบบร่างเรียบร้อย');
+                        window.location.href = '/draft-petitions-page';
+                    } else {
+                        alert('ไม่สามารถลบแบบร่างได้');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting draft:', error);
+                });
+            }
+        }
+
+        document.getElementById("attachFile01").addEventListener("change", function() {
+            const fileName = document.getElementById("attachFile01").files[0]?.name || "ยังไม่ได้เลือกไฟล์";
+            document.getElementById("fileName").textContent = fileName;
+        });
+
+        document.getElementById("attachFile02").addEventListener("change", function() {
+            const fileName = document.getElementById("attachFile02").files[0]?.name || "ยังไม่ได้เลือกไฟล์";
+            document.getElementById("fileName02").textContent = fileName;
+        });
     </script>
+    
 </body>
 </html>

@@ -62,8 +62,8 @@ body, html {
 }
 
 .menu-item.active, .menu-item:hover {
-    background-color: #ffe5e5;
-    color: #b30000;
+    background-color: #D9D9D9;
+    color: black;
 }
 
 .logout-section {

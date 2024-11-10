@@ -1,77 +1,94 @@
-<!-- project-root/public/studentPetitions.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>สถานะคำร้อง</title>
+    <link rel="stylesheet" href="css/styleListofPetitionAdvisor.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
     <style>
-        /* Basic layout and styling */
-        body {
-            display: flex;
-            font-family: Arial, sans-serif;
-        }
-        .sidebar {
-            width: 200px;
-            background-color: #f4f4f4;
-            padding: 20px;
-        }
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            margin-bottom: 10px;
-            color: black;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .sidebar a.active {
-            background-color: #ccc;
-        }
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        /* สไตล์สำหรับสถานะ */
+        .status-label {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
             text-align: center;
         }
-        th {
-            background-color: #f2f2f2;
+        .status-waiting { background-color: #FFE6A7; color: #B68900; }
+        .status-read { background-color: #E0B0FF; color: #8E44AD; }
+        .status-rejected { background-color: #FFCDD2; color: #C62828; }
+        .status-approved { background-color: #A5D6A7; color: #2E7D32; }
+        .status-canceled { background-color: #BBDEFB; color: #1565C0; }
+        .sort-icon {
+            cursor: pointer;
+            margin-left: 5px;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
-    <!-- Sidebar with navigation -->
-    <div class="sidebar">
-        <a href="/draftPetitions.html">เขียนคำร้อง</a>
-        <a href="#" class="active">สถานะคำร้อง</a>
-        <a href="/logout">ออกจากระบบ</a>
-    </div>
+    <div class="wrapper">
+        <div class="sidebar">
+            <a href="/draftPetitions.html">เขียนคำร้อง</a>
+            <a href="#" class="active">สถานะคำร้อง</a>
+            <a href="/logout">ออกจากระบบ</a>
+        </div>
 
-    <!-- Main content area -->
-    <div class="content">
-        <h1>รายการคำร้อง</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>วันที่</th>
-                    <th>ประเภท</th>
-                    <th>รหัสวิชา</th>
-                    <th>สถานะ</th>
-                    <th>ตรวจสอบ</th>
-                </tr>
-            </thead>
-            <tbody id="petition-list"></tbody>
-        </table>
+        <div class="container">
+            <div class="header">
+                <div class="header-button">รายการคำร้อง</div>
+            </div>
+
+            <div class="search-filter">
+                <input type="text" placeholder="ค้นหา">
+            </div>
+
+            <table class="table">
+                <thead>
+                    <tr class="table-header">
+                        <th>ประเภท</th>
+                        <th>ชื่อวิชา</th>
+                        <th>รหัสวิชา</th>
+                        <th>Section</th>
+                        <th>วันที่</th>
+                        <th>เวลา</th>
+                        <th>สถานะ</th>
+                        <th>ตรวจสอบ</th>
+                    </tr>
+                </thead>
+                <tbody id="petition-list"></tbody>
+            </table>
+        </div>
     </div>
 
     <script>
+        // ฟังก์ชันแสดงประเภทคำร้อง
+        function getPetitionType(type) {
+            switch(type) {
+                case 1: return 'จดทะเบียนล่าช้า';
+                case 2: return 'ถอนรายวิชา';
+                case 3: return 'จดทะเบียนศึกษารายวิชาข้ามหลักสูตร';
+                case 4: return 'ลาออก';
+                default: return 'ไม่ทราบประเภท';
+            }
+        }
+
+        // ฟังก์ชันแสดงสถานะพร้อมแถบสี
+        function getStatusLabel(status) {
+            switch(status) {
+                case 2: return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
+                case 3: return '<span class="status-label status-read">อ่านแล้ว</span>';
+                case 4: return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
+                case 5: return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
+                case 6: return '<span class="status-label status-canceled">ยกเลิก</span>';
+                default: return '<span class="status-label">ไม่ทราบสถานะ</span>';
+            }
+        }
+
         // Fetch the list of petitions for the student
         fetch('/student/petitions')
             .then(response => response.json())
@@ -79,12 +96,19 @@
                 const petitionList = document.getElementById('petition-list');
                 data.forEach(petition => {
                     const row = document.createElement('tr');
+                    row.classList.add('table-row');
+
+                    const submitDate = new Date(petition.submit_time);
+
                     row.innerHTML = `
-                        <td>${new Date(petition.submit_time).toLocaleDateString()}</td>
-                        <td>${petition.petition_type}</td>
+                        <td>${getPetitionType(parseInt(petition.petition_type))}</td>
+                        <td>${petition.subject_name}</td>
                         <td>${petition.subject_code}</td>
-                        <td>${petition.status}</td>
-                        <td><button onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
+                        <td>${petition.section}</td>
+                        <td>${submitDate.toLocaleDateString()}</td>
+                        <td>${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+                        <td>${getStatusLabel(petition.status)}</td>
+                        <td><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
                     `;
                     petitionList.appendChild(row);
                 });

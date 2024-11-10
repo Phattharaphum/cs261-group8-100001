@@ -339,7 +339,7 @@ body {
 }
 
 .subtt {
-		font-size: 10pt;
+		font-size: 8pt;
 	font-weight: 500;
 }
 
@@ -364,4 +364,14 @@ body {
 	font-size: 10pt;
 	margin-left: 32px;
 	margin-top: -10px;
+}
+
+.timestamp {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.8em;
+    color: #888;
+    text-align: center;
 }
