@@ -1,0 +1,277 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body {
+    font-family: 'Bai Jamjuree';
+    display: flex;
+    background-color: #f5f5f5;
+    min-height: 100vh;
+}
+
+/* sidebar */
+.sidebar {
+    width: 20%;
+    background-color: #ffffff;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+}
+
+.sidebar h1 {
+    font-size: 18px;
+    color: #c44c00;
+    margin-bottom: 30px;
+}
+
+.menu {
+    margin-top: 20px;
+}
+
+.menu-item img {
+    width: 40px;
+    height: 40px;
+    margin-right: 20px;
+}
+
+.sidebar .menu-item {
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.sidebar .menu-item a {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: #939393;
+    font-weight: bold;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+}
+
+.sidebar .menu-item a.active,
+.sidebar .menu-item a:hover {
+    background-color: #EEBBBA;
+    color: #81171B;
+}
+
+.sidebar .logout {
+    margin-top: auto;
+}
+
+.sidebar .logout a {
+    color: #939393;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    padding: 10px 15px;
+    font-weight: bold;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+    text-decoration: none;
+}
+.logout img {
+    width: 40px;
+    height: 40px;
+    
+}
+
+.sidebar .logout a:hover {
+    background-color: #EEBBBA;
+    color: #81171B;
+}
+.image-sidebar {
+    width: 100px;
+    height: 100px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+/* sidebar */
+
+/* content */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h1 {
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: #ffffff;
+    background-color: #F0AC28;
+    border-radius: 15px;
+}
+
+
+/* เขียนคำร้อง */
+.draft-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.draft-header h1 {
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: #ffffff;
+    background-color: #A70C0C;
+    border-radius: 15px;
+    
+}
+
+.draft-section {
+    margin-top: 30px;
+}
+
+.draft-cards {
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+}
+.draft-card img {
+    width: 80px;
+    height: 80px;
+}
+
+.draft-card {
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 150px;
+    color: #333;
+}
+
+/* แบบร่าง */
+.draftlist-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.draftlist-header h1 {
+    margin: 10px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    color: #ffffff;
+    background-color: #A70C0C;
+    border-radius: 15px;
+    
+}
+
+.draftlist-section {
+    margin-top: 30px;
+}
+
+.draftlist-cards {
+    display: flex;
+    gap: 100px;
+    justify-content: center;
+}
+.draftlist-card img {
+    width: 30px;
+    height: 30px;
+    justify-content: right;
+}
+
+.draftlist-card {
+    background-color: #fff;
+    border: 1px solid #e6e6e6;
+    border-radius: 8px;
+    text-align: center;
+    padding: 20px;
+    margin-bottom: 20px;
+    width: 150px;
+    color: #333;
+}
+
+.not-found {
+    margin-top: 100px;
+    text-align: center;
+}
+
+/* Logo sidebar */
+.logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    margin-right: 20px;
+    justify-content: left;
+}
+
+.text-container {
+    text-align: right;
+    justify-content: right;
+}
+
+.text-container h3 {
+    font-size: 24px;
+    margin-bottom: 5px;
+}
+
+.text-container p {
+    font-size: 15px;
+}
+
+
+.card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.icon-container {
+    position: relative;
+}
+
+.icon-container img {
+    width: 50px;
+    height: 50px;
+}
+
+
+
+.card-sidebar {
+    display: flex;
+    align-items: center;
+    flex-flow: row wrap;
+    border-radius: 10px;
+    padding: 10px;
+    justify-content: center;
+}
+
+
+.text-sidebar {
+    text-align: right;
+    color: #939393;
+}
+
+.card {
+    background-color: #F5A299;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+/* content */

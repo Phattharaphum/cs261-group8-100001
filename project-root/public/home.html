@@ -1,12 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Bai Jamjuree' rel='stylesheet'>
     <title>Home</title>
+    <link rel="stylesheet" href="./css/homestyle.css">
 </head>
+
 <body>
-    <h1>Welcome to the Home Page</h1>
-    <p>This is the home page after login.</p>
+    <div class="sidebar">
+        <div>
+            <div class="logo-container">
+                <img src="./img/TU_logo.png" alt="โลโก้มหาวิทยาลัยธรรมศาสตร์" class="logo">
+                <div class="text-container">
+                    <h3>ระบบยื่นคำร้อง</h3>
+                    <p>คณะวิทยาศาสตร์และเทคโนโลยี</p>
+                    <p>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <div class="menu">
+                <div class="menu-item">
+                    <a href="#" class="active"><img src="./img/Artboard 13.svg"> เขียนคำร้อง</a>
+                </div>
+                <div class="menu-item">
+                    <a href="#"><img src="./img/Artboard 14.svg"> สถานะคำร้อง</a>
+                </div>
+            </div>
+        </div>
+        <div class="logout">
+            <!-- <a href="#"><img src="./Artboard 3.svg"> ออกจากระบบ</a> -->
+            <a href="#"> ออกจากระบบ</a>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div class="card-sidebar">
+            <img src="./img/TU_logo.png" class="image-sidebar" alt="">
+            <div class="text-sidebar">
+                <p id="sidebar-name">ชื่อจริง นามสกุล</p>
+                <p id="sidebar-id">6809612160</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="section-header">
+            <h1>เขียนคำร้องใหม่</h1>
+        </div>
+        <div class="draft-section">
+            <div class="draft-cards">
+                <div class="draft-cards">
+                    <div style="box-shadow: 4px 4px #FB8500;" class="draft-card">
+                        <img src="./img/Artboard 4.svg" alt="">
+                        <p style="color: #FB8500;">จดทะเบียนล่าช้า</p>
+                    </div>
+                    <div style="box-shadow: 4px 4px #E29578;" class="draft-card">
+                        <img src="./img/Artboard 1.svg" alt="">
+                        <p style="color: #E29578;">ถอนรายวิชา</p>
+                    </div>
+                    <div style="box-shadow: 4px 4px #023E8A;" class="draft-card">
+                        <img src="./img/Artboard 6.svg" alt="">
+                        <p style="color: #023E8A;">จดทะเบียนศึกษารายวิชาข้ามหลักสูตร</p>
+                    </div>
+                    <div style="box-shadow: 4px 4px #BB3E03;" class="draft-card">
+                        <img src="./img/Artboard 7.svg" alt="">
+                        <p style="color: #BB3E03;">ลาออก</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <hr>
+        <br>
+        <div class="draft-header">
+            <h1>แบบร่าง</h1>
+        </div>
+        <div class="draftlist-section">
+            <div class="draftlist-cards">
+                <div style="box-shadow: 4px 4px #E29578;" class="draftlist-card">
+                    <p>คำร้อง</p>
+                    <p>CS980</p>
+                    <img src="./img/Artboard 9.svg">
+                </div>
+                <div style="box-shadow: 4px 4px #BB3E03;" class="draftlist-card">
+                    <p>คำร้อง</p>
+                    <p>ลาออก</p>
+                    <img src="./img/Artboard 10.svg">
+                </div>
+                <div style="box-shadow: 4px 4px #023E8A;" class="draftlist-card">
+                    <p>คำร้อง</p>
+                    <p>PC550</p>
+                    <img src="./img/Artboard 11.svg">
+                </div>
+                <div style="box-shadow: 4px 4px #023E8A;" class="draftlist-card">
+                    <p>คำร้อง</p>
+                    <p>PC560</p>
+                    <img src="./img/Artboard 12.svg">
+                </div>
+            </div>
+        </div>
+        <div class="not-found">
+            <p>ไม่พบแบบร่าง</p>
+        </div>
+    </div>
 </body>
+
 </html>
