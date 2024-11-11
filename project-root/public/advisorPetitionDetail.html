@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +8,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" as="style" onload="this.rel='stylesheet'">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&display=swap" as="style" onload="this.rel='stylesheet'">
-    <link rel="stylesheet" href="/css/studentPetitionsChecked.css">
+    <link rel="stylesheet" href="css/studentPetitionsChecked.css">
+    <link rel="stylesheet" href="css/stylesidebar.css">
     <style>
         /* สไตล์สำหรับแถบสถานะ */
         .status-label {
@@ -26,15 +27,60 @@
         .highlight {
             font-weight: 600;
         }
+	
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="left"></div>
-        
+<div class="container">
+    <div class="sidebar">
+        <div class="sidebar-header">
+                  <img src="img/logo.svg" alt="University Logo" class="logo">
+                  <div class="tops">
+                  <p class="hasd">ระบบยื่นคำร้อง</p>
+                  <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                  </div>
+              
+              </div>
+              <nav class="sidebar-menu">
+               
+                <a href="javascript:void(0);" class="menu-item" onclick="updateStatus(5)" style="display: none;" id="approve-button">
+                    <img src="img/icon (4).svg" alt="Status Icon">
+                    <span class="tee">อนุมัติคำร้อง</span>
+                </a>
+             
+
+              
+                <a href="javascript:void(0);" class="menu-item " onclick="deleteDraft(4)" style="display: none;" id="reject-button">
+                  <img src="img/icon (5).svg" alt="Status Icon">
+                  <span class="tee">ปฏิเสธคำร้อง</span>
+              </a>
+
+            
+            </nav>
+              <div class="logout-section">
+                   <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
+                     <img src="img/back.svg" alt="Status Icon">
+                      <span class="tee">ย้อนกลับ</span>
+                  </a>
+                  <a href="/logout" class="menu-item">
+                      <img src="img/Artboard3.svg" alt="Logout Icon">
+                      <span class="tee">ออกจากระบบ</span>
+                  </a>
+                  <div class="user-info">
+                    <div class="asee"><img src="img/avt (1).svg" alt="Logout Icon"></div>
+                    <div class="user-details">
+                        <p class="name" id="barname">ธนา สงวนวิชา</p>
+                        <p class="idd" id="barid">0001</p> 
+                    </div>
+                </div>
+              </div>
+      </div>
+      
         <!-- Main Content Section (80%) -->
+	<div class="scallable"> 
+		<h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
         <div class="middle">
-            <h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
+            
             <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
             <dd>
                 <p>ผู้ยื่น : <span class="highlight" id="student_name"></span></p>
@@ -48,8 +94,8 @@
                 <p>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
                 <p>โทรศัพท์ติดต่อกับนักศึกษา : <span class="highlight" id="student_phone"></span></p>
                 <p>ติดต่อผู้ปกครอง : <span class="highlight" id="guardian_phone"></span></p>
-            </dd>
-            <hr>
+            </dd><br>
+            <hr><br>
             <h3 class="bold-text">คำร้อง</h3>
             <dd>
                 <p>ประเภท : <span class="highlight" id="petition_type"></span></p>
@@ -57,8 +103,8 @@
                 <p>ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
                 <p>กลุ่มเรียน : <span class="highlight" id="section"></span></p>
                 <p>เหตุผลในการยื่นคำร้อง : <span class="highlight" id="reason"></span></p>
-            </dd>
-            <hr>
+            </dd><br>
+            <hr><br>
             <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
             <div class="file">
                 <table id="attachedFilesTable">
@@ -74,26 +120,32 @@
                     </tbody>
                 </table>
             </div><br><br>
+			 
+			</div>
         </div>
+		
+		</div>
 
         <!-- Status and Action Buttons -->
         <div class="right">
             <h3 style="text-align: left;">สถานะคำร้อง</h3>
             <div class="rounded-border2">
-                <p>คำร้องถูกยื่นเมื่อ: <span id="submit_time"></span></p>
-                <p>พิจารณาเมื่อ: <span id="review_time"></span></p>
-                <p><span id="status"></span></p>
+                <p  class="asad">คำร้องถูกยื่นเมื่อ: <span id="submit_time"></span></p>
+                <p class="asad" >พิจารณาเมื่อ:<span id="review_time"></span></p>
+                <p class="spanlab"><span id="status"></span></p>
             </div>
             
-            <!-- Action Buttons -->
-            <button class="back-button" onclick="goBack()">ย้อนกลับ</button>
+            <!-- Action Buttons 
             <button class="reject-button" onclick="updateStatus(4)">ปฏิเสธคำร้อง</button>
-            <button class="approve-button" onclick="updateStatus(5)">อนุมัติคำร้อง</button>
+            <button class="approve-button" onclick="updateStatus(5)">อนุมัติคำร้อง</button>-->
         </div>
-    </div>
+   
 
     <script>
-        const petitionId = window.location.pathname.split('/').pop();
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const petitionId = urlParams.get('id');
+
        
         function updateStatusOnLoad() {
         fetch(`/advisor/petition-details/${petitionId}`)
@@ -194,9 +246,9 @@
 
                 document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(data.petition_type);
                 // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 4 หรือ 5
-                if (data.status === 4 || data.status === 5) {
-                    document.querySelector('.reject-button').style.display = 'none';
-                    document.querySelector('.approve-button').style.display = 'none';
+                if (data.status === 3 || data.status === 2) {
+                    document.getElementById('reject-button').style.display = 'flex';        
+                    document.getElementById('approve-button').style.display = 'flex';   
                 }
 
                  // แสดง review_time เฉพาะเมื่อสถานะเป็น 4 หรือ 5
@@ -247,6 +299,12 @@
             })
             .catch(error => console.error('Error updating petition status:', error));
         }
+		
+		document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible') {
+            location.reload();
+        }
+    });
     </script>
 </body>
 </html>

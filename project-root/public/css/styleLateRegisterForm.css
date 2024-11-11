@@ -9,12 +9,14 @@ body{
 	display: flex;
 	width: 100vw;
 	min-height: 100vh;
+	overflow: hidden;
 }
 /*กรอบพื้นหลังการเขีบยคำร้อง*/
 .container {
     background-color: #F4F4F4;
-		width: 70vw;
+	width: 50vw;
     padding: 20px;
+	margin: auto;
 }
 
 /*กรอบหัวข้อ*/
@@ -27,6 +29,8 @@ body{
     border-radius: 25px;
     display: inline-block;
 	font-size: 18pt;
+	
+	margin: 60px;
 	margin-bottom: 20px;
 }
 
@@ -38,16 +42,21 @@ h2 {
 .container p {
     font-weight: 600;
     margin-bottom: 5px;
+	color: #5F5F5F;
 }
 
 /*การกำหนดขนาดช่อง text*/
 .container input[type="text"] {
-    background-color: #D9D9D9;
+    background-color: white;
     border: none;
     border-radius: 13px;
-    height: 30px;
+    height: 40px;
     padding-left: 10px;
-	font-size: 12pt;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
 }
 
 /*จัดเรียงช่องคำนำหน้า -> เบอร์ติดต่อ*/
@@ -57,6 +66,7 @@ h2 {
     gap: 30px;
     margin-left: 60px;
 	margin-bottom: 10px;
+	margin-top: 15px;
 }
 
 .prefix, .years {
@@ -67,6 +77,19 @@ h2 {
     height: 30px;
     padding-left: 10px;
 	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+	
 }
 
 .firstname, .surename, .studentID, .field, .stuNumber, .parNumber {
@@ -80,6 +103,7 @@ h2 {
     gap: 30px;
     margin-left: 60px;
 	margin-bottom: 10px;
+	margin-top: 20px;
 }
 
 .houseNumber, .no, .subDistrict, .district{
@@ -105,10 +129,46 @@ h2 {
 
 .petitionType, .courseName {
     width: 300px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
 }
 
 .semester {
     width: 150px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
 }
 
 .courseCode, .section {
@@ -255,6 +315,7 @@ h2 {
 	flex: 1;
 	width: 100%;
 	background-color: #f5f5f5;
+	overflow-y: scroll;
 }
 
 .aaa {
@@ -270,4 +331,78 @@ h2 {
     padding-left: 10px;
 	font-size: 12pt;
 	width: 160px;
+}
+
+.reason-form {
+	margin-left: 60px;
+}
+
+#reason {
+	width: 600px;
+	resize: none;
+	border: none;
+	border-radius: 20px;
+	padding: 20px;
+}
+
+.autf {
+	background-color: 
+}
+
+
+
+#topmain {
+	color: white;
+}
+
+
+
+.academicYear {
+		    width: 150px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.attachFile01 {
+	font-family: 'Bai jamjuree',Poppins;
+	font-size: 12pt;
+}
+
+.attachFile02 {
+	font-family: 'Bai jamjuree',Poppins;
+	font-size: 12pt;
+}
+
+.asadsad {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.lineee {
+	width: 80%;
+	height: 2px;
+	background-color: #BFBFBF;
+	margin: auto;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+.petition {
+	margin-top: 20px;
 }

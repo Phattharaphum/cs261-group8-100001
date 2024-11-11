@@ -1,0 +1,68 @@
+- Trello
+- UI Prototype Design
+- Coding
+- Use Case Specification
+- Presentation
+
+
+User Stories
+1. login เข้าระบบด้วย email tu นักศึกษา
+2. login เข้าระบบด้วย email tu อาจารย์
+3. logout ออกจากระบบ นักศึกษา/อาจารย์
+4. เขียนคำร้อง นักศึกษา
+5. บันทึกคำร้อง นักศึกษา
+6. แก้ไขคำร้อง นักศึกษา
+7. ยื่นคำร้อง นักศึกษา
+8. ยกเลิกคำร้อง นักศึกษา
+9. การอนุมัติคำร้องโดย อ.ที่ปรึกษา
+
+
+- Requirement Management
+ 	- Problems
+ 	- Needs 
+ 	- Constraints
+ 	- Features
+ 	- Use cases
+ 	- User stories
+ 	- Release Planning
+
+
+- Release Planning
+ 	- Product Backlog
+ 	- Sprint backlog 1 
+ 	- To Do
+ 	- Doing
+ 	- Done
+
+ 	- Sprint backlog 2 
+
+
+ปาล์ม
+นีออน
+คิว
+โอเว่น
+ฝ้าย
+เกม
+บีม
+มิน
+ภูมิ
+
+
+
+- สิ่งที่ต้องรู้ก่อน
+- นิยามความหมาย/ตัวอย่างในชีวิตประจำวัน หลักการพื้นฐาน
+- Concept และที่ทำได้ ต้องคำนวณ การหาค่า
+- สัญลักษณ์ต่างๆทั้งหมด และความหมาย 
+- สูตรและการคำนวณ / ความสัมพันธ์ของสัญลักษณ์ต่างๆ ตาราง ANOVA
+- ตัวอย่างการทำ
+
+- ความหมาย นิยาม ทฤษฎีบท ประโยชน์ (ตัวอย่างในชีวิตประจำวัน)
+- concept สัญลักษณ์ต่างๆ
+- สูตร และการคำนวณ (ตาราง, วิธีการสร้างตาราง) 
+- ตัวอย่างวิธีทำแบบขั้นต้น
+- Two Equivalent Ways of Using Bayes’ Theorem ความหมาย ตัวอย่างขั้นตอนวิธีการทำ
+- Bayes’ Theorem for Binomial with Discrete Prior ความหมาย ตัวอย่างขั้นตอนวิธีการทำ
+- Bayes’ Theorem for Poisson with Discrete Prior ความหมาย ตัวอย่างขั้นตอนวิธีการทำ
+- ตัวอย่างวิธีทำแบบประยุกต์
+
+

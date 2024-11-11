@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายการคำร้อง</title>
-    <link rel="stylesheet" href="css/styleListofPetitionAdvisor.css">
+    <link rel="stylesheet" href="css/styleListofPetitionStudent.css">
+    <link rel="stylesheet" href="css/stylesidebar.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
@@ -12,18 +13,18 @@
     <style>
         .tab-button {
             padding: 10px 20px;
-            border-radius: 20px;
+            border-radius: 15px;
             border: none;
             cursor: pointer;
             font-weight: bold;
             margin-right: 10px;
         }
         .tab-button.active {
-            background-color: #D32F2F;
-            color: white;
+            background-color: white;
+            color: black;
         }
         .tab-button.inactive {
-            background-color: #f0f0f0;
+            background-color: #D9D9D9;
             color: #333;
         }
         .status-label {
@@ -38,6 +39,8 @@
 .status-rejected { background-color: #FFCDD2; color: #C62828; }
 .status-approved { background-color: #A5D6A7; color: #2E7D32; }
 .status-canceled { background-color: #BBDEFB; color: #1565C0; }
+		
+		
     </style>
 
 </head>
@@ -45,8 +48,41 @@
     <div class="wrapper">
         <!-- Sidebar Section (20%) -->
         <div class="sidebar">
+
+            <div class="sidebar-header">
+                <img src="img/logo.svg" alt="University Logo" class="logo">
+                <div class="tops">
+                 <p class="hasd">ระบบยื่นคำร้อง</p>
+                <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+               
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/advisorPetitions" class="menu-item active">
+                    <img src="img/Artboard2.svg" alt="Status Icon">
+                    <span class="tee">รายการคำร้อง</span>
+                </a>
+            </nav>
+            <div class="logout-section">
+                <a href="/logout" class="menu-item">
+                    <img src="img/Artboard3.svg" alt="Logout Icon">
+                    <span class="tee">ออกจากระบบ</span>
+                </a>
+                <div class="user-info">
+                    <div class="asee"><img src="img/avt (1).svg" alt="Logout Icon">
+					</div>
+                    <div class="user-details">
+                        <p class="name" id="barname">ธนา สงวนวิชา</p>
+                        <p class="idd" id="barid">0001</p> 
+                    </div>
+                </div>
+            </div>
+
+            <!-- 
             <a href="/advisorPetitions" class="active">รายการคำร้อง</a>
             <a href="/logout">ออกจากระบบ</a>
+        -->
+
         </div>
 
         <!-- Main Content Section (80%) -->
@@ -68,23 +104,61 @@
                 </div>
             </div>  
 
-            <table class="table">
-                <thead>
-                    <tr class="table-header">
-                        <th onclick="sortTable('petition_type')">ประเภท <span class="sort-icon" id="sort-icon-petition_type">▲▼</span></th>
-                        <th onclick="sortTable('subject_name')">ชื่อวิชา <span class="sort-icon" id="sort-icon-subject_name">▲▼</span></th>
-                        <th onclick="sortTable('subject_code')">รหัสวิชา <span class="sort-icon" id="sort-icon-subject_code">▲▼</span></th>
-                        <th>Section</th>
-                        <th onclick="sortTable('student_name')">ชื่อนักศึกษา <span class="sort-icon" id="sort-icon-student_name">▲▼</span></th>
-                        <th onclick="sortTable('student_id')">รหัสนักศึกษา <span class="sort-icon" id="sort-icon-student_id">▲▼</span></th>
-                        <th onclick="sortTable('submit_time')">วันที่ <span class="sort-icon" id="sort-icon-submit_time">▲▼</span></th>
-                        <th>เวลา</th>
-                        <th onclick="sortTable('status')">สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span></th>
-                        
-                    </tr>
-                </thead>
-                <tbody id="petition-list"></tbody>
-            </table>
+  <table class="table">
+    <thead>
+        <tr class="table-header">
+            <th class="column-type coan" onclick="sortTable('petition_type')">ประเภท <span class="sort-icon" id="sort-icon-petition_type">▲▼</span></th>
+            <th class="column-subject-name coan" onclick="sortTable('subject_name')">ชื่อวิชา <span class="sort-icon" id="sort-icon-subject_name">▲▼</span></th>
+            <th class="column-subject-code coan" onclick="sortTable('subject_code')">รหัสวิชา <span class="sort-icon" id="sort-icon-subject_code">▲▼</span></th>
+            <th class="column-section">กลุ่มเรียน</th>
+            <th class="column-student-name coan" onclick="sortTable('student_name')">ชื่อนักศึกษา <span class="sort-icon" id="sort-icon-student_name">▲▼</span></th>
+            <th class="column-student-id coan" onclick="sortTable('student_id')">รหัสนักศึกษา <span class="sort-icon" id="sort-icon-student_id">▲▼</span></th>
+            <th class="column-date coan" onclick="sortTable('submit_time')">วันที่ <span class="sort-icon" id="sort-icon-submit_time">▲▼</span></th>
+            <th class="column-time">เวลา</th>
+            <th class="column-status coan" onclick="sortTable('status')">สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span></th>
+            <th class="column-check"></th>
+        </tr>
+    </thead>
+    <tbody id="petition-list">
+        <tr class="table-row">
+            <td class="column-type">จดทะเบียนล่าช้า</td>
+            <td class="column-subject-name">วิทยาการคอมพิวเตอร์เบื้องต้น</td>
+            <td class="column-subject-code">CS101</td>
+            <td class="column-section">01</td>
+            <td class="column-student-name">สมชาย ใจดี</td>
+            <td class="column-student-id">6600812345</td>
+            <td class="column-date">12/11/2024</td>
+            <td class="column-time">09:30</td>
+            <td class="column-status"><span class="status-label status-waiting">รอตรวจสอบ</span></td>
+            <td class="column-check"><button class="verify-button" onclick="viewPetition(1)">ตรวจสอบ</button></td>
+        </tr>
+        <tr class="table-row">
+            <td class="column-type">ถอนรายวิชา</td>
+            <td class="column-subject-name">คณิตศาสตร์ขั้นสูง</td>
+            <td class="column-subject-code">MA201</td>
+            <td class="column-section">02</td>
+            <td class="column-student-name">สาวิตรี รักดี</td>
+            <td class="column-student-id">6600823456</td>
+            <td class="column-date">13/11/2024</td>
+            <td class="column-time">10:15</td>
+            <td class="column-status"><span class="status-label status-approved">อนุมัติแล้ว</span></td>
+            <td class="column-check"><button class="verify-button" onclick="viewPetition(2)">ตรวจสอบ</button></td>
+        </tr>
+        <tr class="table-row">
+            <td class="column-type">จดทะเบียนศึกษารายวิชาข้ามหลักสูตร</td>
+            <td class="column-subject-name">ฟิสิกส์พื้นฐาน</td>
+            <td class="column-subject-code">PH101</td>
+            <td class="column-section">03</td>
+            <td class="column-student-name">สุกัญญา คงดี</td>
+            <td class="column-student-id">6600834567</td>
+            <td class="column-date">14/11/2024</td>
+            <td class="column-time">11:45</td>
+            <td class="column-status"><span class="status-label status-rejected">ไม่อนุมัติ</span></td>
+            <td class="column-check"><button class="verify-button" onclick="viewPetition(3)">ตรวจสอบ</button></td>
+        </tr>
+    </tbody>
+</table>
+
         </div>
     </div>
 
@@ -156,18 +230,18 @@ function renderPetitions() {
         // ใช้ฟังก์ชัน formatStudentName เพื่อตัดคำนำหน้า
         const studentName = formatStudentName(petition.student_name);
 
-        row.innerHTML = `
-            <td>${petitionType}</td>
-            <td>${subjectName}</td>
-            <td>${subjectCode}</td>
-            <td>${section}</td>
-            <td>${studentName}</td>
-            <td>${petition.student_id}</td>
-            <td>${submitDate.toLocaleDateString()}</td>
-            <td>${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-            <td>${statusLabel}</td> <!-- เพิ่มคอลัมน์สถานะ -->
-            <td><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
-        `;
+row.innerHTML = `
+    <td class="column-type">${petitionType}</td>
+    <td class="column-subject-name">${subjectName}</td>
+    <td class="column-subject-code">${subjectCode}</td>
+    <td class="column-section">${section}</td>
+    <td class="column-student-name">${studentName}</td>
+    <td class="column-student-id">${petition.student_id}</td>
+    <td class="column-date">${submitDate.toLocaleDateString()}</td>
+    <td class="column-time">${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+    <td class="column-status">${statusLabel}</td>
+    <td class="column-check"><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
+`;
         petitionList.appendChild(row);
     });
 }
@@ -192,7 +266,7 @@ function showPending() {
         }
 
         function viewPetition(id) {
-            window.location.href = `/advisor/petition/${id}`;
+            window.location.href = `/advisorPetitionDetail.html?id=${id}`;
         }
 
         // Filter petitions by search input
@@ -214,17 +288,19 @@ function showPending() {
                 row.className = 'table-row';
                 
                 const submitDate = new Date(petition.submit_time);
-                row.innerHTML = `
-                    <td>${petition.petition_type}</td>
-                    <td>${petition.subject_name || 'N/A'}</td>
-                    <td>${petition.subject_code || 'N/A'}</td>
-                    <td>${petition.section || 'N/A'}</td>
-                    <td>${petition.student_name}</td>
-                    <td>${petition.student_id}</td>
-                    <td>${submitDate.toLocaleDateString()}</td>
-                    <td>${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-                    <td><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
-                `;
+row.innerHTML = `
+    <td class="column-type">${getPetitionType(petition.petition_type)}</td>
+    <td class="column-subject-name">${petition.subject_name || 'N/A'}</td>
+    <td class="column-subject-code">${petition.subject_code || 'N/A'}</td>
+    <td class="column-section">${petition.section || 'N/A'}</td>
+    <td class="column-student-name">${petition.student_name}</td>
+    <td class="column-student-id">${petition.student_id}</td>
+    <td class="column-date">${submitDate.toLocaleDateString()}</td>
+    <td class="column-time">${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+<td class="column-status">${getStatusLabel(petition.status)}</td>
+    <td class="column-check"><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
+`;
+
                 petitionList.appendChild(row);
             });
         });
@@ -277,8 +353,11 @@ function updateSortIcons() {
 document.addEventListener('DOMContentLoaded', () => {
     // Default sorting on submit_time (ล่าสุดอยู่บนสุด)
     sortTable('submit_time');
+	
 });
 
+		     
+		
     </script>
 </body>
 </html>

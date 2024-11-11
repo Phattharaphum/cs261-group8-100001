@@ -9,27 +9,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet">
-    <style>
-        /* Status label styling */
-        .status-label {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            color: white;
-            font-weight: bold;
-            text-align: center;
-        }
-        .status-waiting { background-color: #FFE6A7; color: #B68900; }
-        .status-read { background-color: #E0B0FF; color: #8E44AD; }
-        .status-rejected { background-color: #FFCDD2; color: #C62828; }
-        .status-approved { background-color: #A5D6A7; color: #2E7D32; }
-        .status-canceled { background-color: #BBDEFB; color: #1565C0; }
-        .sort-icon {
-            cursor: pointer;
-            margin-left: 5px;
-            font-size: 0.9em;
-        }
-    </style>
 </head>
 <body>
     <div class="wrapper">
@@ -58,7 +37,7 @@
                     <span class="tee">ออกจากระบบ</span>
                 </a>
                 <div class="user-info">
-                    <div class="asee"></div>
+                    <div class="asee"><img src="img/avt (2).svg" alt="Logout Icon"></div>
                     <div class="user-details">
                         <p class="name" id="barname">ชื่อจริง นามสกุล</p>
                         <p class="idd" id="barid">6600812160</p> 
@@ -78,19 +57,54 @@
 
 
             <table class="table">
-                <thead>
-                    <tr class="table-header">
-                        <th onclick="sortTable('petition_type')">ประเภท <span class="sort-icon" id="sort-icon-petition_type">▲▼</span></th>
-                        <th onclick="sortTable('subject_name')">ชื่อวิชา <span class="sort-icon" id="sort-icon-subject_name">▲▼</span></th>
-                        <th onclick="sortTable('subject_code')">รหัสวิชา <span class="sort-icon" id="sort-icon-subject_code">▲▼</span></th>
-                        <th>Section</th>
-                        <th onclick="sortTable('submit_time')">วันที่ <span class="sort-icon" id="sort-icon-submit_time">▲▼</span></th>
-                        <th>เวลา</th>
-                        <th onclick="sortTable('status')">สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span></th>
-                        <th>ตรวจสอบ</th>
-                    </tr>
-                </thead>
-                <tbody id="petition-list"></tbody>
+<thead>
+    <tr class="table-header">
+        <th class="column-petition-type" onclick="sortTable('petition_type')">ประเภท <span class="sort-icon" id="sort-icon-petition_type">▲▼</span></th>
+        <th class="column-subject-name" onclick="sortTable('subject_name')">ชื่อวิชา <span class="sort-icon" id="sort-icon-subject_name">▲▼</span></th>
+        <th class="column-subject-code" onclick="sortTable('subject_code')">รหัสวิชา <span class="sort-icon" id="sort-icon-subject_code">▲▼</span></th>
+        <th class="column-section" >กลุ่มเรียน</th>
+        <th class="column-date" onclick="sortTable('submit_time')">วันที่ <span class="sort-icon" id="sort-icon-submit_time">▲▼</span></th>
+        <th class="column-time">เวลา</th>
+        <th class="column-status" onclick="sortTable('status')">สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span></th>
+        <th class="column-check"></th>
+    </tr>
+</thead>
+
+<tbody id="petition-list">
+    <!-- 
+    <tr class="table-row">
+        <td class="column-petition-type">จดทะเบียนล่าช้า</td>
+        <td class="column-subject-name">วิทยาการคอมพิวเตอร์เบื้องต้น</td>
+        <td class="column-subject-code">CS101</td>
+        <td class="column-section">01</td>
+        <td class="column-date">12/11/2024</td>
+        <td class="column-time">09:30</td>
+        <td class="column-status"><span class="status-label status-waiting">รอตรวจสอบ</span></td>
+        <td class="column-check"><button class="verify-button" onclick="viewPetition(1)">ตรวจสอบ</button></td>
+    </tr>
+    <tr class="table-row">
+        <td class="column-petition-type">ถอนรายวิชา</td>
+        <td class="column-subject-name">คณิตศาสตร์ขั้นสูง</td>
+        <td class="column-subject-code">MA201</td>
+        <td class="column-section">02</td>
+        <td class="column-date">13/11/2024</td>
+        <td class="column-time">10:15</td>
+        <td class="column-status"><span class="status-label status-approved">อนุมัติแล้ว</span></td>
+        <td class="column-check"><button class="verify-button" onclick="viewPetition(2)">ตรวจสอบ</button></td>
+    </tr>
+    <tr class="table-row">
+        <td class="column-petition-type">จดทะเบียนศึกษารายวิชาข้ามหลักสูตร</td>
+        <td class="column-subject-name">ฟิสิกส์พื้นฐาน</td>
+        <td class="column-subject-code">PH101</td>
+        <td class="column-section">03</td>
+        <td class="column-date">14/11/2024</td>
+        <td class="column-time">11:45</td>
+        <td class="column-status"><span class="status-label status-rejected">ไม่อนุมัติ</span></td>
+        <td class="column-check"><button class="verify-button" onclick="viewPetition(3)">ตรวจสอบ</button></td>
+    </tr>
+    -->
+</tbody>
+
             </table>
         </div>
     </div>
@@ -112,7 +126,7 @@
 
         function getStatusLabel(status) {
             switch(status) {
-                case 2: return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
+                case 2: return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
                 case 3: return '<span class="status-label status-read">อ่านแล้ว</span>';
                 case 4: return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
                 case 5: return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
@@ -140,15 +154,15 @@
                 const submitDate = new Date(petition.submit_time);
 
                 row.innerHTML = `
-                    <td>${getPetitionType(parseInt(petition.petition_type))}</td>
-                    <td>${petition.subject_name || 'N/A'}</td>
-                    <td>${petition.subject_code || 'N/A'}</td>
-                    <td>${petition.section || 'N/A'}</td>
-                    <td>${submitDate.toLocaleDateString()}</td>
-                    <td>${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
-                    <td>${getStatusLabel(petition.status)}</td>
-                    <td><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
-                `;
+    <td class="column-petition-type">${getPetitionType(parseInt(petition.petition_type))}</td>
+    <td class="column-subject-name">${petition.subject_name || 'N/A'}</td>
+    <td class="column-subject-code">${petition.subject_code || 'N/A'}</td>
+    <td class="column-section">${petition.section || 'N/A'}</td>
+    <td class="column-date">${submitDate.toLocaleDateString()}</td>
+    <td class="column-time">${submitDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</td>
+    <td class="column-status">${getStatusLabel(petition.status)}</td>
+    <td class="column-check"><button class="verify-button" onclick="viewPetition(${petition.petition_id})">ตรวจสอบ</button></td>
+`;
                 petitionList.appendChild(row);
             });
         }

@@ -3,55 +3,228 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	
+	    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" as="style" onload="this.rel='stylesheet'">
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&family=Kanit&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styleLateRegisterForm.css">
+    <link rel="stylesheet" href="css/stylesidebar.css">
     <title>Petition Form</title>
     <style>
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed;
-            z-index: 9999;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-        
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto;
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%;
-        }
-        
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-        
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
+ /* Error Modal Style */
+ /* Modal Container */
+/* Modal Container */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+
+ /* Error Modal Style */
+.error-modal {
+    background-color: #fefefe;
+    width: 400px;
+    max-width: 90%; /* ทำให้ตอบสนองต่อหน้าจอขนาดเล็ก */
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #333;
+	top: 50%;
+	left: 50%;
+}
+
+.error-modal .header {
+    background-color: #b22222;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+.error-modal .content {
+    padding: 20px;
+    font-size: 1em;
+    color: #333;
+}
+
+.error-modal .close-button {
+    background-color: #b22222;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+/* Confirmation Modal Style */
+.confirm-modal {
+    background-color: #fefefe;
+    width: 400px;
+    max-width: 90%;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #333;
+}
+
+.confirm-modal .header {
+    background-color: #b22222;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+.confirm-modal .content {
+    padding: 20px;
+    font-size: 1em;
+    color: #333;
+}
+
+.confirm-modal .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.confirm-modal .button-group button {
+    width: 100px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-modal .button-group .yes-button {
+    background-color: #a9a9a9;
+    color: white;
+}
+
+.confirm-modal .button-group .no-button {
+    background-color: #2e8b57;
+    color: white;
+}
+
+/* Success Modal Style */
+.success-modal {
+    background-color: #fefefe;
+    width: 400px;
+    max-width: 90%;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #333;
+}
+
+.success-modal .header {
+    background-color: #2e8b57; /* สีเขียว */
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+}
+
+.success-modal .content {
+    padding: 20px;
+    font-size: 1em;
+    color: #333;
+}
+
+.success-modal .close-button {
+    background-color: #2e8b57; /* สีเขียว */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+
         </style>
 </head>
 
 <body>
     <div class="sidebar">
-        <!-- Optional sidebar content -->
-    </div>
+        <div class="sidebar-header">
+                  <img src="img/logo.svg" alt="University Logo" class="logo">
+                  <div class="tops">
+                  <p class="hasd">ระบบยื่นคำร้อง</p>
+                  <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                  </div>
+              
+              </div>
+              <nav class="sidebar-menu">
+               
+                  <a href="javascript:void(0);" class="menu-item" onclick="submitForm(1)">
+                      <img src="img/icon (3).svg" alt="Status Icon">
+                      <span class="tee">บันทึกแบบร่าง</span>
+                  </a>
+               
+
+                
+                  <a href="javascript:void(0);" class="menu-item " onclick="deleteDraft()" style="display: none;" id="delete-button">
+                    <img src="img/icon (7).svg" alt="Status Icon">
+                    <span class="tee">ลบแบบร่าง</span>
+                </a>
+                
+
+           
+                <a href="javascript:void(0);" class="menu-item" onclick="submitForm(2)">
+                    <img src="img/icon (1).svg" alt="Status Icon">
+                    <span class="tee">ยื่นคำร้อง</span>
+                </a>
+              
+              </nav>
+              <div class="logout-section">
+                <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
+                  <img src="img/back.svg" alt="Status Icon">
+                   <span class="tee">ย้อนกลับ</span>
+               </a>
+               <a href="/logout" class="menu-item">
+                   <img src="img/Artboard3.svg" alt="Logout Icon">
+                   <span class="tee">ออกจากระบบ</span>
+               </a>
+               <div class="user-info">
+                   <div class="asee"><img src="img/avt (2).svg" alt="Logout Icon"></div>
+                   <div class="user-details">
+                       <p class="name" id="barname">สมนึก นึกสม</p>
+                       <p class="idd" id="barid">0001</p> 
+                   </div>
+               </div>
+             </div>
+      </div>
+      <div class="scallable"> 
     <div class="content">
-        <div class="container">
-            <div class="header">
+		 <div class="header" id="headerrcol">
                 <p id="topmain">แบบคำร้อง</p>
             </div>
+        <div class="container">
+           
 
             <form enctype="multipart/form-data">
                 <input type="hidden" id="petition_id">
@@ -61,22 +234,22 @@
                     <div class="prefix-form">
                         <p class="aaa">คำนำหน้า</p>
                         <select class="prefix" id="prefix" required>
-                            <option value="" selected disabled>เลือกคำนำหน้า</option>
+                            <option value="" selected disabled>คำนำหน้า</option>
                             <option value="นาย">นาย</option>
                             <option value="นางสาว">นางสาว</option>
                         </select>
                     </div>
                     <div class="firstname-form">
                         <p>ชื่อ</p>
-                        <input class="firstname" id="student_name" type="text" readonly>
+                        <input class="firstname autf" id="student_name" type="text" disabled>
                     </div>
                     <div class="surename-form">
                         <p>นามสกุล</p>
-                        <input class="surename" id="student_surname" type="text" readonly>
+                        <input class="surename" id="student_surname" type="text" disabled>
                     </div>
                     <div class="studentID-form">
                         <p>รหัสนักศึกษา</p>
-                        <input class="studentID" id="student_id" type="text" readonly>
+                        <input class="studentID" id="student_id" type="text" disabled>
                     </div>
                 </div>
 
@@ -84,11 +257,11 @@
                     <div class="years-form">
                         <p>ชั้นปีที่</p>
                         <!-- Modified 'year' input element (readonly and calculated) -->
-<input class="years" id="year" type="number" readonly>
+<input class="years" id="year" type="number" disabled>
                     </div>
                     <div class="field-form">
                         <p>สาขาวิชา</p>
-                        <input class="field" id="major" type="text" required readonly>
+                        <input class="field" id="major" type="text" required disabled>
                     </div>
                     <div class="stuNumber-form">
                         <p>เบอร์ติดต่อ</p>
@@ -100,7 +273,7 @@
                     </div>
                 </div>
 
-                <p>ที่อยู่ที่สามารถติดต่อได้</p>
+                <p class="asadsad">ที่อยู่ที่สามารถติดต่อได้</p>
                 <div class="address-form01">
                     <div class="houseNumber-form">
                         <p>บ้านเลขที่</p>
@@ -130,7 +303,7 @@
                         <input class="postcode" id="postcode" type="text">
                     </div>
                 </div>
-
+				<div class="lineee"></div>
                 <h2>คำร้อง</h2>
                 <div class="petition">
                     <div class="petition-form01">
@@ -178,12 +351,12 @@
                         </div>
                     </div>
                 </div>
-                <h2>เหตุผลในการยื่นคำร้อง</h2>
+               
 <div class="reason-form">
     <p>เหตุผลในการยื่นคำร้อง</p>
     <textarea class="reason" id="reason" placeholder="กรุณากรอกเหตุผลในการยื่นคำร้อง" rows="4" required></textarea>
 </div>
-
+				<div class="lineee"></div>
                 <h2>แนบเอกสาร</h2>
                 <div class="file">
                     <p>เอกสารแนบที่ 1</p>
@@ -203,23 +376,53 @@
                         <div id="existingFile2"></div>
                     </div>
                 </div>
-
+				<div class="lineee"></div>
+                <!-- 
                 <div class="button-group">
                     <button type="button" class="button-save-draft" onclick="submitForm(1)">บันทึกแบบร่าง</button>
                     <button type="button" class="button-submit" onclick="submitForm(2)">ยื่นคำร้อง</button>
                     <button type="button" id="delete-button" onclick="deleteDraft()" style="display: none;">ลบแบบร่าง</button>
-                </div>
+                </div>-->
+				
             </form>
-        </div>
+        
+		  
     </div>
-    <div id="errorModal" class="modal">
-        <div class="modal-content">
-            <span id="closeModal" class="close-button">&times;</span>
-            <p id="errorMessages"></p>
+</div>
+<!-- Error Modal -->
+<div id="errorModal" class="modal" style="display: none;">
+    <div class="error-modal">
+        <div class="header">รูปแบบข้อมูลไม่ถูกต้อง</div>
+        <div class="content">
+            <p id="errorMessages">กรุณาเลือกคำนำหน้า</p>
         </div>
+        <button id="closeModal" class="close-button">ปิด</button>
     </div>
+</div>
 
-    <script>
+<!-- Confirmation Modal -->
+<div id="confirmModal" class="modal" style="display: none;">
+    <div class="confirm-modal">
+        <div class="header">คุณต้องการลบไฟล์นี้หรือไม่?</div>
+        <div class="button-group">
+            <button class="yes-button">ใช่</button>
+            <button class="no-button">ไม่ใช่</button>
+        </div>
+    </div>
+</div>
+
+<!-- Success Modal -->
+<div id="successModal" class="modal" style="display: none;">
+    <div class="success-modal">
+        <div class="header">สำเร็จ</div>
+        <div class="content">
+            <p id="successMessages">ดำเนินการสำเร็จ</p>
+        </div>
+        <button id="closeSuccessModal" class="close-button">ปิด</button>
+    </div>
+</div>
+
+<script>
     const urlParams = new URLSearchParams(window.location.search);
     const petitionId = urlParams.get('petition_id');
     const initialPetitionType = urlParams.get("petition_type");
@@ -284,7 +487,7 @@
 
     if (petitionId) {
         document.getElementById('petition_id').value = petitionId;
-        document.getElementById('delete-button').style.display = 'inline'; // แสดงปุ่มลบแบบร่าง
+        document.getElementById('delete-button').style.display = 'flex'; // แสดงปุ่มลบแบบร่าง
         fetch(`/draft-petitions/${petitionId}`)
             .then(response => response.json())
             .then(data => {
@@ -477,8 +680,7 @@
 
         if (errors.length > 0) {
             // Show modal with errors
-            document.getElementById('errorMessages').innerHTML = errors.join('<br>');
-            document.getElementById('errorModal').style.display = 'block';
+            showErrorModal(errors.join('<br>'));
             return; // Stop form submission
         }
 
@@ -526,13 +728,15 @@
         .then(response => response.json())
         .then(result => {
             if (result.success) {
-                window.location.href = status === 1 ? '/draft-petitions-page' : '/studentPetitions';
+                const redirectUrl = status === 1 ? '/draft-petitions-page' : '/studentPetitions';
+                showSuccessModal('ส่งคำร้องสำเร็จ', redirectUrl);
             } else {
-                alert('Error: ' + result.message);
+                showErrorModal('Error: ' + result.message);
             }
         })
         .catch(error => {
             console.error('Error submitting form:', error);
+            showErrorModal('เกิดข้อผิดพลาดในการส่งคำร้อง');
         });
     }
 
@@ -560,47 +764,56 @@
     function deleteDraft() {
         const petitionId = document.getElementById('petition_id').value;
 
-        if (confirm("คุณต้องการลบแบบร่างนี้หรือไม่?")) {
-            fetch(`/delete-petition/${petitionId}`, {
-                method: 'DELETE'
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    alert('ลบแบบร่างเรียบร้อย');
-                    window.location.href = '/draft-petitions-page';
-                } else {
-                    alert('ไม่สามารถลบแบบร่างได้');
-                }
-            })
-            .catch(error => {
-                console.error('Error deleting draft:', error);
-            });
-        }
+        showConfirmModal("คุณต้องการลบแบบร่างนี้หรือไม่?").then((confirmed) => {
+            if (confirmed) {
+                fetch(`/delete-petition/${petitionId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        showSuccessModal('ลบแบบร่างเรียบร้อย', '/draft-petitions-page');
+                    } else {
+                        showErrorModal('ไม่สามารถลบแบบร่างได้');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error deleting draft:', error);
+                    showErrorModal('เกิดข้อผิดพลาดในการลบแบบร่าง');
+                });
+            }
+        });
     }
 
     function removeAttachedFile(fileId, fileNumber) {
-        if (confirm("คุณต้องการลบไฟล์นี้หรือไม่?")) {
-            fetch(`/remove-file/${fileId}`, {
-                method: 'DELETE'
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    alert('ลบไฟล์เรียบร้อย');
-                    // ลบไฟล์ที่แสดงอยู่
-                    document.getElementById(`existingFile${fileNumber}`).innerHTML = '';
-                    // แสดง input สำหรับเลือกไฟล์ใหม่
-                    document.getElementById(`attachFile0${fileNumber}`).style.display = 'block';
-                    document.getElementById(`fileName${fileNumber === 1 ? '' : '02'}`).textContent = 'ยังไม่ได้เลือกไฟล์';
-                } else {
-                    alert('ไม่สามารถลบไฟล์ได้');
-                }
-            })
-            .catch(error => {
-                console.error('Error removing file:', error);
-            });
-        }
+        showConfirmModal("คุณต้องการลบไฟล์นี้หรือไม่?").then((confirmed) => {
+            if (confirmed) {
+                fetch(`/remove-file/${fileId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        showSuccessModal('ลบไฟล์เรียบร้อย');
+                        // ลบไฟล์ที่แสดงอยู่
+                        document.getElementById(`existingFile${fileNumber}`).innerHTML = '';
+                        // แสดง input สำหรับเลือกไฟล์ใหม่
+                        document.getElementById(`attachFile0${fileNumber}`).style.display = 'block';
+                        document.getElementById(`fileName${fileNumber === 1 ? '' : '02'}`).textContent = 'ยังไม่ได้เลือกไฟล์';
+                    } else {
+                        showErrorModal('ไม่สามารถลบไฟล์ได้');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error removing file:', error);
+                    showErrorModal('เกิดข้อผิดพลาดในการลบไฟล์');
+                });
+            }
+        });
+    }
+
+    function goBack() {
+        window.history.back();
     }
 
     // เมื่อมีการเลือกไฟล์ใหม่
@@ -614,19 +827,117 @@
         document.getElementById("fileName02").textContent = fileName;
     });
 
-    // Close modal when clicking on the close button
+    // ปิด Error Modal เมื่อคลิกที่ปุ่มปิด
     document.getElementById('closeModal').addEventListener('click', function() {
         document.getElementById('errorModal').style.display = 'none';
     });
 
-    // Close modal when clicking outside the modal content
+    // ปิด Error Modal เมื่อคลิกนอกเนื้อหาโมดอล
     window.addEventListener('click', function(event) {
         const modal = document.getElementById('errorModal');
         if (event.target == modal) {
             modal.style.display = 'none';
         }
     });
+
+    // ฟังก์ชันแสดง Confirm Modal
+    function showConfirmModal(message) {
+        return new Promise((resolve, reject) => {
+            document.querySelector('#confirmModal .header').innerText = message;
+            document.getElementById('confirmModal').style.display = 'block';
+
+            const yesButton = document.querySelector('#confirmModal .yes-button');
+            const noButton = document.querySelector('#confirmModal .no-button');
+
+            yesButton.onclick = null;
+            noButton.onclick = null;
+
+            yesButton.addEventListener('click', function() {
+                document.getElementById('confirmModal').style.display = 'none';
+                resolve(true);
+            });
+
+            noButton.addEventListener('click', function() {
+                document.getElementById('confirmModal').style.display = 'none';
+                resolve(false);
+            });
+        });
+    }
+
+    // ฟังก์ชันแสดง Error Modal
+    function showErrorModal(message) {
+        document.getElementById('errorMessages').innerHTML = message;
+        document.getElementById('errorModal').style.display = 'block';
+    }
+
+    // ฟังก์ชันแสดง Success Modal
+    function showSuccessModal(message, redirectUrl = null) {
+        document.getElementById('successMessages').innerHTML = message;
+        document.getElementById('successModal').style.display = 'block';
+
+        document.getElementById('closeSuccessModal').onclick = null;
+
+        document.getElementById('closeSuccessModal').onclick = function() {
+            document.getElementById('successModal').style.display = 'none';
+            if (redirectUrl) {
+                window.location.href = redirectUrl;
+            }
+        };
+    }
+
+    // ปิด Success Modal เมื่อคลิกนอกเนื้อหาโมดอล
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('successModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // ฟังก์ชันสำหรับเปลี่ยนสีพื้นหลังตามค่า initialPetitionType
+function setHeaderColor() {
+    const headerrcol = document.getElementById('headerrcol');
+    if (!headerrcol) return;
+
+    let color = '';
+
+    switch (initialPetitionType) {
+        case '1':
+            color = '#FB8500';
+            break;
+        case '2':
+            color = '#E29578';
+            break;
+        case '3':
+            color = '#023E8A';
+            break;
+        case '4':
+            color = '#BB3E03';
+            break;
+        default:
+            color = ''; // สีพื้นฐานหรือเว้นว่างไว้
+    }
+
+    if (color) {
+        headerrcol.style.backgroundColor = color;
+    }
+}
+window.addEventListener('load', function () {
+    setHeaderColor();
+
+    // โค้ดอื่น ๆ ที่ต้องการให้ทำงานเมื่อโหลดหน้าเว็บ
+});
+
+    document.addEventListener("DOMContentLoaded", () => {
+        fetch('/api/session-student-info')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('barname').textContent = data.student_name || 'ไม่ทราบชื่อ';
+                document.getElementById('barid').textContent = data.student_id || 'ไม่ทราบรหัส';
+            })
+            .catch(error => console.error('Error fetching student info:', error));
+    });
 </script>
+
 
     
 </body>

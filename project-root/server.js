@@ -563,10 +563,12 @@ app.get('/advisor/pending-petitions', async (req, res) => {
     }
 });
 
-// ใน server.js
-app.get('/advisor/petition/:id', (req, res) => {
+// เส้นทางสำหรับ '/advisor/petition/:id'
+app.get('/advisor/petition', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'advisorPetitionDetail.html'));
 });
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/advisor/petition-details/:id', async (req, res) => {
     const { id } = req.params;

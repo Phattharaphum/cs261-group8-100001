@@ -1,3 +1,7 @@
+dd p {
+    margin: 10px 0; /* เพิ่มระยะห่างด้านบนและด้านล่าง */
+    line-height: 1.5; /* กำหนด line-height ให้บรรทัดดูโปร่งขึ้น */
+}
 
 body {
     font-family: 'Bai Jamjuree', sans-serif;  
@@ -18,12 +22,14 @@ body {
 .middle {
 	flex: 1;
     width: 100%;
-    padding: 20px;
+    padding: 70px;
+	padding-top: 20px;
 }
 
 .right {
-    width: 30%;
-    padding: 20px;
+    width: 450px;
+    padding: 30px;
+	margin: 30px;
     position: fixed;   
     bottom: 0;          
     right: 0;  
@@ -38,17 +44,20 @@ body {
     padding: 5px 30px;        
     background-color: #A70C0C;
     display: inline-block;    
-    color: #FFFFFF;              
+    color: #FFFFFF; 
+	margin-top: 20px;
+	margin-left: 20px 
 }
 
 .rounded-border2 {
     border: 2px solid #FFFFFF;     
     border-radius: 20px;       
-    padding: 5px 30px;        
+    padding: 20px 40px;        
     background-color: #FFFFFF;
     display: inline-block;    
     color: #000000;
     font-weight: bold;
+	font-size: 12pt;
 }
 
 #personalInfo {
@@ -79,6 +88,8 @@ hr {
 .file {
     display: flex;
     gap: 20px;
+	padding: 20px;
+	padding-top: 10px;
 }
 
 .box-container {
@@ -130,4 +141,20 @@ hr {
 .back-botton:hover {
     background-color: lightblue; 
     color: #023047; 
+}
+.dasda {
+	width: 600px;
+}
+
+.asd {
+	width: 100px;
+}
+
+.asad {
+	text-align: left;
+}
+
+.spanlab {
+	margin-top: 20px;
+	font-size: 15pt;
 }
