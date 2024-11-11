@@ -143,10 +143,12 @@
         const urlParams = new URLSearchParams(window.location.search);
         const petitionId = urlParams.get('id');
         const attachedFilesBody = document.getElementById('attachedFilesBody');
+
+        
                 // ฟังก์ชันแสดงสถานะพร้อมแถบสี
                 function getStatusText(status) {
             switch(status) {
-                case 2: return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
+                case 2: return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
                 case 3: return '<span class="status-label status-read">อ่านแล้ว</span>';
                 case 4: return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
                 case 5: return '<span class="status-label status-approved">อนุมัติแล้ว</span>';

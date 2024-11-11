@@ -11,161 +11,7 @@
     <link rel="stylesheet" href="css/styleLateRegisterForm.css">
     <link rel="stylesheet" href="css/stylesidebar.css">
     <title>Petition Form</title>
-    <style>
- /* Error Modal Style */
- /* Modal Container */
-/* Modal Container */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-
- /* Error Modal Style */
-.error-modal {
-    background-color: #fefefe;
-    width: 400px;
-    max-width: 90%; /* ทำให้ตอบสนองต่อหน้าจอขนาดเล็ก */
-    padding: 20px;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    color: #333;
-	top: 50%;
-	left: 50%;
-}
-
-.error-modal .header {
-    background-color: #b22222;
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.2em;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
-}
-
-.error-modal .content {
-    padding: 20px;
-    font-size: 1em;
-    color: #333;
-}
-
-.error-modal .close-button {
-    background-color: #b22222;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1em;
-}
-
-/* Confirmation Modal Style */
-.confirm-modal {
-    background-color: #fefefe;
-    width: 400px;
-    max-width: 90%;
-    padding: 20px;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    color: #333;
-}
-
-.confirm-modal .header {
-    background-color: #b22222;
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.2em;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
-}
-
-.confirm-modal .content {
-    padding: 20px;
-    font-size: 1em;
-    color: #333;
-}
-
-.confirm-modal .button-group {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding-top: 10px;
-}
-
-.confirm-modal .button-group button {
-    width: 100px;
-    padding: 10px;
-    font-weight: bold;
-    font-size: 1em;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.confirm-modal .button-group .yes-button {
-    background-color: #a9a9a9;
-    color: white;
-}
-
-.confirm-modal .button-group .no-button {
-    background-color: #2e8b57;
-    color: white;
-}
-
-/* Success Modal Style */
-.success-modal {
-    background-color: #fefefe;
-    width: 400px;
-    max-width: 90%;
-    padding: 20px;
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-    color: #333;
-}
-
-.success-modal .header {
-    background-color: #2e8b57; /* สีเขียว */
-    color: #fff;
-    font-weight: bold;
-    font-size: 1.2em;
-    padding: 10px;
-    border-radius: 10px 10px 0 0;
-}
-
-.success-modal .content {
-    padding: 20px;
-    font-size: 1em;
-    color: #333;
-}
-
-.success-modal .close-button {
-    background-color: #2e8b57; /* สีเขียว */
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1em;
-}
-
-
-        </style>
+  
 </head>
 
 <body>
@@ -392,7 +238,7 @@
 <!-- Error Modal -->
 <div id="errorModal" class="modal" style="display: none;">
     <div class="error-modal">
-        <div class="header">รูปแบบข้อมูลไม่ถูกต้อง</div>
+        <div class="header">กรุณาตรวจสอบข้อมูล</div>
         <div class="content">
             <p id="errorMessages">กรุณาเลือกคำนำหน้า</p>
         </div>
@@ -421,6 +267,7 @@
         <button id="closeSuccessModal" class="close-button">ปิด</button>
     </div>
 </div>
+<div id="modalBackdrop" class="modal-backdrop" style="display: none;"></div>
 
 <script>
     const urlParams = new URLSearchParams(window.location.search);
@@ -729,7 +576,7 @@
         .then(result => {
             if (result.success) {
                 const redirectUrl = status === 1 ? '/draft-petitions-page' : '/studentPetitions';
-                showSuccessModal('ส่งคำร้องสำเร็จ', redirectUrl);
+                showSuccessModal('บันทึกแบบร่างสำเร็จ', redirectUrl);
             } else {
                 showErrorModal('Error: ' + result.message);
             }
@@ -806,7 +653,7 @@
                 })
                 .catch(error => {
                     console.error('Error removing file:', error);
-                    showErrorModal('เกิดข้อผิดพลาดในการลบไฟล์');
+                   /*  showErrorModal('เกิดข้อผิดพลาดในการลบไฟล์'); */
                 });
             }
         });
@@ -841,57 +688,68 @@
     });
 
     // ฟังก์ชันแสดง Confirm Modal
-    function showConfirmModal(message) {
-        return new Promise((resolve, reject) => {
-            document.querySelector('#confirmModal .header').innerText = message;
-            document.getElementById('confirmModal').style.display = 'block';
+ // ฟังก์ชันแสดง Confirm Modal
+function showConfirmModal(message) {
+    return new Promise((resolve) => {
+        document.querySelector('#confirmModal .header').innerText = message;
+        document.getElementById('confirmModal').style.display = 'block';
+        document.getElementById('modalBackdrop').style.display = 'block'; // แสดงแบ็คดรอป
 
-            const yesButton = document.querySelector('#confirmModal .yes-button');
-            const noButton = document.querySelector('#confirmModal .no-button');
+        const yesButton = document.querySelector('#confirmModal .yes-button');
+        const noButton = document.querySelector('#confirmModal .no-button');
 
-            yesButton.onclick = null;
-            noButton.onclick = null;
-
-            yesButton.addEventListener('click', function() {
-                document.getElementById('confirmModal').style.display = 'none';
-                resolve(true);
-            });
-
-            noButton.addEventListener('click', function() {
-                document.getElementById('confirmModal').style.display = 'none';
-                resolve(false);
-            });
-        });
-    }
-
-    // ฟังก์ชันแสดง Error Modal
-    function showErrorModal(message) {
-        document.getElementById('errorMessages').innerHTML = message;
-        document.getElementById('errorModal').style.display = 'block';
-    }
-
-    // ฟังก์ชันแสดง Success Modal
-    function showSuccessModal(message, redirectUrl = null) {
-        document.getElementById('successMessages').innerHTML = message;
-        document.getElementById('successModal').style.display = 'block';
-
-        document.getElementById('closeSuccessModal').onclick = null;
-
-        document.getElementById('closeSuccessModal').onclick = function() {
-            document.getElementById('successModal').style.display = 'none';
-            if (redirectUrl) {
-                window.location.href = redirectUrl;
-            }
+        yesButton.onclick = function() {
+            document.getElementById('confirmModal').style.display = 'none';
+            document.getElementById('modalBackdrop').style.display = 'none'; // ซ่อนแบ็คดรอป
+            resolve(true);
         };
-    }
 
-    // ปิด Success Modal เมื่อคลิกนอกเนื้อหาโมดอล
-    window.addEventListener('click', function(event) {
-        const modal = document.getElementById('successModal');
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
+        noButton.onclick = function() {
+            document.getElementById('confirmModal').style.display = 'none';
+            document.getElementById('modalBackdrop').style.display = 'none'; // ซ่อนแบ็คดรอป
+            resolve(false);
+        };
     });
+}
+
+// ฟังก์ชันแสดง Error Modal
+function showErrorModal(message) {
+    document.getElementById('errorMessages').innerHTML = message;
+    document.getElementById('errorModal').style.display = 'block';
+    document.getElementById('modalBackdrop').style.display = 'block'; // แสดงแบ็คดรอป
+}
+
+  // ฟังก์ชันแสดง Success Modal
+function showSuccessModal(message, redirectUrl = null) {
+    document.getElementById('successMessages').innerHTML = message;
+    document.getElementById('successModal').style.display = 'block';
+    document.getElementById('modalBackdrop').style.display = 'block'; // แสดงแบ็คดรอป
+
+    document.getElementById('closeSuccessModal').onclick = function() {
+        document.getElementById('successModal').style.display = 'none';
+        document.getElementById('modalBackdrop').style.display = 'none'; // ซ่อนแบ็คดรอป
+        if (redirectUrl) {
+            window.location.href = redirectUrl;
+        }
+    };
+}
+
+// ปิด Error Modal เมื่อคลิกที่ปุ่มปิด
+document.getElementById('closeModal').addEventListener('click', function() {
+    document.getElementById('errorModal').style.display = 'none';
+    document.getElementById('modalBackdrop').style.display = 'none'; // ซ่อนแบ็คดรอป
+});
+
+// ปิดโมดอลเมื่อคลิกนอกเนื้อหาโมดอล
+document.getElementById('modalBackdrop').addEventListener('click', function() {
+    // ซ่อนโมดอลทั้งหมดที่เปิดอยู่
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+        modal.style.display = 'none';
+    });
+    // ซ่อนแบ็คดรอป
+    document.getElementById('modalBackdrop').style.display = 'none';
+});
 
     // ฟังก์ชันสำหรับเปลี่ยนสีพื้นหลังตามค่า initialPetitionType
 function setHeaderColor() {
