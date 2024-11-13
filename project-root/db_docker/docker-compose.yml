@@ -1,0 +1,15 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:latest
+    container_name: sqlserver_container
+    environment:
+      ACCEPT_EULA: "Y" # ยอมรับข้อตกลงการใช้งานของ SQL Server
+      SA_PASSWORD: "YourStrong!Passw0rd" # รหัสผ่านสำหรับ SA user
+    ports:
+      - "1433:1433" # แมปพอร์ต 1433 สำหรับการเชื่อมต่อ SQL Server
+    volumes:
+      - sqlserver_data:/var/opt/mssql # กำหนด volume สำหรับเก็บข้อมูล
+
+volumes:
+  sqlserver_data:
+    driver: local
