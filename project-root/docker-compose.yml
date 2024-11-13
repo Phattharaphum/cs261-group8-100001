@@ -1,16 +1,17 @@
-version: '3.8'
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:latest
-    container_name: sqlserver_container
-    environment:
-      ACCEPT_EULA: "Y"                         # ยอมรับข้อตกลงการใช้งานของ SQL Server
-      SA_PASSWORD: "YourStrong!Passw0rd"       # รหัสผ่านสำหรับ SA user
+  express-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: express_container
     ports:
-      - "1433:1433"                            # แมปพอร์ต 1433 สำหรับการเชื่อมต่อ SQL Server
-    volumes:
-      - sqlserver_data:/var/opt/mssql          # กำหนด volume สำหรับเก็บข้อมูล
-
-volumes:
-  sqlserver_data:
-    driver: local
+      - "3000:3000" # Map container's port 3000 to host's port 3000
+    environment:
+      - PORT=3000
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    env_file:
+      - ./.env
