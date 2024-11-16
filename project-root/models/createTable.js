@@ -1,4 +1,4 @@
-const sql = require('../config/db.config');
+const sql = require("../config/db.config");
 
 const createPetitionTable = `
 IF OBJECT_ID('petition', 'U') IS NULL
@@ -57,27 +57,27 @@ END;
 `;
 
 const initializeTables = async () => {
-    try {
-        // สร้างการเชื่อมต่อกับฐานข้อมูล
-        const pool = await sql.connect();
-        
-        // สร้างตาราง petition
-        await pool.request().query(createPetitionTable);
-        console.log('Petition table created successfully or already exists.');
-        
-        // สร้างตาราง advisor_info
-        await pool.request().query(createAdvisorInfoTable);
-        console.log('Advisor info table created successfully or already exists.');
-        
-        // สร้างตาราง file
-        await pool.request().query(createFileTable);
-        console.log('File table created successfully or already exists.');
-    } catch (err) {
-        console.error('Error creating tables:', err);
-    } finally {
-        // ปิดการเชื่อมต่อฐานข้อมูล
-        await sql.close();
-    }
+  try {
+    // สร้างการเชื่อมต่อกับฐานข้อมูล
+    const pool = await sql.connect();
+
+    // สร้างตาราง petition
+    await pool.request().query(createPetitionTable);
+    console.log("Petition table created successfully or already exists.");
+
+    // สร้างตาราง advisor_info
+    await pool.request().query(createAdvisorInfoTable);
+    console.log("Advisor info table created successfully or already exists.");
+
+    // สร้างตาราง file
+    await pool.request().query(createFileTable);
+    console.log("File table created successfully or already exists.");
+  } catch (err) {
+    console.error("Error creating tables:", err);
+  } finally {
+    // ปิดการเชื่อมต่อฐานข้อมูล
+    await sql.close();
+  }
 };
 
 // เรียกใช้ฟังก์ชันเพื่อสร้างตาราง
