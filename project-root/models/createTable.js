@@ -1,4 +1,17 @@
-const sql = require("../config/db.config");
+const sql = require("mssql");
+require("dotenv").config();
+
+const config = {
+  user: process.env.DB_USER, // ชื่อผู้ใช้ฐานข้อมูล
+  password: process.env.DB_PASSWORD, // รหัสผ่านของผู้ใช้ฐานข้อมูล
+  server: process.env.DB_HOST, // ที่อยู่ของเซิร์ฟเวอร์ เช่น 'localhost'
+  port: 1433, // พอร์ตของ SQL Server
+  database: process.env.DB_NAME, // ชื่อฐานข้อมูล
+  options: {
+    encrypt: true, // ใช้ encrypt ถ้าเชื่อมต่อกับ Azure
+    trustServerCertificate: true, // ใช้เมื่อเชื่อมต่อกับ localhost
+  },
+};
 
 const createPetitionTable = `
 IF OBJECT_ID('petition', 'U') IS NULL
@@ -59,7 +72,9 @@ END;
 const initializeTables = async () => {
   try {
     // สร้างการเชื่อมต่อกับฐานข้อมูล
-    const pool = await sql.connect();
+    const pool = await sql.connect(config);
+
+    console.log("Initializing tables...");
 
     // สร้างตาราง petition
     await pool.request().query(createPetitionTable);
@@ -72,13 +87,16 @@ const initializeTables = async () => {
     // สร้างตาราง file
     await pool.request().query(createFileTable);
     console.log("File table created successfully or already exists.");
+
+    console.log("All tables initialized successfully.");
   } catch (err) {
-    console.error("Error creating tables:", err);
+    console.error("Error initializing tables:", err);
+    throw err; // Re-throw the error to handle it upstream if needed
   } finally {
     // ปิดการเชื่อมต่อฐานข้อมูล
     await sql.close();
+    console.log("Database connection closed.");
   }
 };
 
-// เรียกใช้ฟังก์ชันเพื่อสร้างตาราง
-initializeTables();
+module.exports = initializeTables;

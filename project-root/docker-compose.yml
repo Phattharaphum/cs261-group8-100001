@@ -10,19 +10,26 @@ services:
     volumes:
       - sqlserver_data:/var/opt/mssql
 
+  initialize:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: initialize_container
+    command: ["node", "initialize.js"]
+    depends_on:
+      - sqlserver
+
   backend:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: express_backend
-    env_file:
-      - .env
-    ports:
-      - "3000:3000"
-    volumes:
-      - .:/usr/src/app
+    container_name: backend_container
+    command: ["node", "server.js"]
     depends_on:
       - sqlserver
+      - initialize
+    ports:
+      - "3000:3000"
 
 volumes:
   sqlserver_data:

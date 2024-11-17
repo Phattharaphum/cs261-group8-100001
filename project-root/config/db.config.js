@@ -13,7 +13,7 @@ const config = {
   user: process.env.DB_USER, // ชื่อผู้ใช้ฐานข้อมูล
   password: process.env.DB_PASSWORD, // รหัสผ่านของผู้ใช้ฐานข้อมูล
   server: process.env.DB_HOST, // ที่อยู่ของเซิร์ฟเวอร์ เช่น 'localhost'
-  port: parseInt(process.env.DB_PORT, 10), // พอร์ตของ SQL Server
+  port: 1433, // พอร์ตของ SQL Server
   database: process.env.DB_NAME, // ชื่อฐานข้อมูล
   options: {
     encrypt: true, // ใช้ encrypt ถ้าเชื่อมต่อกับ Azure
