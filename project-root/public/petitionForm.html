@@ -209,7 +209,7 @@
                     <div class="file-form01">
                         <!-- Existing file input -->
                         <input class="attachFile01" id="attachFile01" name="attachFile01" type="file" style="display:block;">
-                        
+                        <textarea id="fileDescription1" name="fileDescription1" placeholder="คำอธิบายไฟล์แนบที่ 1" rows="2"></textarea>
                         <!-- Placeholder for existing attached file -->
                         <div id="existingFile1"></div>
                     </div>
@@ -217,7 +217,7 @@
                     <div class="file-form02">
                         <!-- Existing file input -->
                         <input class="attachFile02" id="attachFile02" name="attachFile02" type="file" style="display:block;">
-                        
+                        <textarea id="fileDescription2" name="fileDescription2" placeholder="คำอธิบายไฟล์แนบที่ 2" rows="2"></textarea>
                         <!-- Placeholder for existing attached file -->
                         <div id="existingFile2"></div>
                     </div>
@@ -380,6 +380,7 @@
                         if (existingFileDiv) {
                             existingFileDiv.innerHTML = `
                                 <p>ไฟล์ที่แนบไว้: ${file.file_name}</p>
+                                
                                 <button type="button" onclick="removeAttachedFile(${file.file_id}, ${fileNumber})">ลบไฟล์นี้</button>
                                 <a href="/download-file/${file.file_id}">ดาวน์โหลด</a>
                             `;
@@ -558,9 +559,13 @@
 
         // เพิ่มไฟล์ลงใน FormData
         const file1 = document.getElementById('attachFile01').files[0];
+        const description1 = document.getElementById('fileDescription1').value;
         const file2 = document.getElementById('attachFile02').files[0];
+        const description2 = document.getElementById('fileDescription2').value;
         if (file1) formData.append('attachFile01', file1);
+        if (description1) formData.append('fileDescription1', description1);
         if (file2) formData.append('attachFile02', file2);
+        if (description2) formData.append('fileDescription2', description2);
 
         // Add information about removed files (if any)
         formData.append('removedFiles', JSON.stringify(removedFilesArray));
