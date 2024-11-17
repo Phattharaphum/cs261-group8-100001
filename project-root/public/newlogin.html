@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="css/styleloginNew.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload"  href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" as="style" onload="this.rel='stylesheet'">
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" as="style" onload="this.rel='stylesheet'">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/styleloginNew.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap"
+      as="style"
+      onload="this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      as="style"
+      onload="this.rel='stylesheet'"
+    />
     <title>Login</title>
-</head>
-<body>
+    <script defer src="./js/redirect-handler.js"></script>
+  </head>
+  <body>
     <div class="container">
-        <div class="left-section">
-            <img src="img/bg02.jpg" alt="Campus Image" id="img">
+      <div class="left-section">
+        <img src="img/bg02.jpg" alt="Campus Image" id="img" />
+      </div>
+      <div class="right-section">
+        <div class="logo">
+          <img src="img/logo.svg" alt="University Logo" />
         </div>
-        <div class="right-section">
-            <div class="logo">
-                <img src="img/logo.svg" alt="University Logo">
-            </div>
-            <h2>ระบบยื่นคำร้อง</h2>
-            <p>คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์</p>
-            <form action="#" method="post">
-                <input type="text" placeholder="ชื่อผู้ใช้" required>
-                <input type="password" placeholder="รหัสผ่าน" required>
-                <button type="submit">ลงชื่อเข้าใช้</button>
-            </form>
-        </div>
+        <h2>ระบบยื่นคำร้อง</h2>
+        <p>คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์</p>
+        <form action="#" method="post">
+          <input type="text" placeholder="ชื่อผู้ใช้" required />
+          <input type="password" placeholder="รหัสผ่าน" required />
+          <button type="submit">ลงชื่อเข้าใช้</button>
+        </form>
+      </div>
     </div>
-</body>
+  </body>
 </html>

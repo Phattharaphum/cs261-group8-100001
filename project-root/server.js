@@ -21,32 +21,34 @@ const fs = require("fs");
 dotenv.config(); // โหลด environment variables จาก .env
 const initialization = require("./initialize");
 
+// การตั้งค่าการเชื่อมต่อฐานข้อมูล
 const config = {
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  server: process.env.DB_HOST,
-  port: 1433,
-  database: process.env.DB_NAME,
+  user: process.env.DB_USER, // ชื่อผู้ใช้ฐานข้อมูล
+  password: process.env.DB_PASSWORD, // รหัสผ่านฐานข้อมูล
+  server: process.env.DB_HOST, // โฮสต์ของฐานข้อมูล
+  port: 1433, // พอร์ตของฐานข้อมูล
+  database: process.env.DB_NAME, // ชื่อฐานข้อมูล
   options: {
-    encrypt: true,
-    trustServerCertificate: true,
+    encrypt: true, // เข้ารหัสการเชื่อมต่อ
+    trustServerCertificate: true, // เชื่อถือใบรับรองเซิร์ฟเวอร์
   },
 };
 
+// ฟังก์ชันสำหรับรอการเชื่อมต่อกับฐานข้อมูล SQL Server
 const waitForDatabase = async (maxRetries = 10, retryDelay = 5000) => {
-  console.log("Waiting for SQL Server to be ready...");
+  console.log("Waiting for SQL Server to be ready..."); // แสดงข้อความรอการเชื่อมต่อ
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
-      const pool = await sql.connect(config);
-      console.log("Connected to SQL Server!");
-      await pool.close();
-      return true;
+      const pool = await sql.connect(config); // พยายามเชื่อมต่อกับฐานข้อมูล
+      console.log("Connected to SQL Server!"); // แสดงข้อความเมื่อเชื่อมต่อสำเร็จ
+      await pool.close(); // ปิดการเชื่อมต่อ
+      return true; // คืนค่า true เมื่อเชื่อมต่อสำเร็จ
     } catch (err) {
-      console.error(`Attempt ${attempt} failed: ${err.message}`);
+      console.error(`Attempt ${attempt} failed: ${err.message}`); // แสดงข้อความเมื่อการเชื่อมต่อล้มเหลว
       if (attempt === maxRetries) {
-        throw new Error("SQL Server is not ready after maximum retries.");
+        throw new Error("SQL Server is not ready after maximum retries."); // ขว้างข้อผิดพลาดเมื่อพยายามเชื่อมต่อครบจำนวนครั้งที่กำหนด
       }
-      await new Promise((resolve) => setTimeout(resolve, retryDelay));
+      await new Promise((resolve) => setTimeout(resolve, retryDelay)); // รอเวลาที่กำหนดก่อนพยายามเชื่อมต่อใหม่
     }
   }
 };
@@ -164,7 +166,7 @@ const StartServer = async () => {
   });
 
   // Route สำหรับหน้าของอาจารย์
-  app.get("/hometeacher", isAuthenticated, (req, res) => {
+  app.get("/hometeacher", isAuthenticated, isTeacher, (req, res) => {
     res.sendFile(path.join(__dirname, "views", "hometeacher.html"));
   });
 
@@ -548,7 +550,7 @@ const StartServer = async () => {
   );
 
   // Route สำหรับดึง draft petitions
-  app.get("/draft-petitions", async (req, res) => {
+  app.get("/draft-petitions", isAuthenticated, isStudent, async (req, res) => {
     if (!req.session.user) {
       return res.status(401).json({ error: "Unauthorized" });
     }
@@ -578,7 +580,7 @@ const StartServer = async () => {
   });
 
   // Route สำหรับแสดงหน้า draft petitions
-  app.get("/draft-petitions-page", (req, res) => {
+  app.get("/draft-petitions-page", isAuthenticated, isStudent, (req, res) => {
     res.sendFile(path.join(__dirname, "public", "draftPetitions.html"));
   });
 
@@ -615,64 +617,74 @@ const StartServer = async () => {
   });
 
   // Route สำหรับแสดงคำร้องของอาจารย์
-  app.get("/advisor-petitions", async (req, res) => {
-    const advisorId = req.session.user?.username; // ใช้รหัสอาจารย์จาก session
+  app.get(
+    "/advisor-petitions",
+    isAuthenticated,
+    isTeacher,
+    async (req, res) => {
+      const advisorId = req.session.user?.username; // ใช้รหัสอาจารย์จาก session
 
-    if (!advisorId) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
+      if (!advisorId) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
 
-    try {
-      const query = `
+      try {
+        const query = `
             SELECT p.*
             FROM petition p
             JOIN advisor_info a ON p.student_id = a.student_id
             WHERE a.advisor_id = @advisorId AND p.status = 2
         `;
 
-      const pool = await sql.connect(config);
-      const result = await pool
-        .request()
-        .input("advisorId", sql.NVarChar, advisorId)
-        .query(query);
+        const pool = await sql.connect(config);
+        const result = await pool
+          .request()
+          .input("advisorId", sql.NVarChar, advisorId)
+          .query(query);
 
-      res.json(result.recordset); // ส่งข้อมูลคำร้องไปยัง client
-    } catch (error) {
-      console.error("Error fetching petitions:", error);
-      res.status(500).json({ error: "Failed to fetch petitions" });
+        res.json(result.recordset); // ส่งข้อมูลคำร้องไปยัง client
+      } catch (error) {
+        console.error("Error fetching petitions:", error);
+        res.status(500).json({ error: "Failed to fetch petitions" });
+      }
     }
-  });
+  );
 
   // ดึงข้อมูลคำร้องที่ยังไม่ได้ตรวจสอบและตรวจสอบแล้ว
-  app.get("/advisor/pending-petitions", async (req, res) => {
-    try {
-      const advisorId = req.session.user.username;
-      const pool = await sql.connect(config);
+  app.get(
+    "/advisor/pending-petitions",
+    isAuthenticated,
+    isTeacher,
+    async (req, res) => {
+      try {
+        const advisorId = req.session.user.username;
+        const pool = await sql.connect(config);
 
-      const pendingResult = await pool
-        .request()
-        .input("advisorId", sql.NVarChar, advisorId)
-        .query(`SELECT * FROM petition WHERE status = 2 AND student_id IN 
+        const pendingResult = await pool
+          .request()
+          .input("advisorId", sql.NVarChar, advisorId)
+          .query(`SELECT * FROM petition WHERE status = 2 AND student_id IN 
                     (SELECT student_id FROM advisor_info WHERE advisor_id = @advisorId)`);
 
-      const reviewedResult = await pool
-        .request()
-        .input("advisorId", sql.NVarChar, advisorId)
-        .query(`SELECT * FROM petition WHERE status IN (3, 4, 5) AND student_id IN 
+        const reviewedResult = await pool
+          .request()
+          .input("advisorId", sql.NVarChar, advisorId)
+          .query(`SELECT * FROM petition WHERE status IN (3, 4, 5) AND student_id IN 
                     (SELECT student_id FROM advisor_info WHERE advisor_id = @advisorId)`);
 
-      res.json({
-        pending: pendingResult.recordset,
-        reviewed: reviewedResult.recordset,
-      });
-    } catch (err) {
-      console.error(err);
-      res.status(500).json({ error: "Failed to fetch petitions" });
+        res.json({
+          pending: pendingResult.recordset,
+          reviewed: reviewedResult.recordset,
+        });
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Failed to fetch petitions" });
+      }
     }
-  });
+  );
 
   // เส้นทางสำหรับ '/advisor/petition/:id'
-  app.get("/advisor/petition", (req, res) => {
+  app.get("/advisor/petition", isAuthenticated, isTeacher, (req, res) => {
     res.sendFile(path.join(__dirname, "public", "advisorPetitionDetail.html"));
   });
 
@@ -738,36 +750,41 @@ const StartServer = async () => {
     res.sendFile(path.join(__dirname, "public", "advisorPetitions.html"));
   });
 
-  app.get("/studentPetitions", (req, res) => {
+  app.get("/studentPetitions", isAuthenticated, isStudent, (req, res) => {
     res.sendFile(path.join(__dirname, "public", "studentPetitions.html"));
   });
 
-  app.get("/draftPetitions", (req, res) => {
+  app.get("/draftPetitions", isAuthenticated, isStudent, (req, res) => {
     res.sendFile(path.join(__dirname, "public", "draftPetitions.html"));
   });
 
-  app.get("/advisorPetitions", (req, res) => {
+  app.get("/advisorPetitions", isAuthenticated, isTeacher, (req, res) => {
     res.sendFile(path.join(__dirname, "public", "advisorPetitions.html"));
   });
 
   // Fetch petitions for the logged-in student
-  app.get("/student/petitions", async (req, res) => {
-    try {
-      const studentId = req.session.user.username;
-      const pool = await sql.connect(config);
-      const result = await pool
-        .request()
-        .input("studentId", sql.NVarChar, studentId)
-        .query(
-          "SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5, 6)"
-        );
+  app.get(
+    "/student/petitions",
+    isAuthenticated,
+    isStudent,
+    async (req, res) => {
+      try {
+        const studentId = req.session.user.username;
+        const pool = await sql.connect(config);
+        const result = await pool
+          .request()
+          .input("studentId", sql.NVarChar, studentId)
+          .query(
+            "SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5, 6)"
+          );
 
-      res.json(result.recordset);
-    } catch (err) {
-      console.error("Error fetching petitions:", err);
-      res.status(500).json({ error: "Failed to fetch petitions" });
+        res.json(result.recordset);
+      } catch (err) {
+        console.error("Error fetching petitions:", err);
+        res.status(500).json({ error: "Failed to fetch petitions" });
+      }
     }
-  });
+  );
 
   // Fetch details of a specific petition
   app.get("/student/petition-details/:id", async (req, res) => {
@@ -962,6 +979,20 @@ const StartServer = async () => {
       res
         .status(500)
         .json({ success: false, message: "Failed to delete draft petition" });
+    }
+  });
+
+  // Route สำหรับตรวจสอบการเข้าสู่ระบบและสิทธิ์ของผู้ใช้
+  app.get("/check-auth", (req, res) => {
+    if (!req.session.user) {
+      // ผู้ใช้ยังไม่ได้เข้าสู่ระบบ
+      res.redirect("/index.html");
+    } else if (req.session.user.userType !== "student") {
+      // ผู้ใช้ไม่มีสิทธิ์ที่ถูกต้อง
+      res.redirect("/index.html");
+    } else {
+      // ผู้ใช้ได้รับการยืนยันและมีสิทธิ์ที่ถูกต้อง
+      res.status(200).json({ message: "Authorized" });
     }
   });
 
