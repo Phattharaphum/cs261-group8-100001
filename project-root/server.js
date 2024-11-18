@@ -348,11 +348,7 @@ const StartServer = async () => {
           fileRequest1.input("petition_id", sql.Int, petitionId);
           fileRequest1.input("file_type", sql.NVarChar, file1.mimetype);
           fileRequest1.input("file_name", sql.NVarChar, file1.originalname);
-          fileRequest1.input(
-            "description",
-            sql.NVarChar,
-            req.body.description || ""
-          );
+          fileRequest1.input('description', sql.NVarChar, req.body.fileDescription1 || '');
           fileRequest1.input("file_path", sql.NVarChar, file1.path);
 
           await fileRequest1.query(`
@@ -367,11 +363,7 @@ const StartServer = async () => {
           fileRequest2.input("petition_id", sql.Int, petitionId);
           fileRequest2.input("file_type", sql.NVarChar, file2.mimetype);
           fileRequest2.input("file_name", sql.NVarChar, file2.originalname);
-          fileRequest2.input(
-            "description",
-            sql.NVarChar,
-            req.body.description02 || ""
-          );
+          fileRequest2.input('description', sql.NVarChar, req.body.fileDescription2 || '');
           fileRequest2.input("file_path", sql.NVarChar, file2.path);
 
           await fileRequest2.query(`
@@ -518,7 +510,7 @@ const StartServer = async () => {
             .input("petition_id", sql.Int, id)
             .input("file_type", sql.NVarChar, file1.mimetype)
             .input("file_name", sql.NVarChar, file1.originalname)
-            .input("description", sql.NVarChar, req.body.description || "")
+            .input('description', sql.NVarChar, req.body.fileDescription1 || '')
             .input("file_path", sql.NVarChar, file1.path).query(`
                     INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
                     VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
@@ -532,7 +524,7 @@ const StartServer = async () => {
             .input("petition_id", sql.Int, id)
             .input("file_type", sql.NVarChar, file2.mimetype)
             .input("file_name", sql.NVarChar, file2.originalname)
-            .input("description", sql.NVarChar, req.body.description02 || "")
+            .input('description', sql.NVarChar, req.body.fileDescription2 || '')
             .input("file_path", sql.NVarChar, file2.path).query(`
                     INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
                     VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
