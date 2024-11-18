@@ -119,6 +119,7 @@
                     <thead>
                         <tr>
                             <th class="asd">ชื่อไฟล์</th>
+                            <th class="asd">คำอธิบาย</th>
                             <th class="asd">ดาวน์โหลด</th>
                         </tr>
                     </thead>
@@ -228,6 +229,7 @@ if (data.attachedFiles && data.attachedFiles.length > 0) {
 
         row.innerHTML = `
             <td>${file.file_name}</td>
+            <td>${file.description}</td>
             <td><a href="/student/download-file/${file.file_id}" target="_blank">ดาวน์โหลด</a></td>
         `;
 

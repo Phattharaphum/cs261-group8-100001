@@ -16,6 +16,7 @@ const waitForSqlServer = async (maxRetries = 10, retryDelay = 5000) => {
     },
   };
 
+  
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
       const pool = await sql.connect(config);

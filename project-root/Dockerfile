@@ -4,15 +4,13 @@ FROM node:22
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and install dependencies
+# Install dependencies
 COPY package*.json ./
 RUN npm install
-
-# Copy project files and wait-for-it script
-COPY . .
+RUN npm install -g nodemon # ติดตั้ง nodemon แบบ global
 
 # Expose the application's port
 EXPOSE 3000
 
-# Command to wait for SQL Server and start the backend
-CMD ["node", "server.js"]
+# Default command (ใช้ nodemon)
+CMD ["nodemon", "server.js"]

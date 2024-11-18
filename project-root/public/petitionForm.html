@@ -209,6 +209,8 @@
                     <div class="file-form01">
                         <!-- Existing file input -->
                         <input class="attachFile01" id="attachFile01" name="attachFile01" type="file" style="display:block;">
+                        <!-- เพิ่ม hidden input เพื่อเก็บ file_id -->
+                        <input type="hidden" id="fileId1" name="fileId1" value="">
                         <textarea id="fileDescription1" name="fileDescription1" placeholder="คำอธิบายไฟล์แนบที่ 1" rows="2"></textarea>
                         <!-- Placeholder for existing attached file -->
                         <div id="existingFile1"></div>
@@ -217,6 +219,8 @@
                     <div class="file-form02">
                         <!-- Existing file input -->
                         <input class="attachFile02" id="attachFile02" name="attachFile02" type="file" style="display:block;">
+                        <!-- เพิ่ม hidden input เพื่อเก็บ file_id -->
+                        <input type="hidden" id="fileId2" name="fileId2" value="">
                         <textarea id="fileDescription2" name="fileDescription2" placeholder="คำอธิบายไฟล์แนบที่ 2" rows="2"></textarea>
                         <!-- Placeholder for existing attached file -->
                         <div id="existingFile2"></div>
@@ -374,18 +378,22 @@
                 }  
 
                 if (data.attachedFiles && data.attachedFiles.length > 0) {
-                    data.attachedFiles.forEach((file, index) => {
-                        const fileNumber = index + 1;
-                        const existingFileDiv = document.getElementById(`existingFile${fileNumber}`);
-                        if (existingFileDiv) {
-                            existingFileDiv.innerHTML = `
-                                <p>ไฟล์ที่แนบไว้: ${file.file_name}</p>
-                                <button type="button" onclick="removeAttachedFile(${file.file_id}, ${fileNumber})">ลบไฟล์นี้</button>
-                                <a href="/download-file/${file.file_id}">ดาวน์โหลด</a>
-                            `;
-                        }
-                    });
-                }
+                data.attachedFiles.forEach((file, index) => {
+                    const fileNumber = index + 1;
+                    const existingFileDiv = document.getElementById(`existingFile${fileNumber}`);
+                    if (existingFileDiv) {
+                        existingFileDiv.innerHTML = `
+                            <p>ไฟล์ที่แนบไว้: ${file.file_name}</p>
+                            <button type="button" onclick="removeAttachedFile(${file.file_id}, ${fileNumber})">ลบไฟล์นี้</button>
+                            <a href="/download-file/${file.file_id}">ดาวน์โหลด</a>
+                        `;
+                        // ตั้งค่า fileId ใน hidden input
+                        document.getElementById(`fileId${fileNumber}`).value = file.file_id;
+                        // ตั้งค่า description ใน textarea
+                        document.getElementById(`fileDescription${fileNumber}`).value = file.description || '';
+                    }
+                });
+            }
 
                 // สำหรับเอกสารแนบที่ 1
                 if (data.attachedFiles && data.attachedFiles.length > 0) {
@@ -566,6 +574,14 @@
         const description2 = document.getElementById('fileDescription2').value;
         if (description1) formData.append('fileDescription1', description1);
         if (description2) formData.append('fileDescription2', description2);
+
+                // ในฟังก์ชัน submitForm
+        const fileId1 = document.getElementById('fileId1').value;
+        const fileId2 = document.getElementById('fileId2').value;
+
+        if (fileId1) formData.append('fileId1', fileId1);
+        if (fileId2) formData.append('fileId2', fileId2);
+
         // Add information about removed files (if any)
         formData.append('removedFiles', JSON.stringify(removedFilesArray));
 
@@ -637,31 +653,36 @@
     }
 
     function removeAttachedFile(fileId, fileNumber) {
-        showConfirmModal("คุณต้องการลบไฟล์นี้หรือไม่?").then((confirmed) => {
-            if (confirmed) {
-                fetch(`/remove-file/${fileId}`, {
-                    method: 'DELETE'
-                })
-                .then(response => response.json())
-                .then(result => {
-                    if (result.success) {
-                        showSuccessModal('ลบไฟล์เรียบร้อย');
-                        // ลบไฟล์ที่แสดงอยู่
-                        document.getElementById(`existingFile${fileNumber}`).innerHTML = '';
-                        // แสดง input สำหรับเลือกไฟล์ใหม่
-                        document.getElementById(`attachFile0${fileNumber}`).style.display = 'block';
-                        document.getElementById(`fileName${fileNumber === 1 ? '' : '02'}`).textContent = 'ยังไม่ได้เลือกไฟล์';
-                    } else {
-                        showErrorModal('ไม่สามารถลบไฟล์ได้');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error removing file:', error);
-                   /*  showErrorModal('เกิดข้อผิดพลาดในการลบไฟล์'); */
-                });
-            }
-        });
-    }
+    showConfirmModal("คุณต้องการลบไฟล์นี้หรือไม่?").then((confirmed) => {
+        if (confirmed) {
+            fetch(`/remove-file/${fileId}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    showSuccessModal('ลบไฟล์เรียบร้อย');
+                    // Remove the displayed file information
+                    document.getElementById(`existingFile${fileNumber}`).innerHTML = '';
+                    // Show the file input field
+                    document.getElementById(`attachFile0${fileNumber}`).style.display = 'block';
+                    // Show the file description field
+                    document.getElementById(`fileDescription${fileNumber}`).style.display = 'block';
+                    // Clear fileId and description values
+                    document.getElementById(`fileId${fileNumber}`).value = '';
+                    document.getElementById(`fileDescription${fileNumber}`).value = '';
+                } else {
+                    showErrorModal('ไม่สามารถลบไฟล์ได้');
+                }
+            })
+            .catch(error => {
+                console.error('Error removing file:', error);
+            });
+        }
+    });
+}
+
+
 
     function goBack() {
         window.history.back();

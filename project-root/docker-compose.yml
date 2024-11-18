@@ -6,7 +6,7 @@ services:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "YourStrong!Passw0rd"
     ports:
-      - "0.0.0.0:1433:1433"
+      - "1433:1433"
     volumes:
       - sqlserver_data:/var/opt/mssql
 
@@ -15,21 +15,25 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: initialize_container
-    command: ["node", "initialize.js"]
+    command: ["node", "initialize.js"] 
     depends_on:
       - sqlserver
+    volumes:
+      - .:/usr/src/app # Mount โค้ดจากโฮสต์ไปยัง container
 
   backend:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: backend_container
-    command: ["node", "server.js"]
+    command: ["nodemon", "server.js"] # ใช้ nodemon สำหรับ live reload
     depends_on:
       - sqlserver
       - initialize
     ports:
       - "3000:3000"
+    volumes:
+      - .:/usr/src/app # Mount โค้ดจากโฮสต์ไปยัง container
 
 volumes:
   sqlserver_data:
