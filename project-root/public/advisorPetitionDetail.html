@@ -161,7 +161,7 @@
               <thead>
                 <tr>
                   <th>ชื่อไฟล์</th>
-
+                  <th>คำอธิบาย</th>
                   <th>ดาวน์โหลด</th>
                 </tr>
               </thead>
@@ -349,6 +349,7 @@
               const row = document.createElement("tr");
               row.innerHTML = `
                     <td>${file.file_name}</td>
+                    <td>${file.description}</td>
                     <td><a href="/student/download-file/${file.file_id}" target="_blank">ดาวน์โหลด</a></td>
                 `;
               attachedFilesBody.appendChild(row);

@@ -646,7 +646,6 @@
                         document.getElementById(`existingFile${fileNumber}`).innerHTML = '';
                         // แสดง input สำหรับเลือกไฟล์ใหม่
                         document.getElementById(`attachFile0${fileNumber}`).style.display = 'block';
-                        document.getElementById(`fileName${fileNumber === 1 ? '' : '02'}`).textContent = 'ยังไม่ได้เลือกไฟล์';
                     } else {
                         showErrorModal('ไม่สามารถลบไฟล์ได้');
                     }
