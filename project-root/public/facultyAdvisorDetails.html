@@ -5,25 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>รายละเอียดอาจารย์</title>
     <link rel="stylesheet" href="css/stylesidebar.css">
+    <link rel="stylesheet" href="css/stylefacultyAdvisorDetails.css">
 </head>
 <body>
     <div class="container">
         <!-- ส่วนของ Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <img src="img/logo.svg" alt="University Logo" class="logo">
-                <div class="tops">
-                    <p class="hasd">ระบบจัดการบุคลากร</p>
-                    <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
-                </div>
+              <img src="img/logo.svg" alt="University Logo" class="logo" />
+              <div class="tops">
+                <p class="hasd">ระบบจัดการบุคลากร</p>
+                <p class="asdasd">
+                  คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
+                </p>
+              </div>
             </div>
             <nav class="sidebar-menu">
-                <a href="/editFacultyStaff.html" class="menu-item">
-                    <img src="img/edit-staff-icon.svg" alt="Edit Staff Icon">
-                    <span class="tee">แก้ไขข้อมูลอาจารย์</span>
-                </a>
+              <a href="/editFacultyStaff.html" class="menu-item active">
+                <img src="img/Artboard 1.svg" alt="Logs Icon" />
+                <span class="tee">แก้ไขข้อมูลอาจารย์</span>
+              </a>
+              <a href="/editAdministrativeStaff.html" class="menu-item">
+                <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
+                <span class="tee">แก้ไขข้อมูลเจ้าหน้าที่</span>
+              </a>
             </nav>
-        </div>
+            <div class="logout-section">
+                <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
+                    <img src="img/back.svg" alt="Back Icon">
+                    <span class="tee">ย้อนกลับ</span>
+                </a>
+              <a href="/logout" class="menu-item">
+                <img src="img/Artboard 3.svg" alt="Logout Icon" />
+                <span class="tee">ออกจากระบบ</span>
+              </a>
+              <div class="user-info">
+                <div class="asee">
+                  <img src="img/avt (1).svg" alt="User Icon" />
+                </div>
+                <div class="user-details">
+                  <p class="name" id="barname">ชื่อจริง นามสกุล</p>
+                  <p class="idd" id="barid">Admin</p>
+                </div>
+              </div>
+            </div>
+          </div>
 
         <!-- ส่วนเนื้อหาหลัก -->
         <div class="scallable">
@@ -487,6 +513,39 @@
                 });
             }
         }
+        function goBack() {
+            window.location.href = '/ITStaffSystemLogs.html';
+        }
+
+        
+        document.getElementById('addStudentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const studentId = document.getElementById('student_id').value;
+
+            fetch('/api/advisor-students', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ advisor_id: facultyId, student_id: studentId })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to add advisor student');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('เพิ่มนักศึกษาในที่ปรึกษาเรียบร้อยแล้ว');
+                closeDialog('addStudentDialog');
+                document.getElementById('addStudentForm').reset();
+                fetchAdvisorStudents(facultyId);
+            })
+            .catch(error => {
+                console.error('Error adding advisor student:', error);
+                alert('เกิดข้อผิดพลาดในการเพิ่มนักศึกษา');
+            });
+        });
+
+
     </script>
 </body>
 </html>
