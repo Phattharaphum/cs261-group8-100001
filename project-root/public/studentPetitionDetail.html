@@ -192,7 +192,6 @@
                 document.getElementById('submit_time').textContent = new Date(data.submit_time).toLocaleString() || '';
                 document.getElementById('status').innerHTML = getStatusText(data.status);
                 document.getElementById('reason').textContent = data.reason || 'ไม่มีเหตุผลระบุไว้'; // เพิ่มการแสดงเหตุผล
-
                 document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(data.petition_type);
 
   
