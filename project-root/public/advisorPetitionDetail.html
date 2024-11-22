@@ -363,12 +363,11 @@
           console.error("Error fetching petition details:", error)
         );
 
-      function updateStatus(newStatus) {
+      /*function updateStatus(newStatus) {
         fetch(`/advisor/update-petition/${petitionId}`, {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
-          },
+            "Content-Type": "application/json",},
           body: JSON.stringify({ status: newStatus }),
         })
           .then((response) => response.json())
@@ -389,7 +388,8 @@
         if (document.visibilityState === "visible") {
           location.reload();
         }
-      });
+      }); */
+      
     </script>
   </body>
 </html>
