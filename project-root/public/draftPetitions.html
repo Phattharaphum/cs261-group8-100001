@@ -1,116 +1,304 @@
-<!-- project-root/public/draftPetitions.html -->
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap"
+      as="style"
+      onload="this.rel='stylesheet'"
+    />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      as="style"
+      onload="this.rel='stylesheet'"
+    />
     <title>Draft Petitions</title>
-    <style>
-      /* Basic layout and styling */
-      body {
-        display: flex;
-        font-family: Arial, sans-serif;
-      }
-      .sidebar {
-        width: 200px;
-        background-color: #f4f4f4;
-        padding: 20px;
-      }
-      .sidebar a {
-        display: block;
-        padding: 10px;
-        margin-bottom: 10px;
-        color: black;
-        text-decoration: none;
-        border-radius: 5px;
-      }
-      .sidebar a.active {
-        background-color: #ccc;
-      }
-      .content {
-        flex-grow: 1;
-        padding: 20px;
-      }
-      .button-container {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 20px;
-      }
-      .drafts-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 20px;
-      }
-      .draft-card {
-        padding: 20px;
-        background-color: #e0e0e0;
-        border-radius: 5px;
-        text-align: center;
-        cursor: pointer;
-      }
-    </style>
+    <link rel="stylesheet" href="./css/homestyle.css" />
+    <link rel="stylesheet" href="css/stylesidebar.css" />
+    <script defer src="./js/redirect-handler.js"></script>
   </head>
+
   <body>
-    <!-- Sidebar with navigation -->
     <div class="sidebar">
-      <a href="#" class="active">เขียนคำร้อง</a>
-      <a href="/studentPetitions.html">สถานะคำร้อง</a>
-      <a href="/logout">ออกจากระบบ</a>
-    </div>
-
-    <!-- Main content area -->
-    <div class="content">
-      <h1>เขียนคำร้อง</h1>
-
-      <!-- Buttons for new petition -->
-      <div class="button-container">
-        <button onclick="window.location.href='/petitionForm.html'">
-          เขียนคำร้องใหม่
-        </button>
+      <div class="sidebar-header">
+        <img src="img/logo.svg" alt="University Logo" class="logo" />
+        <div class="tops">
+          <p class="hasd">ระบบยื่นคำร้อง</p>
+          <p class="asdasd">
+            คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
+          </p>
+        </div>
+      </div>
+      <nav class="sidebar-menu">
+        <a href="#" class="menu-item active">
+          <img src="img/Artboard1.svg" alt="Write Icon" id="iconA" />
+          <span class="tee">เขียนคำร้อง</span>
+        </a>
+        <a href="/studentPetitions" class="menu-item">
+          <img src="img/Artboard2.svg" alt="Status Icon" />
+          <span class="tee">สถานะคำร้อง</span>
+        </a>
+      </nav>
+      <div class="logout-section">
+        <a href="/logout" class="menu-item">
+          <img src="img/Artboard3.svg" alt="Logout Icon" />
+          <span class="tee">ออกจากระบบ</span>
+        </a>
+        <div class="user-info">
+          <div class="asee">
+            <img src="img/avt (2).svg" alt="Logout Icon" />
+          </div>
+          <div class="user-details">
+            <p class="name" id="barname">ชื่อจริง นามสกุล</p>
+            <p class="idd" id="barid">6600812160</p>
+          </div>
+        </div>
       </div>
 
-      <!-- Section for drafts -->
-      <h2>แบบร่าง</h2>
-      <div class="drafts-container" id="draftsContainer">
-        <!-- Draft cards will be populated here by JavaScript -->
+      <!--
+        <a href="#" class="active">เขียนคำร้อง</a>
+        <a href="/studentPetitions.html">สถานะคำร้อง</a>
+        <a href="/logout">ออกจากระบบ</a>-->
+    </div>
+
+    <div class="content">
+      <div class="section-header">
+        <h1 class="top">เขียนคำร้องใหม่</h1>
+      </div>
+      <div class="draft-section">
+        <div class="draft-cards">
+          <div class="draft-cards">
+            <div class="draft-card" style="box-shadow: 4px 4px #fb8500">
+              <a href="/petitionForm.html?petition_type=1">
+                <img
+                  src="img/rgu (2).svg"
+                  alt="floating image"
+                  class="floating-image"
+                />
+                <img src="./img/cne (2).svg" alt="Icon" class="mico" />
+                <p class="tea" style="color: #fb8500">จดทะเบียนล่าช้า</p>
+              </a>
+            </div>
+            <div class="draft-card" style="box-shadow: 4px 4px #e29578">
+              <a href="/petitionForm.html?petition_type=2">
+                <img
+                  src="img/rgu (3).svg"
+                  alt="floating image"
+                  class="floating-image"
+                />
+                <img src="./img/cne (3).svg" alt="Icon" class="mico" />
+                <p class="tea" style="color: #e29578">ถอนรายวิชา</p>
+              </a>
+            </div>
+            <div class="draft-card" style="box-shadow: 4px 4px #023e8a">
+              <a href="/petitionForm.html?petition_type=3">
+                <img
+                  src="img/rgu (4).svg"
+                  alt="floating image"
+                  class="floating-image"
+                />
+                <img src="./img/cne (4).svg" alt="Icon" class="mico" />
+                <p class="allee" style="color: #023e8a">
+                  จดทะเบียนศึกษา<br />รายวิชาข้ามหลักสูตร
+                </p>
+              </a>
+            </div>
+            <div class="draft-card" style="box-shadow: 4px 4px #bb3e03">
+              <a href="/petitionForm.html?petition_type=4">
+                <img
+                  src="img/rgu (1).svg"
+                  alt="floating image"
+                  class="floating-image"
+                />
+                <img src="./img/cne (1).svg" alt="Icon" class="mico" />
+                <p class="tea" style="color: #bb3e03">ลาออก</p>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Button to write new petition 
+        <div class="button-container">
+            <button onclick="window.location.href='/petitionForm.html'">เขียนคำร้องใหม่</button>
+        </div>-->
+
+      <div class="linekja"></div>
+      <!-- Section for Drafts -->
+      <div class="draft-header">
+        <h1 class="top">แบบร่าง</h1>
+      </div>
+
+      <div class="draftlist-section">
+        <div class="draftlist-cards" id="draftsContainer">
+          <!-- 
+    <div class="oucar">
+        <div class="draftlist-card" style="box-shadow: 4px 4px #FB8500;">
+            <div class="asaa" style="color: #FB8500">
+                <p class="tope">คำร้อง</p>
+                <p class="subtt">จดทะเบียนล่าช้า</p>
+            </div>
+            <p class="subas" style="color: #FB8500">CS266</p>
+            <img src="img/pen (1).svg" class="pee" alt="Late Registration Icon">
+        </div>
+        <p class="assdd">15/10/24 - 09:30</p>
+    </div>
+
+    <div class="oucar">
+        <div class="draftlist-card" style="box-shadow: 4px 4px #E29578;">
+            <div class="asaa" style="color: #E29578">
+                <p class="tope">คำร้อง</p>
+                <p class="subtt">ถอนรายวิชา</p>
+            </div>
+            <p class="subas" style="color: #E29578">CS282</p>
+            <img src="img/pen (3).svg" class="pee" alt="Course Withdrawal Icon">
+        </div>
+        <p class="assdd">20/10/24 - 14:50</p>
+    </div>
+
+    <div class="oucar">
+        <div class="draftlist-card" style="box-shadow: 4px 4px #023E8A;">
+            <div class="asaa" style="color: #023E8A">
+                <p class="tope">คำร้อง</p>
+                <p class="subtt">จดทะเบียนศึกษารายวิชาข้ามหลักสูตร</p>
+            </div>
+            <p class="subas" style="color: #023E8A">MA982</p>
+            <img src="img/pen (4).svg" class="pee" alt="Cross-Program Registration Icon">
+        </div>
+        <p class="assdd">23/10/24 - 08:15</p>
+    </div>
+
+    <div class="oucar">
+        <div class="draftlist-card" style="box-shadow: 4px 4px #BB3E03;">
+            <div class="asaa" style="color: #BB3E03">
+                <p class="tope">คำร้อง</p>
+                <p class="subtt">ลาออก</p>
+            </div>
+            <p class="subas" style="color: #BB3E03">ลาออก</p>
+            <img src="img/pen (2).svg" class="pee" alt="Resignation Icon">
+        </div>
+        <p class="assdd">30/10/24 - 17:45</p>
+    </div>
+	-->
+        </div>
+      </div>
+      <div class="not-found">
+        <p>ไม่พบแบบร่าง</p>
       </div>
     </div>
 
     <script>
       // Fetch draft petitions and populate the draftsContainer
-      fetch("/api/draft-petitions")
-        .then((response) => {
-          if (!response.ok) {
-            if (response.status === 401) {
-              window.location.href = "/index.html"; // Redirect to login page
-            }
-            throw new Error("Failed to fetch draft petitions");
-          }
-          return response.json();
-        })
+      // ฟังก์ชันเพื่อสร้าง draft card พร้อมสไตล์ตาม petition_type
+
+      function formatTimestamp(timestamp) {
+        const date = new Date(timestamp);
+        const day = String(date.getDate()).padStart(2, "0");
+        const month = String(date.getMonth() + 1).padStart(2, "0"); // เดือนใน JavaScript เริ่มจาก 0
+        const year = String(date.getFullYear()).slice(-2); // เอาเฉพาะสองหลักสุดท้ายของปี
+        const hours = String(date.getHours()).padStart(2, "0");
+        const minutes = String(date.getMinutes()).padStart(2, "0");
+
+        return `${day}/${month}/${year} - ${hours}:${minutes}`;
+      }
+
+      function createDraftCard(petition) {
+        const cardColors = {
+          1: {
+            color: "#FB8500",
+            text: "จดทะเบียนล่าช้า",
+            img: "img/pen (1).svg",
+          },
+          2: { color: "#E29578", text: "ถอนรายวิชา", img: "img/pen (3).svg" },
+          3: {
+            color: "#023E8A",
+            text: "จดทะเบียนศึกษารายวิชาข้ามหลักสูตร",
+            img: "img/pen (4).svg",
+          },
+          4: { color: "#BB3E03", text: "ลาออก", img: "img/pen (2).svg" },
+        };
+
+        const { color, text, img } = cardColors[petition.petition_type] || {
+          color: "#000",
+          text: "คำร้อง",
+          img: "img/pen (3).svg",
+        };
+        const isResignation = petition.petition_type === "4";
+        const subasText = isResignation
+          ? "ลาออก"
+          : petition.subject_code || petition.petition_type;
+
+        const draftCardWrapper = document.createElement("div");
+        draftCardWrapper.className = "oucar";
+
+        const draftCard = document.createElement("div");
+        draftCard.className = "draftlist-card";
+        draftCard.style.boxShadow = `4px 4px ${color}`;
+
+        draftCard.innerHTML = `
+        <div class="asaa" style="color: ${color}">
+            <p class="tope">คำร้อง</p>
+            <p class="subtt">${text}</p>
+        </div>
+        <p class="subas" style="color: ${color}">${subasText}</p>
+        <img src="${img}" class="pee">
+    `;
+
+        const timestamp = document.createElement("p");
+        timestamp.className = "assdd";
+        timestamp.textContent = formatTimestamp(petition.submit_time);
+
+        draftCardWrapper.appendChild(draftCard);
+        draftCardWrapper.appendChild(timestamp);
+
+        draftCard.onclick = () => {
+          // Navigate to petitionForm.html with the petition ID for editing
+          window.location.href = `/petitionForm.html?petition_id=${petition.petition_id}`;
+        };
+
+        return draftCardWrapper;
+      }
+
+      // Fetch draft petitions and populate the draftsContainer
+      fetch("/draft-petitions")
+        .then((response) => response.json())
         .then((data) => {
           const draftsContainer = document.getElementById("draftsContainer");
-          data.forEach((petition) => {
-            const draftCard = document.createElement("div");
-            draftCard.className = "draft-card";
-            draftCard.innerHTML = `
-          <p>ประเภท: ${petition.petition_type}</p>
-          <p>รหัสวิชา: ${petition.subject_code}</p>
-          <p>ชื่อวิชา: ${petition.subject_name}</p>
-          <p>ภาคการศึกษา: ${petition.semester}</p>
-          <p>วันที่: ${new Date(petition.submit_time).toLocaleDateString()}</p>
-        `;
-            draftCard.onclick = () => {
-              window.location.href = `/petitionForm.html?petition_id=${petition.petition_id}`;
-            };
-            draftsContainer.appendChild(draftCard);
-          });
+          draftsContainer.innerHTML = ""; // Clear any previous content
+
+          if (data.length === 0) {
+            document.querySelector(".not-found").style.display = "block";
+          } else {
+            document.querySelector(".not-found").style.display = "none";
+            data.forEach((petition) => {
+              const draftCard = createDraftCard(petition);
+              draftsContainer.appendChild(draftCard);
+            });
+          }
         })
         .catch((error) => {
           console.error("Error fetching draft petitions:", error);
         });
-    </script>
 
-    <script src="/js/sessionTimeout.js"></script>
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("/api/session-student-info")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("barname").textContent =
+              data.student_name || "ไม่ทราบชื่อ";
+            document.getElementById("barid").textContent =
+              data.student_id || "ไม่ทราบรหัส";
+          })
+          .catch((error) =>
+            console.error("Error fetching student info:", error)
+          );
+      });
+    </script>
   </body>
 </html>

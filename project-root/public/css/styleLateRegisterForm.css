@@ -1,0 +1,606 @@
+* {
+    box-sizing: border-box;
+    font-family: "Bai Jamjuree";
+	 margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+body{
+	display: flex;
+	width: 100vw;
+	min-height: 100vh;
+	overflow: hidden;
+}
+/*กรอบพื้นหลังการเขีบยคำร้อง*/
+.container {
+    background-color: #F4F4F4;
+	width: 50vw;
+    padding: 20px;
+	margin: auto;
+}
+
+/*กรอบหัวข้อ*/
+.header {
+    font-weight: 600;
+    background-color: #A70C0C ;
+    color: white;
+    text-align: center;
+    padding: 10px 50px;
+    border-radius: 25px;
+    display: inline-block;
+	font-size: 18pt;
+	
+	margin: 60px;
+	margin-bottom: 20px;
+}
+
+h2 {
+    margin-bottom: 5px;
+}
+
+/*การกำหนดความหนา text*/
+.container p {
+    font-weight: 600;
+    margin-bottom: 5px;
+	color: #5F5F5F;
+}
+
+/*การกำหนดขนาดช่อง text*/
+.container input[type="text"] {
+    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+/*จัดเรียงช่องคำนำหน้า -> เบอร์ติดต่อ*/
+.information-form, .number-form{
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-left: 60px;
+	margin-bottom: 10px;
+	margin-top: 15px;
+}
+
+.prefix, .years {
+    width: 100px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+	
+}
+
+.firstname, .surename, .studentID, .field, .stuNumber, .parNumber {
+    width: 150px;
+}
+
+/*จัดเรียงช่องบ้านเลขที่ -> รหัสไปรษณีย์*/
+.address-form01, .address-form02 {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+    margin-left: 60px;
+	margin-bottom: 10px;
+	margin-top: 20px;
+}
+
+.houseNumber, .no, .subDistrict, .district{
+    width: 100px;
+}
+
+.province {
+    width: 150px;
+}
+
+.postcode {
+    width: 150px;
+}
+
+/*จัดเรียงช่องประเภทคำร้อง -> กลุ่มเรียน*/
+.petition-form01, .petition-form02 {
+    display: flex;
+    justify-content: flex-start;
+    gap: 30px;
+	margin-bottom: 10px;
+    margin-left: 60px;
+}
+
+.petitionType, .courseName {
+    width: 300px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.semester {
+    width: 150px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.courseCode, .section {
+    width: 100px;
+}
+/*จัดเรียงช่องไฟล์แนบที่ 1 -> ไฟล์แนบที่ 2*/
+.file {
+    margin-top: 20px;
+	margin-left: 60px;
+}
+
+.file-form01 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.file-form02 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.attachFile-form01, .fileName-form, .description-form {
+    margin-right: 20px;
+}
+
+.attachFile-form02, .fileName-form02, .description-form02 {
+    margin-right: 20px;
+}
+
+.attachFile-form01 input, .attachFile-form02 input {
+    display: none;
+}
+
+.attachFile-form01 label, .attachFile-form02 label {
+    background-color: #D9D9D9;
+    border-radius: 15px;
+    padding: 5px 60px;
+    margin-left: 60px;
+    cursor: pointer;
+    color: #444444;
+    border-color: #444444;
+    font-size: small;
+}
+
+.fileName-form p, .description-form p {
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+.fileName-form02 p, .description-form02 p {
+    margin: 0;
+    padding-bottom: 5px;
+}
+
+.description-form input {
+    padding: 5px;
+}
+
+.description-form02 input {
+    padding: 5px;
+}
+
+.save-file {
+    background-color: #F4F4F4;
+    color: #444444;
+    border-radius: 30px;
+    padding: 7px 10px;
+    font-size: small;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+	
+}
+
+.button-delete-draft {
+    background-color: #F4F4F4;
+    color: #A70C0C;
+    border-color: #A70C0C;
+    border-radius: 15px;
+    padding: 10px 30px;
+	border:solid 2px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.5s;
+}
+
+.button-save-draft {
+
+	    background-color: #F4F4F4;
+    color: #023047;
+    border-color: #023047;
+    border-radius: 15px;
+    padding: 10px 30px;
+	border:solid 2px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.5s;
+}
+
+.button-submit {
+     background-color: #F4F4F4;
+    color: #283618;
+    border-color: #283618;
+    border-radius: 15px;
+    padding: 10px 30px;
+	border:solid 2px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.5s;
+}
+
+.save-file:hover{
+    background-color:#444444 ;
+    color:#D9D9D9 ;
+}
+
+.button-delete-draft:hover {
+    background-color: #A70C0C;
+    color: #F4F4F4;
+    border-color: #F4F4F4;
+}
+
+.button-save-draft:hover {
+    background-color: #023047;
+    color: white;
+	
+}
+
+.button-submit:hover {
+    background-color: #283618;
+    color: white;
+}
+.sidebar {
+	width: 300px;
+}
+
+.content {
+	flex: 1;
+	width: 100%;
+	background-color: #f5f5f5;
+	overflow-y: scroll;
+}
+
+.aaa {
+	    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.fileName02 {
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	width: 160px;
+}
+
+.reason-form {
+	margin-left: 60px;
+}
+
+#reason {
+	width: 600px;
+	resize: none;
+	border: none;
+	border-radius: 20px;
+	padding: 20px;
+}
+
+.autf {
+	background-color: 
+}
+
+
+
+#topmain {
+	color: white;
+}
+
+
+
+.academicYear {
+		    width: 150px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.attachFile01 {
+	font-family: 'Bai jamjuree',Poppins;
+	font-size: 12pt;
+}
+
+.attachFile02 {
+	font-family: 'Bai jamjuree',Poppins;
+	font-size: 12pt;
+}
+
+.asadsad {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.lineee {
+	width: 80%;
+	height: 2px;
+	background-color: #BFBFBF;
+	margin: auto;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+.petition {
+	margin-top: 20px;
+}
+
+
+/* Error Modal Style */
+ /* Modal Container */
+/* Modal Container */
+/* Modal */
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* จัดให้อยู่กลางหน้าจอ */
+    z-index: 9999; /* ให้อยู่เหนือแบ็คดรอป */
+    display: none; /* ซ่อนโมดอลในตอนแรก */
+}
+
+
+
+
+
+ /* Error Modal Style */
+.error-modal {
+    background-color: #fefefe;
+    width: 400px;
+    max-width: 90%; /* ทำให้ตอบสนองต่อหน้าจอขนาดเล็ก */
+    padding: 20px;
+    border: none;
+    border-radius: 50px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #333;
+	top: 50%;
+	left: 50%;
+}
+
+.error-modal .header {
+    background-color: #b22222;
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 10px;
+    border-radius: 15px;
+	margin: auto;
+	width: 400px;
+}
+
+.error-modal .content {
+    padding: 20px;
+    font-size: 1em;
+    color: #333;
+	background-color: white;
+	overflow: hidden;
+	text-align: left;
+}
+
+.error-modal .close-button {
+    background-color: #b22222;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+	position: absolute;
+	bottom: 20px;
+	right: 80px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+}
+
+/* Confirmation Modal Style */
+.confirm-modal {
+    background-color: #fefefe;
+    width: 400px;
+    max-width: 90%;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #333;
+}
+
+.confirm-modal .header {
+	background-color: white;
+    color: #b22222;
+    font-weight: bold;
+    font-size: 20pt;
+    padding: 10px;
+    border-radius: 15px;
+	width: 400px;
+	
+	margin: auto;
+	margin-top: 30px;
+}
+
+.confirm-modal .content {
+    padding: 20px;
+    font-size: 1em;
+    color: #333;
+}
+
+.confirm-modal .button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding-top: 10px;
+}
+
+.confirm-modal .button-group button {
+    width: 100px;
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.confirm-modal .button-group .yes-button {
+    background-color: #a9a9a9;
+    color: white;
+}
+
+.confirm-modal .button-group .no-button {
+    background-color: #2e8b57;
+    color: white;
+}
+
+/* Success Modal Style */
+.success-modal {
+    background-color: #fefefe;
+    width: 400px;
+    max-width: 90%;
+    padding: 20px;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #333;
+}
+
+.success-modal .header {
+    background-color: #2e8b57; /* สีเขียว */
+    color: #fff;
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 10px;
+     border-radius: 15px;
+	margin: auto;
+	width: 400px;
+}
+
+.success-modal .content {
+    padding: 20px;
+    font-size: 1em;
+    color: #333;
+	background-color: white;
+	overflow: hidden;
+	text-align: left;
+}
+
+.success-modal .close-button {
+    background-color: #2e8b57; /* สีเขียว */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    position: absolute;
+	bottom: 20px;
+	right: 80px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+}
+/* สไตล์ของโมดอลเนื้อหา */
+.error-modal,
+.confirm-modal,
+.success-modal {
+    background-color: #fefefe;
+    width: 500px;
+	min-height: 200px;
+    padding: 20px;
+    border: none;
+    border-radius:40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    color: #333;
+}
+
+/* Modal Backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* สีดำโปร่งใส */
+    z-index: 9998; /* ต้องน้อยกว่าโมดอล */
+}

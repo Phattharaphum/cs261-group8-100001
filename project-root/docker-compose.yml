@@ -1,15 +1,35 @@
-version: '3.8'
 services:
   sqlserver:
     image: mcr.microsoft.com/mssql/server:latest
     container_name: sqlserver_container
     environment:
-      ACCEPT_EULA: "Y"                         # ยอมรับข้อตกลงการใช้งานของ SQL Server
-      SA_PASSWORD: "YourStrong!Passw0rd"       # รหัสผ่านสำหรับ SA user
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourStrong!Passw0rd"
     ports:
-      - "1433:1433"                            # แมปพอร์ต 1433 สำหรับการเชื่อมต่อ SQL Server
+      - "0.0.0.0:1433:1433"
     volumes:
-      - sqlserver_data:/var/opt/mssql          # กำหนด volume สำหรับเก็บข้อมูล
+      - sqlserver_data:/var/opt/mssql
+
+  initialize:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: initialize_container
+    command: ["node", "initialize.js"]
+    depends_on:
+      - sqlserver
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: backend_container
+    command: ["node", "server.js"]
+    depends_on:
+      - sqlserver
+      - initialize
+    ports:
+      - "3000:3000"
 
 volumes:
   sqlserver_data:

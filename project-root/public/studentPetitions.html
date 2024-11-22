@@ -1,105 +1,275 @@
-<!-- project-root/public/studentPetitions.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>สถานะคำร้อง</title>
-    <style>
-      /* Basic layout and styling */
-      body {
-        display: flex;
-        font-family: Arial, sans-serif;
-      }
-      .sidebar {
-        width: 200px;
-        background-color: #f4f4f4;
-        padding: 20px;
-      }
-      .sidebar a {
-        display: block;
-        padding: 10px;
-        margin-bottom: 10px;
-        color: black;
-        text-decoration: none;
-        border-radius: 5px;
-      }
-      .sidebar a.active {
-        background-color: #ccc;
-      }
-      .content {
-        flex-grow: 1;
-        padding: 20px;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-      }
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-    </style>
+    <link rel="stylesheet" href="css/styleListofPetitionAdvisor.css" />
+    <link rel="stylesheet" href="css/stylesidebar.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="./js/redirect-handler.js"></script>
   </head>
   <body>
-    <!-- Sidebar with navigation -->
-    <div class="sidebar">
-      <a href="/draftPetitions.html">เขียนคำร้อง</a>
-      <a href="#" class="active">สถานะคำร้อง</a>
-      <a href="/logout">ออกจากระบบ</a>
-    </div>
+    <div class="wrapper">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <img src="img/logo.svg" alt="University Logo" class="logo" />
+          <div class="tops">
+            <p class="hasd">ระบบยื่นคำร้อง</p>
+            <p class="asdasd">
+              คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
+            </p>
+          </div>
+        </div>
+        <nav class="sidebar-menu">
+          <a href="/draftPetitions.html" class="menu-item">
+            <img src="img/Artboard1.svg" alt="Write Icon" id="iconA" />
+            <span class="tee">เขียนคำร้อง</span>
+          </a>
+          <a href="" class="menu-item active">
+            <img src="img/Artboard2.svg" alt="Status Icon" />
+            <span class="tee">สถานะคำร้อง</span>
+          </a>
+        </nav>
+        <div class="logout-section">
+          <a href="/logout" class="menu-item">
+            <img src="img/Artboard3.svg" alt="Logout Icon" />
+            <span class="tee">ออกจากระบบ</span>
+          </a>
+          <div class="user-info">
+            <div class="asee">
+              <img src="img/avt (2).svg" alt="Logout Icon" />
+            </div>
+            <div class="user-details">
+              <p class="name" id="barname">ชื่อจริง นามสกุล</p>
+              <p class="idd" id="barid">6600812160</p>
+            </div>
+          </div>
+        </div>
+        <!-- 
+            <a href="/draftPetitions.html">เขียนคำร้อง</a>
+            <a href="#" class="active">สถานะคำร้อง</a>
+            <a href="/logout">ออกจากระบบ</a>-->
+      </div>
 
-    <!-- Main content area -->
-    <div class="content">
-      <h1>รายการคำร้อง</h1>
-      <table>
-        <thead>
-          <tr>
-            <th>วันที่</th>
-            <th>ประเภท</th>
-            <th>รหัสวิชา</th>
-            <th>สถานะ</th>
-            <th>ตรวจสอบ</th>
-          </tr>
-        </thead>
-        <tbody id="petition-list"></tbody>
-      </table>
+      <div class="container">
+        <div class="header">
+          <div class="header-button">รายการคำร้อง</div>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr class="table-header">
+              <th
+                class="column-petition-type"
+                onclick="sortTable('petition_type')"
+              >
+                ประเภท
+                <span class="sort-icon" id="sort-icon-petition_type">▲▼</span>
+              </th>
+              <th
+                class="column-subject-name"
+                onclick="sortTable('subject_name')"
+              >
+                ชื่อวิชา
+                <span class="sort-icon" id="sort-icon-subject_name">▲▼</span>
+              </th>
+              <th
+                class="column-subject-code"
+                onclick="sortTable('subject_code')"
+              >
+                รหัสวิชา
+                <span class="sort-icon" id="sort-icon-subject_code">▲▼</span>
+              </th>
+              <th class="column-section">กลุ่มเรียน</th>
+              <th class="column-date" onclick="sortTable('submit_time')">
+                วันที่
+                <span class="sort-icon" id="sort-icon-submit_time">▲▼</span>
+              </th>
+              <th class="column-time">เวลา</th>
+              <th class="column-status" onclick="sortTable('status')">
+                สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span>
+              </th>
+              <th class="column-check"></th>
+            </tr>
+          </thead>
+
+          <tbody id="petition-list">
+            <!-- 
+    <tr class="table-row">
+        <td class="column-petition-type">จดทะเบียนล่าช้า</td>
+        <td class="column-subject-name">วิทยาการคอมพิวเตอร์เบื้องต้น</td>
+        <td class="column-subject-code">CS101</td>
+        <td class="column-section">01</td>
+        <td class="column-date">12/11/2024</td>
+        <td class="column-time">09:30</td>
+        <td class="column-status"><span class="status-label status-waiting">รอตรวจสอบ</span></td>
+        <td class="column-check"><button class="verify-button" onclick="viewPetition(1)">ตรวจสอบ</button></td>
+    </tr>
+    <tr class="table-row">
+        <td class="column-petition-type">ถอนรายวิชา</td>
+        <td class="column-subject-name">คณิตศาสตร์ขั้นสูง</td>
+        <td class="column-subject-code">MA201</td>
+        <td class="column-section">02</td>
+        <td class="column-date">13/11/2024</td>
+        <td class="column-time">10:15</td>
+        <td class="column-status"><span class="status-label status-approved">อนุมัติแล้ว</span></td>
+        <td class="column-check"><button class="verify-button" onclick="viewPetition(2)">ตรวจสอบ</button></td>
+    </tr>
+    <tr class="table-row">
+        <td class="column-petition-type">จดทะเบียนศึกษารายวิชาข้ามหลักสูตร</td>
+        <td class="column-subject-name">ฟิสิกส์พื้นฐาน</td>
+        <td class="column-subject-code">PH101</td>
+        <td class="column-section">03</td>
+        <td class="column-date">14/11/2024</td>
+        <td class="column-time">11:45</td>
+        <td class="column-status"><span class="status-label status-rejected">ไม่อนุมัติ</span></td>
+        <td class="column-check"><button class="verify-button" onclick="viewPetition(3)">ตรวจสอบ</button></td>
+    </tr>
+    -->
+          </tbody>
+        </table>
+      </div>
     </div>
 
     <script>
-      // Fetch the list of petitions for the student
+      let petitions = [];
+      let sortDirection = "desc";
+      let sortColumn = "submit_time";
+
+      function getPetitionType(type) {
+        switch (type) {
+          case 1:
+            return "จดทะเบียนล่าช้า";
+          case 2:
+            return "ถอนรายวิชา";
+          case 3:
+            return "จดทะเบียนศึกษารายวิชาข้ามหลักสูตร";
+          case 4:
+            return "ลาออก";
+          default:
+            return "ไม่ทราบประเภท";
+        }
+      }
+
+      function getStatusLabel(status) {
+        switch (status) {
+          case 2:
+            return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
+          case 3:
+            return '<span class="status-label status-read">อ่านแล้ว</span>';
+          case 4:
+            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
+          case 5:
+            return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
+          case 6:
+            return '<span class="status-label status-canceled">ยกเลิก</span>';
+          default:
+            return '<span class="status-label">ไม่ทราบสถานะ</span>';
+        }
+      }
+
       fetch("/student/petitions")
         .then((response) => response.json())
         .then((data) => {
-          const petitionList = document.getElementById("petition-list");
-          data.forEach((petition) => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                        <td>${new Date(
-                          petition.submit_time
-                        ).toLocaleDateString()}</td>
-                        <td>${petition.petition_type}</td>
-                        <td>${petition.subject_code}</td>
-                        <td>${petition.status}</td>
-                        <td><button onclick="viewPetition(${
-                          petition.petition_id
-                        })">ตรวจสอบ</button></td>
-                    `;
-            petitionList.appendChild(row);
-          });
+          petitions = data;
+          renderPetitions();
         })
         .catch((error) => console.error("Error fetching petitions:", error));
+
+      function renderPetitions() {
+        const petitionList = document.getElementById("petition-list");
+        petitionList.innerHTML = "";
+
+        petitions.forEach((petition) => {
+          const row = document.createElement("tr");
+          row.classList.add("table-row");
+
+          const submitDate = new Date(petition.submit_time);
+
+          row.innerHTML = `
+    <td class="column-petition-type">${getPetitionType(
+      parseInt(petition.petition_type)
+    )}</td>
+    <td class="column-subject-name">${petition.subject_name || "N/A"}</td>
+    <td class="column-subject-code">${petition.subject_code || "N/A"}</td>
+    <td class="column-section">${petition.section || "N/A"}</td>
+    <td class="column-date">${submitDate.toLocaleDateString()}</td>
+    <td class="column-time">${submitDate.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}</td>
+    <td class="column-status">${getStatusLabel(petition.status)}</td>
+    <td class="column-check"><button class="verify-button" onclick="viewPetition(${
+      petition.petition_id
+    })">ตรวจสอบ</button></td>
+`;
+          petitionList.appendChild(row);
+        });
+      }
+
+      function sortTable(column) {
+        if (sortColumn === column) {
+          sortDirection = sortDirection === "asc" ? "desc" : "asc";
+        } else {
+          sortDirection = "desc";
+          sortColumn = column;
+        }
+
+        petitions.sort((a, b) => {
+          let aValue = a[column] || "";
+          let bValue = b[column] || "";
+
+          if (column === "submit_time") {
+            return sortDirection === "asc"
+              ? new Date(aValue) - new Date(bValue)
+              : new Date(bValue) - new Date(aValue);
+          } else {
+            if (typeof aValue === "string") aValue = aValue.toLowerCase();
+            if (typeof bValue === "string") bValue = bValue.toLowerCase();
+
+            if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+            if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+            return 0;
+          }
+        });
+
+        updateSortIcons();
+        renderPetitions();
+      }
+
+      function updateSortIcons() {
+        document
+          .querySelectorAll(".sort-icon")
+          .forEach((icon) => (icon.textContent = "▲▼"));
+        const activeIcon = document.getElementById(`sort-icon-${sortColumn}`);
+        if (activeIcon) {
+          activeIcon.textContent = sortDirection === "asc" ? "▲" : "▼";
+        }
+      }
 
       function viewPetition(id) {
         window.location.href = `/studentPetitionDetail.html?id=${id}`;
       }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        fetch("/api/session-student-info")
+          .then((response) => response.json())
+          .then((data) => {
+            document.getElementById("barname").textContent =
+              data.student_name || "ไม่ทราบชื่อ";
+            document.getElementById("barid").textContent =
+              data.student_id || "ไม่ทราบรหัส";
+          })
+          .catch((error) =>
+            console.error("Error fetching student info:", error)
+          );
+      });
     </script>
-    <script src="/js/sessionTimeout.js"></script>
   </body>
 </html>
