@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตรวจสอบคำร้อง</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" as="style" onload="this.rel='stylesheet'">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&display=swap" as="style" onload="this.rel='stylesheet'">
+    <link rel="stylesheet" href="css/studentPetitionsChecked.css">
+    <link rel="stylesheet" href="css/stylesidebar.css">
+    <style>
+        /* Style adjustments */
+        .highlight {
+            font-weight: bold;
+        }
+        .status-label {
+            padding: 5px 10px;
+            border-radius: 15px;
+            color: white;
+            font-weight: bold;
+        }
+        .status-waiting { background-color: #FFE6A7; color: #B68900; }
+        .status-read { background-color: #E0B0FF; color: #8E44AD; }
+        .status-rejected { background-color: #FFCDD2; color: #C62828; }
+        .status-approved { background-color: #A5D6A7; color: #2E7D32; }
+        .status-canceled { background-color: #BBDEFB; color: #1565C0; }
+        .file-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .file-table th, .file-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .file-table th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.svg" alt="University Logo" class="logo">
+                <div class="tops">
+                    <p class="hasd">ระบบยื่นคำร้อง</p>
+                    <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="javascript:void(0);" class="menu-item" onclick="cancelPetition()">
+                    <img src="img/icon (2).svg" alt="Cancel Icon">
+                    <span class="tee">ยกเลิกคำร้อง</span>
+                </a>
+                <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
+                    <img src="img/back.svg" alt="Back Icon">
+                    <span class="tee">ย้อนกลับ</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="scallable">
+            <h2>รายละเอียดคำร้อง</h2>
+            <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
+            <p>รหัสนักศึกษา: <span class="highlight" id="student_id"></span></p>
+            <p>ชื่อ: <span class="highlight" id="student_name"></span></p>
+            <p>สาขาวิชา: <span class="highlight" id="major"></span></p>
+            <p>ชั้นปี: <span class="highlight" id="year"></span></p>
+            <p>ที่อยู่: <span class="highlight" id="address"></span></p>
+            <p>โทรศัพท์: <span class="highlight" id="student_phone"></span></p>
+            <p>โทรผู้ปกครอง: <span class="highlight" id="guardian_phone"></span></p>
+
+            <h3 class="bold-text">รายละเอียดคำร้อง</h3>
+            <p>ประเภทคำร้อง: <span class="highlight" id="petition_type"></span></p>
+            <p>รหัสวิชา: <span class="highlight" id="subject_code"></span></p>
+            <p>ชื่อวิชา: <span class="highlight" id="subject_name"></span></p>
+            <p>กลุ่มเรียน: <span class="highlight" id="section"></span></p>
+            <p>เหตุผล: <span class="highlight" id="reason"></span></p>
+
+            <h3 class="bold-text">สถานะคำร้อง</h3>
+            <p>สถานะ: <span class="highlight" id="status"></span></p>
+
+            <h3 class="bold-text">ไฟล์แนบ</h3>
+            <table class="file-table" id="attachedFilesTable">
+                <thead>
+                    <tr>
+                        <th>ชื่อไฟล์</th>
+                        <th>คำอธิบาย</th>
+                        <th>ดาวน์โหลด</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="3">ไม่มีไฟล์แนบ</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const petitionId = new URLSearchParams(window.location.search).get('id');
+
+        if (!petitionId) {
+            alert('ไม่พบคำร้องที่เลือก');
+            window.location.href = '/ITStaffPetitions.html';
+        }
+
+        // Fetch petition details
+        fetch(`/api/petitions/${petitionId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('student_id').textContent = data.student_id;
+                document.getElementById('student_name').textContent = data.student_name;
+                document.getElementById('major').textContent = data.major || 'ไม่ระบุ';
+                document.getElementById('year').textContent = data.year || 'ไม่ระบุ';
+                document.getElementById('address').textContent = `${data.house_number}, ${data.sub_district}, ${data.district}, ${data.province}, ${data.postcode}`;
+                document.getElementById('student_phone').textContent = data.student_phone || 'ไม่ระบุ';
+                document.getElementById('guardian_phone').textContent = data.guardian_phone || 'ไม่ระบุ';
+
+                document.getElementById('petition_type').textContent = getPetitionType(data.petition_type);
+                document.getElementById('subject_code').textContent = data.subject_code || 'ไม่ระบุ';
+                document.getElementById('subject_name').textContent = data.subject_name || 'ไม่ระบุ';
+                document.getElementById('section').textContent = data.section || 'ไม่ระบุ';
+                document.getElementById('reason').textContent = data.reason || 'ไม่มีเหตุผล';
+
+                document.getElementById('status').textContent = getStatusText(data.status);
+            })
+            .catch(error => {
+                console.error('Error fetching petition details:', error);
+                alert('ไม่สามารถดึงข้อมูลคำร้องได้');
+            });
+
+        // Cancel petition
+        function cancelPetition() {
+            fetch(`/api/petitions/${petitionId}/cancel`, { method: 'POST' })
+                .then(response => {
+                    if (response.ok) {
+                        alert('ยกเลิกคำร้องสำเร็จ');
+                        window.location.href = '/ITStaffPetitions.html';
+                    } else {
+                        alert('ไม่สามารถยกเลิกคำร้องได้');
+                    }
+                })
+                .catch(error => console.error('Error cancelling petition:', error));
+        }
+
+        function goBack() {
+            window.location.href = '/ITStaffPetitions.html';
+        }
+
+        function getPetitionType(type) {
+            switch (parseInt(type)) {
+                case 1: return 'จดทะเบียนล่าช้า';
+                case 2: return 'ถอนรายวิชา';
+                default: return 'ไม่ทราบประเภท';
+            }
+        }
+
+        function getStatusText(status) {
+            switch (parseInt(status)) {
+                case 2: return 'รอตรวจสอบ';
+                case 3: return 'อ่านแล้ว';
+                case 4: return 'ไม่อนุมัติ';
+                case 5: return 'อนุมัติแล้ว';
+                case 22: return 'ยกเลิก';
+                default: return 'ไม่ทราบสถานะ';
+            }
+        }
+    </script>
+</body>
+</html>

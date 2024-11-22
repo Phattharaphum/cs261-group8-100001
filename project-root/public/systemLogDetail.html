@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดประวัติการใช้ระบบ</title>
+    <link rel="stylesheet" href="css/stylesidebar.css">
+    <link rel="stylesheet" href="css/styleSystemLogsDetails.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Section -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.svg" alt="University Logo" class="logo">
+                <div class="tops">
+                    <p class="hasd">ระบบประวัติการใช้งาน</p>
+                    <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/ITStaffSystemLogs.html" class="menu-item">
+                    <img src="img/logs-icon.svg" alt="Logs Icon">
+                    <span class="tee">ประวัติการใช้ระบบ</span>
+                </a>
+                <a href="/editFacultyStaff.html" class="menu-item">
+                    <img src="img/edit-staff-icon.svg" alt="Edit Staff Icon">
+                    <span class="tee">แก้ไขข้อมูลบุคลากรคณะ</span>
+                </a>
+                <a href="/ITStaffPetitions.html" class="menu-item">
+                    <img src="img/petitions-icon.svg" alt="Petitions Icon">
+                    <span class="tee">รายการคำร้อง</span>
+                </a>
+            </nav>
+            <div class="logout-section">
+                <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
+                    <img src="img/back.svg" alt="Back Icon">
+                    <span class="tee">ย้อนกลับ</span>
+                </a>
+                <a href="/logout" class="menu-item">
+                    <img src="img/logout-icon.svg" alt="Logout Icon">
+                    <span class="tee">ออกจากระบบ</span>
+                </a>
+                <div class="user-info">
+                    <div class="asee"><img src="img/avt.svg" alt="User Icon"></div>
+                    <div class="user-details">
+                        <p class="name" id="barname"></p>
+                        <p class="idd" id="barid"></p> 
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="scallable">
+            <h2>รายละเอียดประวัติการใช้ระบบ</h2>
+            <div class="log-details">
+                <p>รหัสบันทึก: <span class="highlight" id="log_id"></span></p>
+                <p>ชื่อผู้ใช้งาน: <span class="highlight" id="tuusername"></span></p>
+                <p>บทบาท: <span class="highlight" id="role"></span></p>
+                <p>การกระทำ: <span class="highlight" id="action"></span></p>
+                <p>รายละเอียด: <span class="highlight" id="description"></span></p>
+                <p>เวลา: <span class="highlight" id="timestamp"></span></p>
+                <p>IP Address: <span class="highlight" id="ip_address"></span></p>
+                <p>ข้อมูลอุปกรณ์: <span class="highlight" id="device_info"></span></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const logId = urlParams.get('id');
+
+        fetch(`/api/system-logs/${logId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('log_id').textContent = data.log_id || 'N/A';
+                document.getElementById('tuusername').textContent = data.tuusername || 'N/A';
+                document.getElementById('role').textContent = getRoleName(data.role) || 'N/A';
+                document.getElementById('action').textContent = data.action || 'N/A';
+                document.getElementById('description').textContent = data.description || 'N/A';
+                document.getElementById('timestamp').textContent = new Date(data.timestamp).toLocaleString() || 'N/A';
+                document.getElementById('ip_address').textContent = data.ip_address || 'N/A';
+                document.getElementById('device_info').textContent = data.device_info || 'N/A';
+            })
+            .catch(error => console.error('Error fetching log details:', error));
+
+        function getRoleName(role) {
+            const roles = {
+                1: 'นักศึกษา',
+                2: 'ที่ปรึกษา',
+                3: 'อาจารย์',
+                4: 'เจ้าหน้าที่',
+                5: 'ผู้ดูแลระบบ'
+            };
+            return roles[role] || 'ไม่ทราบบทบาท';
+        }
+
+        function goBack() {
+            window.location.href = '/ITStaffSystemLogs.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายการคำร้อง</title>
+    <link rel="stylesheet" href="css/stylesidebar.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar Section -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.svg" alt="University Logo" class="logo">
+                <div class="tops">
+                    <p class="hasd">ระบบจัดการคำร้อง</p>
+                    <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/ITStaffPetitions.html" class="menu-item active">
+                    <img src="img/petition-icon.svg" alt="Petition Icon">
+                    <span class="tee">รายการคำร้อง</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- Main Content Section -->
+        <div class="scallable">
+            <h2>รายการคำร้อง</h2>
+            <table id="petitionsTable">
+                <thead>
+                    <tr>
+                        <th>รหัสนักศึกษา</th>
+                        <th>ชื่อนักศึกษา</th>
+                        <th>ประเภทคำร้อง</th>
+                        <th>รหัสวิชา</th>
+                        <th>สถานะ</th>
+                        <th>ดูรายละเอียด</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="6">กำลังโหลดข้อมูล...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            fetch('/api/petitions')
+                .then(response => {
+                    if (!response.ok) throw new Error(`Failed to fetch petitions: ${response.status}`);
+                    return response.json();
+                })
+                .then(data => {
+                    const tableBody = document.getElementById('petitionsTable').querySelector('tbody');
+                    tableBody.innerHTML = data.length
+                        ? data.map(petition => `
+                            <tr>
+                                <td>${petition.student_id}</td>
+                                <td>${petition.student_name}</td>
+                                <td>${getPetitionType(petition.petition_type)}</td>
+                                <td>${petition.subject_code || 'N/A'}</td>
+                                <td>${getStatusText(petition.status)}</td>
+                                <td><button onclick="viewDetails(${petition.petition_id})">ดูรายละเอียด</button></td>
+                            </tr>
+                        `).join('')
+                        : '<tr><td colspan="6">ไม่มีคำร้อง</td></tr>';
+                })
+                .catch(error => {
+                    console.error('Error fetching petitions:', error);
+                    document.getElementById('petitionsTable').querySelector('tbody').innerHTML =
+                        '<tr><td colspan="6">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>';
+                });
+        });
+
+        function viewDetails(petitionId) {
+            window.location.href = `/ITStaffPetitionDetails.html?id=${petitionId}`;
+        }
+
+        function getPetitionType(type) {
+            switch (type) {
+                case 1: return 'จดทะเบียนล่าช้า';
+                case 2: return 'ถอนรายวิชา';
+                case 3: return 'เปลี่ยนกลุ่มเรียน';
+                default: return 'ประเภทไม่ทราบ';
+            }
+        }
+
+        function getStatusText(status) {
+            switch (status) {
+                case 1: return 'รอดำเนินการ';
+                case 2: return 'กำลังตรวจสอบ';
+                case 3: return 'อนุมัติ';
+                case 4: return 'ปฏิเสธ';
+                case 5: return 'ยกเลิก';
+                default: return 'สถานะไม่ทราบ';
+            }
+        }
+    </script>
+</body>
+</html>

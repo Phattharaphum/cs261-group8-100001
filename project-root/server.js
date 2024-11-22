@@ -18,6 +18,9 @@ const multer = require("multer");
 const router = express.Router();
 const fs = require("fs");
 
+app.use(express.json()); // สำหรับ JSON payloads
+app.use(express.urlencoded({ extended: true })); // สำหรับ form-urlencoded
+
 dotenv.config(); // โหลด environment variables จาก .env
 const initialization = require("./initialize");
 
@@ -1002,5 +1005,637 @@ const StartServer = async () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 };
+
+// Endpoint สำหรับดึงข้อมูล system_logs
+app.get("/api/system-logs", async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+
+    const result = await pool.request().query(`
+      SELECT 
+        log_id, 
+        tuusername, 
+        role, 
+        action, 
+        timestamp 
+      FROM system_logs 
+      ORDER BY timestamp DESC
+    `);
+
+    res.json(result.recordset);
+  } catch (err) {
+    console.error("Error fetching system logs:", err);
+    res.status(500).json({ success: false, error: "Failed to fetch logs" });
+  }
+});
+
+// Endpoint สำหรับดึงรายละเอียด log เฉพาะรายการ
+app.get("/api/system-logs/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const pool = await sql.connect(config);
+
+    const result = await pool.request().input("id", sql.Int, id).query(`
+      SELECT 
+        log_id, 
+        staff_id, 
+        tuusername, 
+        role, 
+        action, 
+        description, 
+        timestamp, 
+        ip_address, 
+        device_info 
+      FROM system_logs 
+      WHERE log_id = @id
+    `);
+
+    if (result.recordset.length > 0) {
+      res.json(result.recordset[0]);
+    } else {
+      res.status(404).json({ success: false, error: "Log not found" });
+    }
+  } catch (err) {
+    console.error("Error fetching log details:", err);
+    res.status(500).json({ success: false, error: "Failed to fetch log details" });
+  }
+});
+
+
+// Endpoint สำหรับดึงรายละเอียดของ system_logs
+app.get('/api/system-logs/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const pool = await sql.connect(config);
+
+      const result = await pool.request()
+          .input('id', sql.Int, id)
+          .query(`
+              SELECT 
+                  log_id,
+                  staff_id,
+                  tuusername,
+                  role,
+                  action,
+                  description,
+                  timestamp,
+                  ip_address,
+                  device_info
+              FROM system_logs
+              WHERE log_id = @id
+          `);
+
+      if (result.recordset.length > 0) {
+          res.json(result.recordset[0]);
+      } else {
+          res.status(404).json({ success: false, error: 'Log not found' });
+      }
+  } catch (err) {
+      console.error('Error fetching log details:', err);
+      res.status(500).json({ success: false, error: 'Failed to fetch log details' });
+  }
+});
+
+
+
+
+app.get('/api/faculty-staff', async (req, res) => {
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request().query(`
+          SELECT 
+              staff_id,
+              university_id,
+              academic_title,
+              personal_title,
+              first_name,
+              last_name,
+              status,
+              office,
+              role
+          FROM faculty_staff
+          WHERE role = 1
+      `);
+      res.json(result.recordset);
+  } catch (err) {
+      console.error('Error fetching faculty staff:', err);
+      res.status(500).json({ error: 'Failed to fetch faculty staff' });
+  }
+});
+
+
+app.post('/api/faculty-staff', async (req, res) => {
+  const { university_id, academic_title, personal_title, first_name, last_name, office, status, role } = req.body;
+
+  try {
+      const pool = await sql.connect(config);
+      await pool.request()
+          .input('university_id', sql.NVarChar, university_id)
+          .input('academic_title', sql.NVarChar, academic_title)
+          .input('personal_title', sql.NVarChar, personal_title)
+          .input('first_name', sql.NVarChar, first_name)
+          .input('last_name', sql.NVarChar, last_name)
+          .input('office', sql.NVarChar, office)
+          .input('status', sql.Int, status)
+          .input('role', sql.Int, role)
+          .query(`
+              INSERT INTO faculty_staff (university_id, academic_title, personal_title, first_name, last_name, office, status, role)
+              VALUES (@university_id, @academic_title, @personal_title, @first_name, @last_name, @office, @status, @role)
+          `);
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error adding new faculty:', err);
+      res.status(500).json({ error: 'Failed to add new faculty' });
+  }
+});
+
+
+app.get('/api/faculty-staff/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('staff_id', sql.Int, id)
+          .query(`
+              SELECT 
+                  staff_id,
+                  university_id,
+                  academic_title,
+                  personal_title,
+                  first_name,
+                  last_name,
+                  status,
+                  office,
+                  role
+              FROM faculty_staff
+              WHERE staff_id = @staff_id AND role = 1
+          `);
+      if (result.recordset.length > 0) {
+          res.json(result.recordset[0]);
+      } else {
+          res.status(404).json({ error: 'Faculty not found' });
+      }
+  } catch (err) {
+      console.error('Error fetching faculty details:', err);
+      res.status(500).json({ error: 'Failed to fetch faculty details' });
+  }
+});
+
+
+app.post('/api/advisor-students', async (req, res) => {
+  const { advisor_id, student_id } = req.body;
+
+  try {
+      const pool = await sql.connect(config);
+      await pool.request()
+          .input('advisor_id', sql.Int, advisor_id)
+          .input('student_id', sql.NVarChar, student_id)
+          .query(`
+              INSERT INTO advisor_info (advisor_id, student_id)
+              VALUES (@advisor_id, @student_id)
+          `);
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error adding advisor student:', err);
+      res.status(500).json({ error: 'Failed to add advisor student' });
+  }
+});
+
+
+app.get('/api/advisor-students/:advisor_id', async (req, res) => {
+  const { advisor_id } = req.params;
+
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('advisor_id', sql.Int, advisor_id)
+          .query(`
+              SELECT id, student_id
+              FROM advisor_info
+              WHERE advisor_id = @advisor_id
+          `);
+      res.json(result.recordset);
+  } catch (err) {
+      console.error('Error fetching advisor students:', err);
+      res.status(500).json({ error: 'Failed to fetch advisor students' });
+  }
+});
+
+app.delete('/api/advisor-students/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+      const pool = await sql.connect(config);
+      await pool.request()
+          .input('id', sql.Int, id)
+          .query(`
+              DELETE FROM advisor_info
+              WHERE id = @id
+          `);
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error deleting advisor student:', err);
+      res.status(500).json({ error: 'Failed to delete advisor student' });
+  }
+});
+
+
+
+
+
+
+
+
+
+// ดึงรายการรายวิชาทั้งหมด
+app.get('/api/courses', async (req, res) => {
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request().query(`
+          SELECT 
+              course_id,
+              course_code,
+              course_name,
+              sections,
+              curriculum_year
+          FROM courses
+      `);
+      res.json(result.recordset);
+  } catch (err) {
+      console.error('Error fetching courses:', err);
+      res.status(500).json({ error: 'Failed to fetch courses' });
+  }
+});
+
+// เพิ่มรายวิชาใหม่พร้อม sections
+app.post('/api/courses', async (req, res) => {
+  const { course_code, course_name, curriculum_year, faculty_id, sections } = req.body;
+
+  // ตรวจสอบข้อมูลที่จำเป็น
+  if (!course_code || !course_name || !curriculum_year || !faculty_id || !sections || sections.length === 0) {
+      return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+      const pool = await sql.connect(config);
+
+      // สร้าง sectionsData ที่ประกอบด้วย staff_id และ section
+      const sectionsData = sections.map(section => ({ staff_id: parseInt(faculty_id), section }));
+
+      await pool.request()
+          .input('course_code', sql.NVarChar, course_code)
+          .input('course_name', sql.NVarChar, course_name)
+          .input('curriculum_year', sql.Int, curriculum_year)
+          .input('sections', sql.NVarChar(sql.MAX), JSON.stringify(sectionsData))
+          .query(`
+              INSERT INTO courses (course_code, course_name, curriculum_year, sections)
+              VALUES (@course_code, @course_name, @curriculum_year, @sections)
+          `);
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error adding new course:', err);
+      res.status(500).json({ error: 'Failed to add new course' });
+  }
+});
+
+
+// เพิ่ม sections ให้กับรายวิชาที่มีอยู่แล้ว
+app.post('/api/courses/:course_id/sections', async (req, res) => {
+  let course_id = req.params.course_id;
+  let { faculty_id, sections } = req.body;
+
+  // แปลงค่าเป็นตัวเลขและตรวจสอบความถูกต้อง
+  course_id = parseInt(course_id);
+  faculty_id = parseInt(faculty_id);
+
+  if (isNaN(course_id) || isNaN(faculty_id) || !sections || sections.length === 0) {
+      return res.status(400).json({ error: 'Invalid course_id, faculty_id, or sections' });
+  }
+
+  try {
+      const pool = await sql.connect(config);
+
+      // ดึง Sections ที่มีอยู่แล้ว
+      const result = await pool.request()
+          .input('course_id', sql.Int, course_id)
+          .query(`
+              SELECT sections
+              FROM courses
+              WHERE course_id = @course_id
+          `);
+
+      let existingSections = [];
+      if (result.recordset.length > 0 && result.recordset[0].sections) {
+          existingSections = JSON.parse(result.recordset[0].sections);
+      }
+
+      // สร้างรายการ Sections ใหม่
+      const newSections = sections.map(section => ({ staff_id: faculty_id, section }));
+      const updatedSections = existingSections.concat(newSections);
+
+      // อัปเดต Sections ในฐานข้อมูล
+      await pool.request()
+          .input('course_id', sql.Int, course_id)
+          .input('sections', sql.NVarChar(sql.MAX), JSON.stringify(updatedSections))
+          .query(`
+              UPDATE courses
+              SET sections = @sections
+              WHERE course_id = @course_id
+          `);
+
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error adding sections to course:', err);
+      res.status(500).json({ error: 'Failed to add sections to course' });
+  }
+});
+
+
+
+// ดึงรายวิชาที่สอนโดยอาจารย์
+app.get('/api/teaching-courses/:faculty_id', async (req, res) => {
+  const { faculty_id } = req.params;
+
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('faculty_id', sql.Int, faculty_id)
+          .query(`
+              SELECT 
+                  course_id,
+                  course_code,
+                  course_name,
+                  sections,
+                  curriculum_year
+              FROM courses
+          `);
+
+      // กรองรายวิชาที่สอนโดยอาจารย์คนนั้น
+      const teachingCourses = result.recordset.filter(course => {
+          if (course.sections) {
+              const sections = JSON.parse(course.sections);
+              return sections.some(sec => sec.staff_id === parseInt(faculty_id));
+          }
+          return false;
+      }).map(course => {
+          const sections = JSON.parse(course.sections).filter(sec => sec.staff_id === parseInt(faculty_id));
+          return {
+              course_id: course.course_id,
+              course_code: course.course_code,
+              course_name: course.course_name,
+              curriculum_year: course.curriculum_year,
+              sections: sections
+          };
+      });
+
+      res.json(teachingCourses);
+  } catch (err) {
+      console.error('Error fetching teaching courses:', err);
+      res.status(500).json({ error: 'Failed to fetch teaching courses' });
+  }
+});
+
+// ลบรายวิชาที่สอนโดยอาจารย์ (ลบ sections ที่เกี่ยวข้อง)
+app.delete('/api/teaching-courses/:course_id/faculty/:faculty_id', async (req, res) => {
+  const { course_id, faculty_id } = req.params;
+
+  try {
+      const pool = await sql.connect(config);
+
+      // ดึง sections เดิมจากฐานข้อมูล
+      const result = await pool.request()
+          .input('course_id', sql.Int, course_id)
+          .query(`
+              SELECT sections
+              FROM courses
+              WHERE course_id = @course_id
+          `);
+
+      let existingSections = [];
+      if (result.recordset.length > 0 && result.recordset[0].sections) {
+          existingSections = JSON.parse(result.recordset[0].sections);
+      }
+
+      // ลบ sections ที่เกี่ยวข้องกับ faculty_id
+      const updatedSections = existingSections.filter(sec => sec.staff_id !== parseInt(faculty_id));
+
+      // อัปเดต sections ในฐานข้อมูล
+      await pool.request()
+          .input('course_id', sql.Int, course_id)
+          .input('sections', sql.NVarChar, JSON.stringify(updatedSections))
+          .query(`
+              UPDATE courses
+              SET sections = @sections
+              WHERE course_id = @course_id
+          `);
+
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error deleting teaching course:', err);
+      res.status(500).json({ error: 'Failed to delete teaching course' });
+  }
+});
+
+
+// ดึงรายการบุคลากรที่มี role = 2 หรือ 3
+app.get('/api/administrative-staff', async (req, res) => {
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .query(`
+              SELECT
+                  staff_id,
+                  university_id,
+                  academic_title,
+                  personal_title,
+                  first_name,
+                  last_name,
+                  status,
+                  office,
+                  role
+              FROM faculty_staff
+              WHERE role IN (2, 3)
+          `);
+      res.json(result.recordset);
+  } catch (err) {
+      console.error('Error fetching administrative staff:', err);
+      res.status(500).json({ error: 'Failed to fetch administrative staff' });
+  }
+});
+
+// ดึงข้อมูลบุคลากรโดยใช้ staff_id
+app.get('/api/administrative-staff/:id', async (req, res) => {
+  const { id } = req.params;
+
+  if (!id || isNaN(Number(id))) {
+      return res.status(400).json({ error: 'Invalid staff ID' });
+  }
+
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('staff_id', sql.Int, id)
+          .query(`
+              SELECT
+                  staff_id,
+                  university_id,
+                  academic_title,
+                  personal_title,
+                  first_name,
+                  last_name,
+                  status,
+                  office,
+                  role
+              FROM faculty_staff
+              WHERE staff_id = @staff_id AND role IN (2, 3)
+          `);
+
+      if (result.recordset.length > 0) {
+          res.json(result.recordset[0]);
+      } else {
+          res.status(404).json({ error: 'Staff member not found' });
+      }
+  } catch (err) {
+      console.error('Error fetching staff details:', err);
+      res.status(500).json({ error: 'Failed to fetch staff details' });
+  }
+});
+
+// เพิ่มบุคลากรใหม่
+app.post('/api/administrative-staff', async (req, res) => {
+  const { university_id, academic_title, personal_title, first_name, last_name, office, status, role } = req.body;
+
+  // ตรวจสอบข้อมูลที่จำเป็น
+  if (!university_id || !personal_title || !first_name || !last_name || !role || ![2,3].includes(role)) {
+      return res.status(400).json({ error: 'Missing or invalid required fields' });
+  }
+
+  try {
+      const pool = await sql.connect(config);
+      await pool.request()
+          .input('university_id', sql.NVarChar, university_id)
+          .input('academic_title', sql.NVarChar, academic_title)
+          .input('personal_title', sql.NVarChar, personal_title)
+          .input('first_name', sql.NVarChar, first_name)
+          .input('last_name', sql.NVarChar, last_name)
+          .input('office', sql.NVarChar, office)
+          .input('status', sql.Int, status)
+          .input('role', sql.Int, role)
+          .query(`
+              INSERT INTO faculty_staff (university_id, academic_title, personal_title, first_name, last_name, office, status, role)
+              VALUES (@university_id, @academic_title, @personal_title, @first_name, @last_name, @office, @status, @role)
+          `);
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error adding new staff member:', err);
+      res.status(500).json({ error: 'Failed to add new staff member' });
+  }
+});
+
+// แก้ไขข้อมูลบุคลากร
+app.put('/api/administrative-staff/:id', async (req, res) => {
+  const { id } = req.params;
+  const { university_id, academic_title, personal_title, first_name, last_name, office, status, role } = req.body;
+
+  if (!id || isNaN(Number(id))) {
+      return res.status(400).json({ error: 'Invalid staff ID' });
+  }
+
+  if (!university_id || !personal_title || !first_name || !last_name || !role || ![2,3].includes(role)) {
+      return res.status(400).json({ error: 'Missing or invalid required fields' });
+  }
+
+  try {
+      const pool = await sql.connect(config);
+      await pool.request()
+          .input('staff_id', sql.Int, id)
+          .input('university_id', sql.NVarChar, university_id)
+          .input('academic_title', sql.NVarChar, academic_title)
+          .input('personal_title', sql.NVarChar, personal_title)
+          .input('first_name', sql.NVarChar, first_name)
+          .input('last_name', sql.NVarChar, last_name)
+          .input('office', sql.NVarChar, office)
+          .input('status', sql.Int, status)
+          .input('role', sql.Int, role)
+          .query(`
+              UPDATE faculty_staff
+              SET
+                  university_id = @university_id,
+                  academic_title = @academic_title,
+                  personal_title = @personal_title,
+                  first_name = @first_name,
+                  last_name = @last_name,
+                  office = @office,
+                  status = @status,
+                  role = @role
+              WHERE staff_id = @staff_id AND role IN (2, 3)
+          `);
+      res.json({ success: true });
+  } catch (err) {
+      console.error('Error updating staff member:', err);
+      res.status(500).json({ error: 'Failed to update staff member' });
+  }
+});
+
+
+
+
+
+
+app.get('/api/petitions', async (req, res) => {
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request().query(`
+          SELECT petition_id, student_id, student_name, petition_type, subject_code, status
+          FROM petition
+      `);
+      res.json(result.recordset);
+  } catch (error) {
+      console.error('Error fetching petitions:', error);
+      res.status(500).json({ error: 'Failed to fetch petitions' });
+  }
+});
+
+
+app.get('/api/petitions/:id', async (req, res) => {
+  const { id } = req.params;
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('id', sql.Int, id)
+          .query(`SELECT * FROM petition WHERE petition_id = @id`);
+      if (result.recordset.length > 0) {
+          res.json(result.recordset[0]);
+      } else {
+          res.status(404).json({ error: 'Petition not found' });
+      }
+  } catch (error) {
+      console.error('Error fetching petition details:', error);
+      res.status(500).json({ error: 'Failed to fetch petition details' });
+  }
+});
+
+
+
+app.post('/api/petitions/:id/cancel', async (req, res) => {
+  const { id } = req.params;
+  try {
+      const pool = await sql.connect(config);
+      await pool.request()
+          .input('id', sql.Int, id)
+          .query(`UPDATE petition SET status = 22 WHERE petition_id = @id`);
+      res.json({ success: true });
+  } catch (error) {
+      console.error('Error cancelling petition:', error);
+      res.status(500).json({ error: 'Failed to cancel petition' });
+  }
+});
+
+
+
+
 
 StartServer();

@@ -65,7 +65,7 @@ BEGIN
         tuusername NVARCHAR(50),
         role INT CHECK (role BETWEEN 1 AND 5), -- 1=student, 2=advisor, 3=lecturer, 4=staff, 5=admin
         action NVARCHAR(100),
-        description TEXT,
+        description NVARCHAR(MAX),
         timestamp DATETIME DEFAULT GETDATE(),
         ip_address NVARCHAR(45),
         device_info TEXT

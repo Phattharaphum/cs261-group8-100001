@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แก้ไขข้อมูลบุคลากร</title>
+    <link rel="stylesheet" href="css/stylesidebar.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ส่วนของ Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.svg" alt="University Logo" class="logo">
+                <div class="tops">
+                    <p class="hasd">ระบบจัดการบุคลากร</p>
+                    <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/editFacultyStaff.html" class="menu-item">
+                    <img src="img/edit-staff-icon.svg" alt="Edit Staff Icon">
+                    <span class="tee">แก้ไขข้อมูลอาจารย์</span>
+                </a>
+                <a href="/editAdministrativeStaff.html" class="menu-item active">
+                    <img src="img/edit-staff-icon.svg" alt="Edit Staff Icon">
+                    <span class="tee">แก้ไขข้อมูลบุคลากร</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- ส่วนเนื้อหาหลัก -->
+        <div class="scallable">
+            <h2>รายการบุคลากร</h2>
+            <button onclick="window.location.href='/administrativeStaffDetails.html'">เพิ่มบุคลากรใหม่</button>
+            <table id="staffList">
+                <thead>
+                    <tr>
+                        <th>รหัสบุคลากร</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>ประเภท</th>
+                        <th>สถานะ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- รายการบุคลากรจะถูกโหลดมาที่นี่ -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // ดึงข้อมูลบุคลากรที่มี role = 2 หรือ 3
+        fetch('/api/administrative-staff')
+            .then(response => response.json())
+            .then(data => {
+                const staffList = document.getElementById('staffList').querySelector('tbody');
+                staffList.innerHTML = '';
+                data.forEach(staff => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${staff.university_id}</td>
+                        <td>${staff.academic_title} ${staff.personal_title} ${staff.first_name} ${staff.last_name}</td>
+                        <td>${getRoleName(staff.role)}</td>
+                        <td>${staff.status === 1 ? 'Active' : 'Inactive'}</td>
+                        <td><a href="/administrativeStaffDetails.html?id=${staff.staff_id}">แก้ไข</a></td>
+                    `;
+                    staffList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching staff data:', error));
+
+        function getRoleName(role) {
+            switch (role) {
+                case 2: return 'คณบดี';
+                case 3: return 'เจ้าหน้าที่วิชาการ';
+                default: return 'ไม่ทราบประเภท';
+            }
+        }
+    </script>
+</body>
+</html>

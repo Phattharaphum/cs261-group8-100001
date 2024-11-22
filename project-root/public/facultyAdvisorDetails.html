@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดอาจารย์</title>
+    <link rel="stylesheet" href="css/stylesidebar.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ส่วนของ Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.svg" alt="University Logo" class="logo">
+                <div class="tops">
+                    <p class="hasd">ระบบจัดการบุคลากร</p>
+                    <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/editFacultyStaff.html" class="menu-item">
+                    <img src="img/edit-staff-icon.svg" alt="Edit Staff Icon">
+                    <span class="tee">แก้ไขข้อมูลอาจารย์</span>
+                </a>
+            </nav>
+        </div>
+
+        <!-- ส่วนเนื้อหาหลัก -->
+        <div class="scallable">
+            <h2 id="pageTitle">เพิ่มอาจารย์ใหม่</h2>
+            <div id="facultyDetails">
+                <!-- ฟอร์มเพิ่มอาจารย์ใหม่หรือแสดงรายละเอียด -->
+            </div>
+
+            <!-- ถ้ามีการดูรายละเอียดอาจารย์ จะแสดงส่วนนี้ -->
+            <div id="additionalInfo" style="display: none;">
+                <h3>นักศึกษาในที่ปรึกษา</h3>
+                <button onclick="showAddStudentDialog()">เพิ่มนักศึกษาในที่ปรึกษา</button>
+                <table id="advisorStudentsTable">
+                    <thead>
+                        <tr>
+                            <th>รหัสนักศึกษา</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- แสดงรายชื่อนักศึกษาในที่ปรึกษา -->
+                    </tbody>
+                </table>
+
+                <h3>รายวิชาที่สอน</h3>
+                <button onclick="showAddCourseDialog()">เพิ่มรายวิชาที่สอน</button>
+                <table id="teachingCoursesTable">
+                    <thead>
+                        <tr>
+                            <th>รหัสรายวิชา</th>
+                            <th>ชื่อรายวิชา</th>
+                            <th>Sections</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- แสดงรายวิชาที่สอน -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dialog สำหรับเพิ่มนักศึกษาในที่ปรึกษา -->
+    <dialog id="addStudentDialog">
+        <h3>เพิ่มนักศึกษาในที่ปรึกษา</h3>
+        <form id="addStudentForm">
+            <label for="student_id">รหัสนักศึกษา:</label>
+            <input type="text" id="student_id" required>
+            <button type="submit">บันทึก</button>
+            <button type="button" onclick="closeDialog('addStudentDialog')">ยกเลิก</button>
+        </form>
+    </dialog>
+
+  <!-- คงเหลือเฉพาะส่วนนี้ -->
+<dialog id="addCourseDialog">
+    <h3>เพิ่มรายวิชาที่สอน</h3>
+    <form id="addCourseForm">
+        <label for="courseOption">เลือกวิธีการเพิ่ม:</label>
+        <select id="courseOption" onchange="toggleCourseForm()">
+            <option value="existing">เลือกจากรายวิชาที่มีอยู่แล้ว</option>
+            <option value="new">เพิ่มรายวิชาใหม่</option>
+        </select>
+
+        <!-- ฟอร์มสำหรับเลือกรายวิชาที่มีอยู่แล้ว -->
+        <div id="existingCourseForm">
+            <label for="existingCourse">เลือกรายวิชา:</label>
+            <select id="existingCourse" name="existingCourse"></select>
+        
+            <label for="existingSections">Sections (คั่นด้วยเครื่องหมายจุลภาค):</label>
+            <input type="text" id="existingSections" name="existingSections">
+        </div>
+        
+
+        <!-- ฟอร์มสำหรับเพิ่มรายวิชาใหม่ -->
+        <div id="newCourseForm" style="display: none;">
+            <label for="new_course_code">รหัสวิชา:</label>
+            <input type="text" id="new_course_code" name="new_course_code">
+        
+            <label for="new_course_name">ชื่อวิชา:</label>
+            <input type="text" id="new_course_name" name="new_course_name">
+        
+            <label for="new_curriculum_year">ปีของหลักสูตร:</label>
+            <input type="number" id="new_curriculum_year" name="new_curriculum_year">
+        
+            <label for="newSections">Sections (คั่นด้วยเครื่องหมายจุลภาค):</label>
+            <input type="text" id="newSections" name="newSections">
+        </div>
+        
+
+        <button type="submit">บันทึก</button>
+        <button type="button" onclick="closeDialog('addCourseDialog')">ยกเลิก</button>
+    </form>
+</dialog>
+
+
+       <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const facultyId = urlParams.get('id');
+
+        // ถ้ามี facultyId แสดงรายละเอียดอาจารย์
+        if (facultyId) {
+            document.getElementById('pageTitle').textContent = 'รายละเอียดอาจารย์';
+            fetchFacultyDetails(facultyId);
+            document.getElementById('additionalInfo').style.display = 'block';
+        } else {
+            // ถ้าไม่มี facultyId แสดงฟอร์มเพิ่มอาจารย์ใหม่
+            displayAddFacultyForm();
+        }
+
+        function displayAddFacultyForm() {
+            const facultyDetails = document.getElementById('facultyDetails');
+            facultyDetails.innerHTML = `
+                <form id="facultyForm">
+                    <label for="university_id">รหัสมหาวิทยาลัย:</label>
+                    <input type="text" id="university_id" name="university_id" required>
+
+                    <label for="academic_title">ตำแหน่งทางวิชาการ:</label>
+                    <select id="academic_title" name="academic_title" required>
+                        <option value="">--เลือกตำแหน่ง--</option>
+                        <option value="ศ.">ศ.</option>
+                        <option value="รศ.">รศ.</option>
+                        <option value="ผศ.">ผศ.</option>
+                        <option value="ดร.">ดร.</option>
+                        <option value="">ไม่มี</option>
+                    </select>
+
+                    <label for="personal_title">คำนำหน้าชื่อ:</label>
+                    <select id="personal_title" name="personal_title" required>
+                        <option value="">--เลือกคำนำหน้า--</option>
+                        <option value="นาย">นาย</option>
+                        <option value="นาง">นาง</option>
+                        <option value="นางสาว">นางสาว</option>
+                    </select>
+
+                    <label for="first_name">ชื่อ:</label>
+                    <input type="text" id="first_name" name="first_name" required>
+
+                    <label for="last_name">นามสกุล:</label>
+                    <input type="text" id="last_name" name="last_name" required>
+
+                    <label for="office">ห้องทำงาน:</label>
+                    <input type="text" id="office" name="office">
+
+                    <!-- Hidden fields -->
+                    <input type="hidden" id="status" name="status" value="1">
+                    <input type="hidden" id="role" name="role" value="1">
+
+                    <button type="submit">บันทึก</button>
+                </form>
+            `;
+
+            // เพิ่ม event listener สำหรับฟอร์ม
+            document.getElementById('facultyForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const formData = {
+                    university_id: document.getElementById('university_id').value,
+                    academic_title: document.getElementById('academic_title').value,
+                    personal_title: document.getElementById('personal_title').value,
+                    first_name: document.getElementById('first_name').value,
+                    last_name: document.getElementById('last_name').value,
+                    office: document.getElementById('office').value,
+                    status: 1,
+                    role: 1
+                };
+
+                fetch('/api/faculty-staff', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to add faculty');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('เพิ่มอาจารย์ใหม่เรียบร้อยแล้ว');
+                    window.location.href = '/editFacultyStaff.html';
+                })
+                .catch(error => {
+                    console.error('Error adding new faculty:', error);
+                    alert('เกิดข้อผิดพลาดในการเพิ่มอาจารย์ใหม่');
+                });
+            });
+        }
+
+        function fetchFacultyDetails(id) {
+            fetch(`/api/faculty-staff/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    displayFacultyDetails(data);
+                    fetchAdvisorStudents(id);
+                    fetchTeachingCourses(id);
+                })
+                .catch(error => {
+                    console.error('Error fetching faculty data:', error);
+                    alert('ไม่สามารถดึงข้อมูลอาจารย์ได้');
+                });
+        }
+
+        function displayFacultyDetails(data) {
+            const facultyDetails = document.getElementById('facultyDetails');
+            facultyDetails.innerHTML = `
+                <p>รหัสมหาวิทยาลัย: ${data.university_id}</p>
+                <p>ชื่อ: ${data.academic_title} ${data.personal_title} ${data.first_name} ${data.last_name}</p>
+                <p>ตำแหน่งทางวิชาการ: ${data.academic_title || 'ไม่มี'}</p>
+                <p>ห้องทำงาน: ${data.office || 'ไม่ระบุ'}</p>
+                <p>สถานะ: ${data.status === 1 ? 'Active' : 'Inactive'}</p>
+            `;
+        }
+
+        function fetchAdvisorStudents(id) {
+            fetch(`/api/advisor-students/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('advisorStudentsTable').querySelector('tbody');
+                    tableBody.innerHTML = '';
+                    data.forEach(student => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${student.student_id}</td>
+                            <td><button onclick="removeAdvisorStudent(${student.id})">ลบ</button></td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching advisor students:', error));
+        }
+
+        function fetchTeachingCourses(id) {
+            fetch(`/api/teaching-courses/${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('teachingCoursesTable').querySelector('tbody');
+                    tableBody.innerHTML = '';
+                    data.forEach(course => {
+                        const sections = course.sections.map(sec => sec.section).join(', ');
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${course.course_code}</td>
+                            <td>${course.course_name}</td>
+                            <td>${sections}</td>
+                            <td><button onclick="removeTeachingCourse(${course.course_id})">ลบ</button></td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => console.error('Error fetching teaching courses:', error));
+        }
+
+        function showAddStudentDialog() {
+            document.getElementById('addStudentDialog').showModal();
+        }
+
+        function showAddCourseDialog() {
+            // โหลดรายวิชาที่มีอยู่แล้ว
+            fetch('/api/courses')
+                .then(response => response.json())
+                .then(data => {
+                    const existingCourseSelect = document.getElementById('existingCourse');
+                    existingCourseSelect.innerHTML = '';
+                    data.forEach(course => {
+                        const option = document.createElement('option');
+                        option.value = course.course_id;
+                        option.textContent = `${course.course_code} - ${course.course_name}`;
+                        existingCourseSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error fetching courses:', error));
+
+            document.getElementById('addCourseDialog').showModal();
+        }
+
+        function toggleCourseForm() {
+    const option = document.getElementById('courseOption').value;
+    const existingCourseForm = document.getElementById('existingCourseForm');
+    const newCourseForm = document.getElementById('newCourseForm');
+
+    if (option === 'existing') {
+        existingCourseForm.style.display = 'block';
+        newCourseForm.style.display = 'none';
+
+        // Enable required attributes for existing course fields
+        document.getElementById('existingCourse').required = true;
+        document.getElementById('existingSections').required = true;
+        document.getElementById('existingCourse').disabled = false;
+        document.getElementById('existingSections').disabled = false;
+
+        // Disable required attributes for new course fields
+        document.getElementById('new_course_code').required = false;
+        document.getElementById('new_course_name').required = false;
+        document.getElementById('new_curriculum_year').required = false;
+        document.getElementById('newSections').required = false;
+        document.getElementById('new_course_code').disabled = true;
+        document.getElementById('new_course_name').disabled = true;
+        document.getElementById('new_curriculum_year').disabled = true;
+        document.getElementById('newSections').disabled = true;
+    } else if (option === 'new') {
+        existingCourseForm.style.display = 'none';
+        newCourseForm.style.display = 'block';
+
+        // Enable required attributes for new course fields
+        document.getElementById('new_course_code').required = true;
+        document.getElementById('new_course_name').required = true;
+        document.getElementById('new_curriculum_year').required = true;
+        document.getElementById('newSections').required = true;
+        document.getElementById('new_course_code').disabled = false;
+        document.getElementById('new_course_name').disabled = false;
+        document.getElementById('new_curriculum_year').disabled = false;
+        document.getElementById('newSections').disabled = false;
+
+        // Disable required attributes for existing course fields
+        document.getElementById('existingCourse').required = false;
+        document.getElementById('existingSections').required = false;
+        document.getElementById('existingCourse').disabled = true;
+        document.getElementById('existingSections').disabled = true;
+    }
+}
+
+        function closeDialog(dialogId) {
+            document.getElementById(dialogId).close();
+        }
+
+        document.getElementById('addCourseForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const option = document.getElementById('courseOption').value;
+
+    if (option === 'existing') {
+        // Handling the addition of sections to an existing course
+        const courseId = parseInt(document.getElementById('existingCourse').value);
+        const sectionsInput = document.getElementById('existingSections').value.trim();
+
+        // Validate input fields
+        if (isNaN(courseId) || !sectionsInput) {
+            alert('กรุณาเลือกวิชาและกรอก Sections');
+            return;
+        }
+
+        const sections = sectionsInput.split(',').map(sec => sec.trim());
+
+        console.log('Adding sections to existing course:', { courseId, facultyId, sections });
+
+        // Send POST request to add sections to the existing course
+        fetch(`/api/courses/${courseId}/sections`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ faculty_id: parseInt(facultyId), sections })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to add sections to course');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('เพิ่ม Sections ให้กับรายวิชาที่มีอยู่แล้วเรียบร้อย');
+            closeDialog('addCourseDialog');
+            document.getElementById('addCourseForm').reset();
+            fetchTeachingCourses(facultyId);
+        })
+        .catch(error => {
+            console.error('Error adding sections to course:', error);
+            alert('เกิดข้อผิดพลาดในการเพิ่ม Sections');
+        });
+    } else if (option === 'new') {
+        // Handling the addition of a new course
+        const courseCode = document.getElementById('new_course_code').value.trim();
+        const courseName = document.getElementById('new_course_name').value.trim();
+        const curriculumYearInput = document.getElementById('new_curriculum_year').value.trim();
+        const sectionsInput = document.getElementById('newSections').value.trim();
+
+        const curriculumYear = parseInt(curriculumYearInput);
+
+        // Validate input fields
+        if (!courseCode || !courseName || isNaN(curriculumYear) || !sectionsInput) {
+            alert('กรุณากรอกข้อมูลให้ครบถ้วน');
+            return;
+        }
+
+        const sections = sectionsInput.split(',').map(sec => sec.trim());
+
+        console.log('Adding new course:', { courseCode, courseName, curriculumYear, facultyId, sections });
+
+        // Send POST request to add the new course
+        fetch('/api/courses', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                course_code: courseCode,
+                course_name: courseName,
+                curriculum_year: curriculumYear,
+                faculty_id: parseInt(facultyId),
+                sections
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to add new course');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('เพิ่มรายวิชาใหม่เรียบร้อยแล้ว');
+            closeDialog('addCourseDialog');
+            document.getElementById('addCourseForm').reset();
+            fetchTeachingCourses(facultyId);
+        })
+        .catch(error => {
+            console.error('Error adding new course:', error);
+            alert('เกิดข้อผิดพลาดในการเพิ่มรายวิชาใหม่');
+        });
+    }
+});
+
+
+
+
+
+        function removeAdvisorStudent(id) {
+            if (confirm('คุณต้องการลบนักศึกษาคนนี้ออกจากที่ปรึกษาหรือไม่?')) {
+                fetch(`/api/advisor-students/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete advisor student');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('ลบนักศึกษาเรียบร้อยแล้ว');
+                    fetchAdvisorStudents(facultyId);
+                })
+                .catch(error => {
+                    console.error('Error deleting advisor student:', error);
+                    alert('เกิดข้อผิดพลาดในการลบนักศึกษา');
+                });
+            }
+        }
+
+        function removeTeachingCourse(courseId) {
+            if (confirm('คุณต้องการลบรายวิชานี้หรือไม่?')) {
+                fetch(`/api/teaching-courses/${courseId}/faculty/${facultyId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete teaching course');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert('ลบรายวิชาเรียบร้อยแล้ว');
+                    fetchTeachingCourses(facultyId);
+                })
+                .catch(error => {
+                    console.error('Error deleting teaching course:', error);
+                    alert('เกิดข้อผิดพลาดในการลบรายวิชา');
+                });
+            }
+        }
+    </script>
+</body>
+</html>
