@@ -158,3 +158,85 @@ hr {
 	margin-top: 20px;
 	font-size: 15pt;
 }
+
+.facultyForm {
+    display: flex;
+    flex-direction: column; /* จัดเรียงองค์ประกอบในแนวตั้ง */
+    gap: 10px; /* ระยะห่างระหว่างแถว */
+    margin-left: 100px;
+    font-weight: bold;
+    color: #5F5F5F;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between; /* จัดวางองค์ประกอบให้ห่างกันเท่าๆ กัน */
+  }
+  
+  .form-group {
+    width: 500px; /* กำหนดความกว้างของแต่ละช่อง */
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .container input[type="text"] {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+    
+}
+h2 {
+    padding: 20px;
+    color: rgb(0, 0, 0);
+}
+.aaa {
+	font-weight: 600;
+    margin-bottom: 10px;
+    width: 150px;
+	    background-color: #ffffff;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	font-weight: bold;
+	    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+.addButton{
+    width: 100px;
+    height: 30px;
+    background-color: #A70C0C;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    font-weight: bold;
+}
+button:hover {
+    background-color: #9c9c9c; /* เปลี่ยนสีปุ่มเมื่อ hover */
+}
