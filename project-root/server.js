@@ -762,6 +762,13 @@ const StartServer = async () => {
     res.sendFile(path.join(__dirname, "public", "advisorPetitions.html"));
   });
 
+  app.get("/teacherPetitions", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "teacherPetitions.html"));
+  });
+  app.get("/teacherAppointment", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "teacherAppointment.html"));
+  });
+
   // Fetch petitions for the logged-in student
   app.get(
     "/student/petitions",
