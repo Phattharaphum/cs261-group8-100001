@@ -6,6 +6,10 @@
     <title>รายละเอียดประวัติการใช้ระบบ</title>
     <link rel="stylesheet" href="css/stylesidebar.css">
     <link rel="stylesheet" href="css/styleSystemLogsDetails.css">
+    <link
+    href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600&display=swap"
+    rel="stylesheet"
+  />
 </head>
 <body>
     <div class="container">
@@ -55,17 +59,28 @@
 
         <!-- Main Content Section -->
         <div class="scallable">
-            <h2>รายละเอียดประวัติการใช้ระบบ</h2>
-            <div class="log-details">
-                <p>รหัสบันทึก: <span class="highlight" id="log_id"></span></p>
-                <p>ชื่อผู้ใช้งาน: <span class="highlight" id="tuusername"></span></p>
-                <p>บทบาท: <span class="highlight" id="role"></span></p>
-                <p>การกระทำ: <span class="highlight" id="action"></span></p>
-                <p>รายละเอียด: <span class="highlight" id="description"></span></p>
-                <p>เวลา: <span class="highlight" id="timestamp"></span></p>
-                <p>IP Address: <span class="highlight" id="ip_address"></span></p>
-                <p>ข้อมูลอุปกรณ์: <span class="highlight" id="device_info"></span></p>
+            <div class="rounded-border">
+                <h2>รายละเอียดประวัติการใช้ระบบ</h2>
             </div>
+            <div class="log-details">
+                <div class="rounded-border2 ">
+                <h2>General Information</h2>
+                <p>รหัสบันทึก : <span class="highlight" id="log_id"></span></p>
+                <p>ชื่อผู้ใช้งาน : <span class="highlight" id="tuusername"></span></p>
+                <p>บทบาท : <span class="highlight" id="role"></span></p>
+                <p>การกระทำ : <span class="highlight" id="action"></span></p>
+                <p>Date/Time : <span class="highlight" id="timestamp"></span></p>
+
+            </div>
+            <div class="log-details">
+            <div class="rounded-border2 ">
+            <h2>Activity Details</h2>
+            <p>Description : <span class="highlight" id="description"></span></p>
+            <p>IP Address : <span class="highlight" id="ip_address"></span></p>
+            <p>ข้อมูลอุปกรณ์ : <span class="highlight" id="device_info"></span></p>
+            </div>
+        </div>
+    </div>
         </div>
     </div>
 

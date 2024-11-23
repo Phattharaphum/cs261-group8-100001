@@ -56,8 +56,11 @@ body {
     background-color: #FFFFFF;
     display: inline-block;    
     color: #000000;
-    font-weight: bold;
+    font-weight: 700;
 	font-size: 12pt;
+    width :90%;
+    margin-left:20px;
+    margin-top:40px;
 }
 
 #personalInfo {
@@ -158,3 +161,4 @@ hr {
 	margin-top: 20px;
 	font-size: 15pt;
 }
+
