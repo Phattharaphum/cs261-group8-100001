@@ -200,6 +200,9 @@ body {
     font-family: "Sarabun", sans-serif;
 }
 
+.tab-space {
+    margin-left: 10px;
+}
 .header-form {
     font-size: 20px;
     font-weight: 500;
