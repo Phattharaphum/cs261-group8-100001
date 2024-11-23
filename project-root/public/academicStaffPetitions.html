@@ -13,51 +13,6 @@
       rel="stylesheet"
     />
     <script defer src="./js/redirect-handler.js"></script>
-    <style>
-      .tab-button {
-        padding: 10px 20px;
-        border-radius: 15px;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-        margin-right: 10px;
-      }
-      .tab-button.active {
-        background-color: white;
-        color: black;
-      }
-      .tab-button.inactive {
-        background-color: #d9d9d9;
-        color: #333;
-      }
-      .status-label {
-        padding: 5px 10px;
-        border-radius: 15px;
-        color: white;
-        font-weight: bold;
-      }
-
-      .status-waiting {
-        background-color: #ffe6a7;
-        color: #b68900;
-      }
-      .status-read {
-        background-color: #e0b0ff;
-        color: #8e44ad;
-      }
-      .status-rejected {
-        background-color: #ffcdd2;
-        color: #c62828;
-      }
-      .status-approved {
-        background-color: #a5d6a7;
-        color: #2e7d32;
-      }
-      .status-canceled {
-        background-color: #bbdefb;
-        color: #1565c0;
-      }
-    </style>
   </head>
   <body>
     <div class="wrapper">
@@ -245,11 +200,11 @@
               <td class="column-status">
                 <span class="status-label status-rejected">ไม่อนุมัติ</span>
               </td>
-              <td class="column-check">
+              <!-- <td class="column-check">
                 <button class="verify-button" onclick="viewPetition(3)">
                   ตรวจสอบ
                 </button>
-              </td>
+              </td> -->
             </tr>
             <tr class="table-row">
               <td class="column-type">จดทะเบียนล่าช้า</td>
@@ -274,7 +229,7 @@
       </div>
     </div>
 
-    <!-- <script>
+    <script>
       // Variables to store petitions data
       let pendingPetitions = [];
       let reviewedPetitions = [];
@@ -501,6 +456,6 @@
         // Default sorting on submit_time (ล่าสุดอยู่บนสุด)
         sortTable("submit_time");
       });
-    </script> -->
+    </script>
   </body>
 </html>
