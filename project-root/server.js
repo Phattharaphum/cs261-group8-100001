@@ -231,26 +231,47 @@ const StartServer = async () => {
   // Endpoint สำหรับอัปเดตสถานะคำร้องพร้อมอัปเดต review_time
   app.post("/advisor/update-petition/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, comment } = req.body;
+
+    // Log incoming data for debugging
+    console.log("Incoming Request:", { id, status, comment });
+
+    // Validate input data
+    if (!id || status === undefined || comment === undefined) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing required fields" });
+    }
 
     try {
       const pool = await sql.connect(config);
 
-      await pool
+      // Update the petition's status and comment
+      const result = await pool
         .request()
         .input("id", sql.Int, id)
+        .input("comment", sql.NVarChar, comment)
         .input("status", sql.TinyInt, status).query(`
-                UPDATE petition 
-                SET status = @status, review_time_b = GETDATE()
-                WHERE petition_id = @id
-            `);
+          UPDATE petition
+          SET status = @status,
+              comment_b = @comment, 
+              review_time_b = GETDATE()
+          WHERE petition_id = @id;
+        `);
 
-      res.json({ success: true });
+      // Check if a row was affected
+      if (result.rowsAffected[0] === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Petition not found" });
+      }
+
+      res.json({ success: true, message: "Petition updated successfully" });
     } catch (err) {
       console.error("Error updating petition status and review time:", err);
       res
         .status(500)
-        .json({ success: false, error: "Failed to update petition status" });
+        .json({ success: false, message: "Failed to update petition status" });
     }
   });
 
@@ -739,27 +760,34 @@ const StartServer = async () => {
       res.status(500).json({ error: "Failed to fetch petition details" });
     }
   });
+  // เข้าใจว่า copyมาเกิน เพราะไม่ถูกเรียกใช้
+  // app.post("/advisor/update-petition/:id", async (req, res) => {
+  //   const { id } = req.params;
+  //   const { status, comment } = req.body;
+  //   try {
+  //     const pool = await sql.connect(config);
+  //     console.log("hit 2");
+  //     await pool
+  //       .request()
+  //       .input("id", sql.Int, id)
+  //       .input("comment", sql.NVarChar, comment)
+  //       .input("status", sql.TinyInt, status)
+  //       .query(
+  //         `UPDATE petition
+  //         SET status = @status,
+  //             comment_b = @comment,
+  //             review_time_b = GETDATE()
+  //         WHERE petition_id = @id;`
+  //       );
 
-  app.post("/advisor/update-petition/:id", async (req, res) => {
-    const { id } = req.params;
-    const { status } = req.body;
-    try {
-      const pool = await sql.connect(config);
-
-      await pool
-        .request()
-        .input("id", sql.Int, id)
-        .input("status", sql.TinyInt, status)
-        .query("UPDATE petition SET status = @status WHERE petition_id = @id");
-
-      res.json({ success: true });
-    } catch (err) {
-      console.error(err);
-      res
-        .status(500)
-        .json({ success: false, error: "Failed to update petition status" });
-    }
-  });
+  //     res.json({ success: true });
+  //   } catch (err) {
+  //     console.error(err);
+  //     res
+  //       .status(500)
+  //       .json({ success: false, error: "Failed to update petition status" });
+  //   }
+  // });
 
   //route สำหรับคำร้องของอาจารย์ในรายวิชา
   // ดึงข้อมูลคำร้องในรายวิชาที่ยังไม่ได้ตรวจสอบและตรวจสอบแล้ว
@@ -854,42 +882,33 @@ const StartServer = async () => {
 
   app.post("/teacher/update-petition/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
-    const staffId = req.session.user.staff_id; // Ensure this is populated from the session
+    const { status, comment } = req.body;
+
+    // Validate input
+    if (!id || status === undefined || comment === undefined) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
 
     try {
       const pool = await sql.connect(config);
 
-      // Validate if the petition belongs to the teacher's courses
-      const petitionValidationResult = await pool
-        .request()
-        .input("staffId", sql.Int, staffId)
-        .input("petitionId", sql.Int, id).query(`
-          SELECT p.*
-          FROM petition p
-          JOIN courses c ON p.subject_code = c.course_code
-          WHERE p.petition_id = @petitionId
-          AND JSON_VALUE(c.sections, '$.staff_id') = @staffId;
-        `);
-
-      const petition = petitionValidationResult.recordset[0];
-
-      if (!petition) {
-        return res
-          .status(404)
-          .json({ error: "Petition not found or access denied" });
-      }
-
-      // Update the petition's status
-      await pool
+      // Update the petition's status and comment
+      const result = await pool
         .request()
         .input("id", sql.Int, id)
+        .input("comment", sql.NVarChar, comment)
         .input("status", sql.TinyInt, status).query(`
           UPDATE petition
-          SET status = @status
-          review_time_c = GETDATE()
+          SET status = @status,
+              comment_c = @comment,
+              review_time_c = GETDATE()
           WHERE petition_id = @id;
         `);
+
+      // Check if a row was affected
+      if (result.rowsAffected[0] === 0) {
+        return res.status(404).json({ error: "Petition not found" });
+      }
 
       res.json({ success: true });
     } catch (err) {
@@ -998,7 +1017,7 @@ const StartServer = async () => {
 
   app.post("/dean/update-petition/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, comment } = req.body;
 
     try {
       const pool = await sql.connect(config);
@@ -1007,9 +1026,11 @@ const StartServer = async () => {
       const result = await pool
         .request()
         .input("id", sql.Int, id)
+        .input("comment", sql.NVarChar, comment)
         .input("status", sql.TinyInt, status).query(`
           UPDATE petition
           SET status = @status,
+              comment_e = @comment,
               review_time_e = GETDATE()
           WHERE petition_id = @id;
         `);

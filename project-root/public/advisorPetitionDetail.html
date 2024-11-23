@@ -170,6 +170,20 @@
               </tbody>
             </table>
           </div>
+          <div>
+            <h3>เพิ่มความคิดเห็น</h3>
+            <textarea
+              id="commentField"
+              placeholder="comment b"
+              style="
+                width: 50%;
+                height: 80px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                padding: 10px;
+              "
+            ></textarea>
+          </div>
           <br /><br />
         </div>
       </div>
@@ -226,10 +240,11 @@
       document.addEventListener("DOMContentLoaded", updateStatusOnLoad);
 
       function updateStatus(newStatus) {
+        const comment = document.getElementById("commentField").value;
         fetch(`/advisor/update-petition/${petitionId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: newStatus }),
+          body: JSON.stringify({ status: newStatus, comment: comment }),
         })
           .then((response) => response.json())
           .then((data) => {
@@ -271,16 +286,14 @@
       // ฟังก์ชันแสดงสถานะพร้อมแถบสี
       function getStatusText(status) {
         switch (status) {
-          case 2:
-            return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
           case 3:
-            return '<span class="status-label status-read">อ่านแล้ว</span>';
-          case 4:
-            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
+            return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
           case 5:
-            return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
+            return '<span class="status-label status-read">อ่านแล้ว</span>';
+          case 7:
+            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
           case 6:
-            return '<span class="status-label status-canceled">ยกเลิก</span>';
+            return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
           default:
             return '<span class="status-label">ไม่ทราบสถานะ</span>';
         }
@@ -326,9 +339,15 @@
           document.getElementById("topmain").innerText =
             "แบบคำร้อง" + getPetitionType(data.petition_type);
           // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 4 หรือ 5
-          if (data.status === 3 || data.status === 2) {
+          if (data.status === 5) {
             document.getElementById("reject-button").style.display = "flex";
             document.getElementById("approve-button").style.display = "flex";
+
+            // Reload only if not already reloaded
+            if (!localStorage.getItem(`reloaded_${petitionId}`)) {
+              localStorage.setItem(`reloaded_${petitionId}`, "true");
+              window.location.reload();
+            }
           }
 
           // แสดง review_time เฉพาะเมื่อสถานะเป็น 4 หรือ 5

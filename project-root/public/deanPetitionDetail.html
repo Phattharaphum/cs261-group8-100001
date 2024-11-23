@@ -170,6 +170,20 @@
               </tbody>
             </table>
           </div>
+          <div>
+            <h3>เพิ่มความคิดเห็น</h3>
+            <textarea
+              id="commentField"
+              placeholder="comment e"
+              style="
+                width: 50%;
+                height: 80px;
+                border-radius: 8px;
+                border: 1px solid #ccc;
+                padding: 10px;
+              "
+            ></textarea>
+          </div>
           <br /><br />
         </div>
       </div>
@@ -194,10 +208,11 @@
       const petitionId = urlParams.get("id");
 
       function updateStatus(newStatus) {
+        const comment = document.getElementById("commentField").value;
         fetch(`/dean/update-petition/${petitionId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: newStatus }),
+          body: JSON.stringify({ status: newStatus, comment: comment }),
         })
           .then((response) => response.json())
           .then((data) => {
