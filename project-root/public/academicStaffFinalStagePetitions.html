@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>รายการคำร้องตรวจสอบเบื้องต้น</title>
-    <link rel="stylesheet" href="css/styleListofPetitionAcademicStaff.css" />
+    <title>รายการคำร้องรอยื่นสำนักทะเบียน</title>
+    <link rel="stylesheet" href="css/styleListofPetitionAcademicStaffFinalStage.css" />
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -73,15 +73,15 @@
           </div>
         </div>
         <nav class="sidebar-menu">
-          <a href="#" class="menu-item active">
+          <a href="/academicStaffPetitions" class="menu-item active">
             <img src="img/Artboard2.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องตรวจสอบเบื้องต้น</span>
           </a>
-          <a href="/academicStaffForCommitteePetitions " class="menu-item active">
+          <a href="/academicStaffForCommitteePetitions" class="menu-item active">
             <img src="img/Artboard2.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องรอยื่นคณบดี</span>
           </a>
-          <a href="/academicStaffFinalStagePetitions" class="menu-item active">
+          <a href="" class="menu-item active">
             <img src="img/Artboard2.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องรอยื่นสำนักทะเบียน</span>
           </a>
@@ -111,7 +111,7 @@
       <!-- Main Content Section (80%) -->
       <div class="container">
         <div class="header">
-          <div class="header-button">รายการคำร้องตรวจสอบเบื้องต้น</div>
+          <div class="header-button">รายการคำร้องรอยื่นสำนักทะเบียน</div>
         </div>
 
         <div class="sss">
@@ -253,7 +253,7 @@
       let currentView = "pending";
 
       // Fetch petitions data from server
-      fetch("/academicStaff/pending-petitions")
+      fetch("/academicStaffFinalStage/pending-petitions")
         .then((response) => response.json())
         .then((data) => {
           pendingPetitions = data; // เก็บเฉพาะ pending petitions
@@ -261,7 +261,7 @@
          })
         .catch((error) => console.error("Error fetching pending petitions:", error));
 
-      fetch("/academicStaff/reviewed-petitions")
+      fetch("/academicStaffFinalStage/reviewed-petitions")
         .then((response) => response.json())
         .then((data) => {
           reviewedPetitions = data; // เก็บ reviewed petitions แยกกัน
@@ -271,12 +271,8 @@
       // ฟังก์ชันเพื่อแสดงสถานะพร้อมแถบสี
       function getStatusLabel(status) {
         switch (status) {
-          case 2:
-            return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
-          case 3:
-            return '<span class="status-label status-read">รออาจารย์</span>';
-          case 4:
-            return '<span class="status-label status-rejected">ปฏิเสธ/กลับไปแก้ไข</span>';
+          case 15:
+            return '<span class="status-label status-read">ยืนเรื่องไปยังสำนักทะเบียนแล้ว</span>';
           default:
             return '<span class="status-label">ไม่ทราบสถานะ</span>';
         }
@@ -372,7 +368,7 @@
       }
 
       function viewPetition(id) {
-        window.location.href = `/academicStaffPetitionDetail.html?id=${id}`;
+        window.location.href = `/academicStaffFinalStagePetitionDetail.html?id=${id}`;
       }
 
       // Filter petitions by search input

@@ -71,23 +71,14 @@
           <a
             href="javascript:void(0);"
             class="menu-item"
-            onclick="updateStatus(3)"
+            onclick="updateStatus(15)"
             style="display: none"
             id="approve-button"
           >
             <img src="img/icon (4).svg" alt="Status Icon" />
-            <span class="tee">อนุมัติคำร้อง</span>
+            <span class="tee">ยืนเรื่องไปยังสำนักทะเบียน</span>
           </a>
 
-          <a
-            href="javascript:void(0);"
-            class="menu-item"
-            onclick="updateStatus(4)"
-            style="display: none"
-            id="reject-button"
-          >
-            <img src="img/icon (5).svg" alt="Status Icon" />
-            <span class="tee">ปฏิเสธคำร้อง</span>
           </a>
         </nav>
         <div class="logout-section">
@@ -171,23 +162,32 @@
             </table>
           </div>
           <br /><br />
-          <div class="comments-section">
-            <h3>ความคิดเห็น :</h3>
-            <div class="comments-grid">
-              <div>
-                <label for="acdemicStaff-comment">ความคิดเห็นเจ้าหน้าที่:</label>
-                <textarea id="acdemicStaff-comment" readonly></textarea>
-              </div>
-              <div>
-                <label for="advisor-comment">ความคิดเห็นอาจารย์ที่ปรึกษา:</label>
-                <textarea id="advisor-comment" readonly></textarea>
-              </div>
-              <div>
-                <label for="Lecturer-comment">ความคิดเห็นอาจารย์ผู้สอน:</label>
-                <textarea id="Lecturer-comment" readonly></textarea>
-              </div>
+              <div class="comments-section">
+                <h3>ความคิดเห็น :</h3>
+                <div class="comments-grid">
+                  <div>
+                    <label for="acdemicStaff-comment">ความคิดเห็นเจ้าหน้าที่:</label>
+                    <textarea id="acdemicStaff-comment" readonly></textarea>
+                  </div>
+                  <div>
+                    <label for="advisor-comment">ความคิดเห็นอาจารย์ที่ปรึกษา:</label>
+                    <textarea id="advisor-comment" readonly></textarea>
+                  </div>
+                  <div>
+                    <label for="Lecturer-comment">ความคิดเห็นอาจารย์ผู้สอน:</label>
+                    <textarea id="Lecturer-comment" readonly></textarea>
+                  </div>
+                </div>
+                <div class="comment-box">
+                  <textarea
+                    id="comment-box"
+                    placeholder="กรอกคำแนะนำหรือความคิดเห็น..."
+                    rows="4"
+                    style="display: none"
+                  ></textarea>
+                </div>
+              </div>          
             </div>
-          </div> 
         </div>
       </div>
     </div>
@@ -213,41 +213,10 @@
       const urlParams = new URLSearchParams(window.location.search);
       const petitionId = urlParams.get("id");
 
-      function updateStatusOnLoad() {
-        fetch(`/academicStaff/petition-details/${petitionId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.status !== 3 && data.status !== 4) {
-              // อัปเดตเป็น 2 ถ้าสถานะไม่ใช่ปฏิเสธหรืออนุมัติ
-              fetch(`/academicStaff/auto-update-status/${petitionId}`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status: 2 }),
-              })
-                .then((response) => response.json())
-                .then((updateData) => {
-                  if (!updateData.success) {
-                    console.error(
-                      "Error updating status on load:",
-                      updateData.message
-                    );
-                  }
-                })
-                .catch((error) =>
-                  console.error("Error updating status on load:", error)
-                );
-            }
-          })
-          .catch((error) =>
-            console.error("Error fetching petition details:", error)
-          );
-      }
-
-      document.addEventListener("DOMContentLoaded", updateStatusOnLoad);
 
       function updateStatus(newStatus) {
-        const comment = document.getElementById("acdemicStaff-comment").value || "ไม่มีความคิดเห็น";
-        fetch(`/academicStaff/update-petition/${petitionId}`, {
+        const comment = document.getElementById("comment-box").value;
+        fetch(`/academicStaffFinalStage/update-petition/${petitionId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ status: newStatus, comment: comment }),
@@ -256,7 +225,7 @@
           .then((data) => {
             if (data.success) {
               alert("อัปเดตสถานะสำเร็จ");
-              window.location.href = "/academicStaffPetitions";
+              window.location.href = "/academicStaffFinalStagePetitions";
             } else {
               alert("ไม่สามารถอัปเดตสถานะได้");
             }
@@ -270,8 +239,6 @@
         window.history.back();
       }
 
-      // เรียกใช้ฟังก์ชันอัปเดตสถานะทันทีที่โหลดหน้านี้
-      document.addEventListener("DOMContentLoaded", updateStatusOnLoad);
 
       // ฟังก์ชันแสดงประเภทคำร้อง
       function getPetitionType(type) {
@@ -292,19 +259,21 @@
       // ฟังก์ชันแสดงสถานะพร้อมแถบสี
       function getStatusText(status) {
         switch (status) {
-          case 2:
+          case 9:
             return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
-          case 3:
+          case 11:
             return '<span class="status-label status-read">ผ่าน</span>';
-          case 4:
+          case 12:
             return '<span class="status-label status-rejected">ปฏิเสธ/กลับไปแก้ไข</span>';
+          case 14:
+            return '<span class="status-label status-waiting">รอตรวจสอบ(ถูกปฏิเสธจากคณบดี)</span>';
           default:
             return '<span class="status-label">ไม่ทราบสถานะ</span>';
         }
       }
 
       // ดึงข้อมูลคำร้องจากเซิร์ฟเวอร์
-      fetch(`/academicStaff/petition-details/${petitionId}`)
+      fetch(`/academicStaffFinalStage/petition-details/${petitionId}`)
         .then((response) => response.json())
         .then((data) => {
           document.getElementById("student_name").textContent =
@@ -339,17 +308,15 @@
           );
           document.getElementById("reason").textContent =
             data.reason || "ไม่มีเหตุผลระบุไว้"; // เพิ่มการแสดงเหตุผล
-          document.getElementById("reason").textContent =
-            data.reason || "ไม่มีเหตุผลระบุไว้"; // เพิ่มการแสดงเหตุผล
           
           document.getElementById("acdemicStaff-comment").textContent =
-            data.comment_a || "";
+            data.comment_a || "ไม่มีความคิดเห็น";
 
           document.getElementById("advisor-comment").textContent =
-            data.comment_b || "";
+            data.comment_b || "ไม่มีความคิดเห็น";
 
           document.getElementById("Lecturer-comment").textContent =
-            data.comment_c || "";
+            data.comment_c || "ไม่มีความคิดเห็น";
 
           document.getElementById("review_time_a").textContent =
             data.review_time_a ? new Date(data.review_time_a).toLocaleString() : "ยังไม่มีการพิจารณา";
@@ -358,18 +325,19 @@
           document.getElementById("review_time_c").textContent =
            data.review_time_c ? new Date(data.review_time_c).toLocaleString() : "ยังไม่มีการพิจารณา";
 
+
           document.getElementById("topmain").innerText =
             "แบบคำร้อง" + getPetitionType(data.petition_type);
-          // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 3 หรือ 4
+          // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 13
           //if (data.status === 3 || data.status === 4) {
-          if (data.status === 2) {
-            document.getElementById("reject-button").style.display = "flex";
+          if (data.status === 13 ) {
+          //  document.getElementById("reject-button").style.display = "flex";
             document.getElementById("approve-button").style.display = "flex";
-            document.getElementById("acdemicStaff-comment").removeAttribute("readonly");
+            document.getElementById("comment-box").style.display = "flex";
           }
 
-          // แสดง review_time เฉพาะเมื่อสถานะเป็น 3 หรือ 4
-          if (data.status === 3 || data.status === 4) {
+          // แสดง review_time เฉพาะเมื่อสถานะเป็น 15
+          if (data.status === 15 ) {
             document.getElementById("review_time").textContent = new Date(
               data.review_time
             ).toLocaleString();
