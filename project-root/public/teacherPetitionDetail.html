@@ -71,7 +71,7 @@
           <a
             href="javascript:void(0);"
             class="menu-item"
-            onclick="updateStatus(5)"
+            onclick="updateStatus(9)"
             style="display: none"
             id="approve-button"
           >
@@ -82,7 +82,7 @@
           <a
             href="javascript:void(0);"
             class="menu-item"
-            onclick="updateStatus(4)"
+            onclick="updateStatus(10)"
             style="display: none"
             id="reject-button"
           >
@@ -197,12 +197,12 @@
         fetch(`/advisor/petition-details/${petitionId}`)
           .then((response) => response.json())
           .then((data) => {
-            if (data.status !== 6 && data.status !== 7) {
-              // อัปเดตเป็น 3 ถ้าสถานะไม่ใช่ปฏิเสธหรืออนุมัติ
+            if (data.status !== 9 && data.status !== 10) {
+              // อัปเดตเป็น 8 ถ้าสถานะไม่ใช่ปฏิเสธหรืออนุมัติ
               fetch(`/advisor/auto-update-status/${petitionId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status: 5 }),
+                body: JSON.stringify({ status: 8 }),
               })
                 .then((response) => response.json())
                 .then((updateData) => {
@@ -287,7 +287,7 @@
       }
 
       // ดึงข้อมูลคำร้องจากเซิร์ฟเวอร์
-      fetch(`/advisor/petition-details/${petitionId}`)
+      fetch(`/teacher/petition-details/${petitionId}`)
         .then((response) => response.json())
         .then((data) => {
           document.getElementById("student_name").textContent =
@@ -326,13 +326,12 @@
           document.getElementById("topmain").innerText =
             "แบบคำร้อง" + getPetitionType(data.petition_type);
           // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 4 หรือ 5
-          if (data.status === 3 || data.status === 2) {
+          if (data.status === 8) {
             document.getElementById("reject-button").style.display = "flex";
             document.getElementById("approve-button").style.display = "flex";
           }
-
           // แสดง review_time เฉพาะเมื่อสถานะเป็น 4 หรือ 5
-          if (data.status === 4 || data.status === 5) {
+          if (data.status === 8 || data.status === 9 || data.status === 10) {
             document.getElementById("review_time").textContent = new Date(
               data.review_time
             ).toLocaleString();

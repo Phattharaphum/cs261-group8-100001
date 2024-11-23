@@ -5,3 +5,8 @@ node_modules/
 .env
 
 .DS_Store
+
+../.DS_Store
+
+# macOS system files
+*./**/.DS_Store

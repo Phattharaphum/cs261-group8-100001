@@ -798,6 +798,91 @@ const StartServer = async () => {
     }
   });
 
+  app.get("/teacher/petition-details/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const pool = await sql.connect(config);
+
+      // Fetch the petition by ID
+      const petitionResult = await pool.request().input("id", sql.Int, id)
+        .query(`
+          SELECT * 
+          FROM petition
+          WHERE petition_id = @id;
+        `);
+
+      const petition = petitionResult.recordset[0];
+
+      if (!petition) {
+        return res.status(404).json({ error: "Petition not found" });
+      }
+
+      // Optionally, fetch attached files for the petition
+      const filesResult = await pool.request().input("petition_id", sql.Int, id)
+        .query(`
+          SELECT file_id, file_name, description
+          FROM localdoc
+          WHERE petition_id = @petition_id;
+        `);
+
+      petition.attachedFiles = filesResult.recordset;
+
+      // Return the petition with any attached files
+      res.json(petition);
+    } catch (err) {
+      console.error("Error fetching petition details:", err);
+      res.status(500).json({ error: "Failed to fetch petition details" });
+    }
+  });
+
+  app.post("/teacher/update-petition/:id", async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+    const staffId = req.session.user.staff_id; // Ensure this is populated from the session
+
+    try {
+      const pool = await sql.connect(config);
+
+      // Validate if the petition belongs to the teacher's courses
+      const petitionValidationResult = await pool
+        .request()
+        .input("staffId", sql.Int, staffId)
+        .input("petitionId", sql.Int, id).query(`
+          SELECT p.*
+          FROM petition p
+          JOIN courses c ON p.subject_code = c.course_code
+          WHERE p.petition_id = @petitionId
+          AND JSON_VALUE(c.sections, '$.staff_id') = @staffId;
+        `);
+
+      const petition = petitionValidationResult.recordset[0];
+
+      if (!petition) {
+        return res
+          .status(404)
+          .json({ error: "Petition not found or access denied" });
+      }
+
+      // Update the petition's status
+      await pool
+        .request()
+        .input("id", sql.Int, id)
+        .input("status", sql.TinyInt, status).query(`
+          UPDATE petition
+          SET status = @status
+          WHERE petition_id = @id;
+        `);
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Error updating petition status:", err);
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to update petition status" });
+    }
+  });
+
   // ใน server.js
   app.get("/advisorPetitions", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "advisorPetitions.html"));
