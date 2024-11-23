@@ -15,7 +15,7 @@ body {
   
 .left {
     width: 300px;
-    background-color: #ffffff;
+    background-color: #EDEDED;
 	margin: 0;
 }
   
@@ -80,7 +80,7 @@ hr {
     width: 50%; 
     height: 3px; 
     border: none; 
-    background-color: #BFBFBF; 
+    background-color: #EDEDED; 
     margin: 0;
     margin-left: 0;
 }
@@ -107,8 +107,8 @@ hr {
 .box {
     width: 200px;
     height: 200px;
-    background-color: #BFBFBF;
-    border: 1px solid #BFBFBF;
+    background-color: #EDEDED;
+    border: 1px solid #EDEDED;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -123,7 +123,7 @@ hr {
     padding: 20px 30px;
     font-size: 22px;
     border: 3px solid #023047; 
-    background-color: #F4F4F4;
+    background-color: #EDEDED;
     color: #023047;
     cursor: pointer;
     border-radius: 16px; 
@@ -157,4 +157,98 @@ hr {
 .spanlab {
 	margin-top: 20px;
 	font-size: 15pt;
+}
+
+#pageTitle {
+    width: 1000px;
+    margin-bottom: 5px;
+    padding: 20px 40px;
+}
+/* ฟอร์ม */
+
+.staffForm1, .staffForm2, .staffForm3 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* จัดวางช่องให้ห่างกันเท่าๆ กัน */
+    gap: 20px;
+    margin-left: 100px;
+  }
+  
+  .university_id, .academic_title {
+    flex: 1 1 20%; /* แบ่งพื้นที่ 20% และสามารถยืดหยุ่นได้ */
+  }
+  
+  .personal_title, .first_name, .last_name {
+    flex: 1 1 20%;
+  }
+  
+  .office, .role, .status {
+    flex: 1 1 20%;
+  }
+
+/* ช่องกรอกข้อมูล input และ select */
+input[type="text"],
+select {
+    width: 150px; /* เต็มพื้นที่ของกล่องที่กำหนด */
+    max-width: 250px; /* จำกัดขนาดกว้างสุด */
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* ปุ่มบันทึก */
+button[type="submit"] {
+    width: 150px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
+    margin: 20px auto 0;
+    display: block;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+
+	
+
+.container input[type="text"] {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.aaa {
+	background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 500;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; 
+    width: 130px;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #5F5F5F;
 }
