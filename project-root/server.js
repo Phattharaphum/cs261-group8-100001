@@ -97,7 +97,7 @@ const StartServer = async () => {
       // ตรวจสอบ username และ password สำหรับ userType: 'teacher'
       if (username === "0001" && password === "test") {
         req.session.user = {
-          username: username,
+          username: "U001",
           email: "teacher@example.com", // ตัวอย่างข้อมูล
           displayname_en: "Teacher",
           displayname_th: "ครู",
@@ -663,13 +663,13 @@ const StartServer = async () => {
         const pendingResult = await pool
           .request()
           .input("advisorId", sql.NVarChar, advisorId)
-          .query(`SELECT * FROM petition WHERE status = 2 AND student_id IN 
+          .query(`SELECT * FROM petition WHERE status = 3 AND student_id IN 
                     (SELECT student_id FROM advisor_info WHERE advisor_id = @advisorId)`);
 
         const reviewedResult = await pool
           .request()
           .input("advisorId", sql.NVarChar, advisorId)
-          .query(`SELECT * FROM petition WHERE status IN (3, 4, 5) AND student_id IN 
+          .query(`SELECT * FROM petition WHERE status IN (5, 6, 7) AND student_id IN 
                     (SELECT student_id FROM advisor_info WHERE advisor_id = @advisorId)`);
 
         res.json({
@@ -742,6 +742,59 @@ const StartServer = async () => {
       res
         .status(500)
         .json({ success: false, error: "Failed to update petition status" });
+    }
+  });
+
+  //route สำหรับคำร้องของอาจารย์ในรายวิชา
+  // ดึงข้อมูลคำร้องในรายวิชาที่ยังไม่ได้ตรวจสอบและตรวจสอบแล้ว
+  app.get("/teacher/pending-petitions", async (req, res) => {
+    try {
+      const teacherId = req.session.user.username; // e.g., 'U001'
+      const pool = await sql.connect(config);
+
+      // Pending petitions with status = 6
+      const pendingResult = await pool
+        .request()
+        .input("teacherId", sql.NVarChar, teacherId).query(`
+            SELECT p.*
+            FROM petition p
+            INNER JOIN courses c ON p.subject_code = c.course_code
+            CROSS APPLY OPENJSON(c.sections)
+            WITH (
+              staff_id INT '$.staff_id',
+              section NVARCHAR(50) '$.section'
+            ) AS s
+            INNER JOIN faculty_staff fs ON s.staff_id = fs.staff_id
+            WHERE p.status = 6
+              AND fs.university_id = @teacherId
+              AND s.section = p.section
+          `);
+
+      // Reviewed petitions with status IN (8, 9, 10)
+      const reviewedResult = await pool
+        .request()
+        .input("teacherId", sql.NVarChar, teacherId).query(`
+            SELECT p.*
+            FROM petition p
+            INNER JOIN courses c ON p.subject_code = c.course_code
+            CROSS APPLY OPENJSON(c.sections)
+            WITH (
+              staff_id INT '$.staff_id',
+              section NVARCHAR(50) '$.section'
+            ) AS s
+            INNER JOIN faculty_staff fs ON s.staff_id = fs.staff_id
+            WHERE p.status IN (8, 9, 10)
+              AND fs.university_id = @teacherId
+              AND s.section = p.section
+          `);
+
+      res.json({
+        pending: pendingResult.recordset,
+        reviewed: reviewedResult.recordset,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Failed to fetch petitions" });
     }
   });
 
