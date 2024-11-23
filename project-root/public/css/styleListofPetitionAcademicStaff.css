@@ -126,15 +126,9 @@ button:hover {
     margin-top: 20px;
 	width: 90%;
 }
-
-.table-header{
+.table-header, .table-row {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
-    padding: 15px;
-}
-.table-row{
-    display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     padding: 15px;
 }
 
