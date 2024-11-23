@@ -129,7 +129,7 @@ button:hover {
 
 .table-header, .table-row {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     padding: 15px;
 }
 
@@ -243,13 +243,14 @@ button:hover {
 	width: 140px;
 	text-align: center;
 }
+.column-student-id {
+	width: 130px;
+}
 
 .column-date {
 	text-align: center;
 	width: 100px;
 }
-
-
 
 #petition-list {
 	background-color: #EFEFEF;

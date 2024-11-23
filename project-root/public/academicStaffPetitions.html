@@ -77,12 +77,12 @@
             <img src="img/Artboard2.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องตรวจสอบเบื้องต้น</span>
           </a>
-          <a href="/academicStaffForCommitteePetitions " class="menu-item active">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
+          <a href="/academicStaffForCommitteePetitions " class="menu-item">
+            <img src="img/image 13.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องรอยื่นคณบดี</span>
           </a>
-          <a href="/academicStaffFinalStagePetitions" class="menu-item active">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
+          <a href="/academicStaffFinalStagePetitions" class="menu-item ">
+            <img src="img/image 16.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องรอยื่นสำนักทะเบียน</span>
           </a>
         </nav>
@@ -160,7 +160,9 @@
                 รหัสวิชา
                 <span class="sort-icon" id="sort-icon-subject_code">▲▼</span>
               </th>
-              <th class="column-section">กลุ่มเรียน</th>
+              <th class="column-section coan">
+                กลุ่มเรียน
+              </th>
               <th
                 class="column-student-name coan"
                 onclick="sortTable('student_name')"
@@ -175,18 +177,27 @@
                 รหัสนักศึกษา
                 <span class="sort-icon" id="sort-icon-student_id">▲▼</span>
               </th>
-              <th class="column-date coan" onclick="sortTable('submit_time')">
+              <th 
+                class="column-date coan" 
+                onclick="sortTable('submit_time')"
+              >
                 วันที่
                 <span class="sort-icon" id="sort-icon-submit_time">▲▼</span>
               </th>
-              <th class="column-time">เวลา</th>
-              <th class="column-status coan" onclick="sortTable('status')">
+              <th class="column-time">
+                เวลา
+              </th>
+              <th 
+                class="column-status coan" 
+                onclick="sortTable('status')"
+              >
                 สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span>
               </th>
               <th class="column-check"></th>
             </tr>
           </thead>
           <tbody id="petition-list">
+            
             <tr class="table-row">
               <td class="column-type">จดทะเบียนล่าช้า</td>
               <td class="column-subject-name">วิทยาการคอมพิวเตอร์เบื้องต้น</td>
@@ -237,6 +248,24 @@
               </td>
               <td class="column-check">
                 <button class="verify-button" onclick="viewPetition(3)">
+                  ตรวจสอบ
+                </button>
+              </td>
+            </tr>
+            <tr class="table-row">
+              <td class="column-type">จดทะเบียนล่าช้า</td>
+              <td class="column-subject-name">วิทยาการคอมพิวเตอร์เบื้องต้น</td>
+              <td class="column-subject-code">CS101</td>
+              <td class="column-section">01</td>
+              <td class="column-student-name">สมชาย ใจดี</td>
+              <td class="column-student-id">6600812345</td>
+              <td class="column-date">12/11/2024</td>
+              <td class="column-time">09:30</td>
+              <td class="column-status">
+                <span class="status-label status-waiting">รอตรวจสอบ</span>
+              </td>
+              <td class="column-check">
+                <button class="verify-button" onclick="viewPetition(1)">
                   ตรวจสอบ
                 </button>
               </td>

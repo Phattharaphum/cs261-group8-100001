@@ -60,6 +60,7 @@
     </style>
   </head>
   <body>
+    
     <div class="wrapper">
       <!-- Sidebar Section (20%) -->
       <div class="sidebar">
@@ -73,16 +74,16 @@
           </div>
         </div>
         <nav class="sidebar-menu">
-          <a href="/academicStaffPetitions" class="menu-item active">
+          <a href="/academicStaffPetitions" class="menu-item">
             <img src="img/Artboard2.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องตรวจสอบเบื้องต้น</span>
           </a>
           <a href=" " class="menu-item active">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
+            <img src="img/image 13.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องรอยื่นคณบดี</span>
           </a>
-          <a href="/academicStaffFinalStagePetitions" class="menu-item active">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
+          <a href="/academicStaffFinalStagePetitions" class="menu-item">
+            <img src="img/image 16.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องรอยื่นสำนักทะเบียน</span>
           </a>
         </nav>
@@ -160,7 +161,9 @@
                 รหัสวิชา
                 <span class="sort-icon" id="sort-icon-subject_code">▲▼</span>
               </th>
-              <th class="column-section">กลุ่มเรียน</th>
+              <th class="column-section coan">
+                กลุ่มเรียน
+              </th>
               <th
                 class="column-student-name coan"
                 onclick="sortTable('student_name')"
@@ -175,12 +178,20 @@
                 รหัสนักศึกษา
                 <span class="sort-icon" id="sort-icon-student_id">▲▼</span>
               </th>
-              <th class="column-date coan" onclick="sortTable('submit_time')">
+              <th 
+                class="column-date coan" 
+                onclick="sortTable('submit_time')"
+              >
                 วันที่
                 <span class="sort-icon" id="sort-icon-submit_time">▲▼</span>
               </th>
-              <th class="column-time">เวลา</th>
-              <th class="column-status coan" onclick="sortTable('status')">
+              <th class="column-time">
+                เวลา
+              </th>
+              <th 
+                class="column-status coan" 
+                onclick="sortTable('status')"
+              >
                 สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span>
               </th>
               <th class="column-check"></th>

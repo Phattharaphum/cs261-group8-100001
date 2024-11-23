@@ -127,9 +127,14 @@ button:hover {
 	width: 90%;
 }
 
-.table-header, .table-row {
+.table-header{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr ;
+    padding: 15px;
+}
+.table-row{
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
     padding: 15px;
 }
 
@@ -174,7 +179,7 @@ button:hover {
 }
 
 .column-petition-type {
-	width: 260px;
+	width: 200px;
 }
 
 .column-check {
@@ -238,6 +243,9 @@ button:hover {
 .column-subject-name {
 	width: 280px;
 }
+.column-student-id {
+	width: 130px;
+}
 
 .column-section {
 	width: 140px;
@@ -253,4 +261,11 @@ button:hover {
 
 #petition-list {
 	background-color: #EFEFEF;
+}
+
+.table tbody {
+    display: block;
+    max-height:400px; /* Adjust height as needed */
+    overflow-y: auto;
+    width: 100%;
 }
