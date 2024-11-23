@@ -96,8 +96,8 @@
                   <img src="img/avt (1).svg" alt="User Icon" />
                 </div>
                 <div class="user-details">
-                  <p class="name" id="barname">ชื่อจริง นามสกุล</p>
-                  <p class="idd" id="barid">Admin</p>
+                  <p class="name" id="barname">ภัทรภูมิ กิ่งชัย</p>
+                  <p class="idd" id="barid">6609612160</p>
                 </div>
               </div>
             </div>
@@ -107,43 +107,64 @@
 
         <!-- Main Content -->
         <div class="scallable">
-            <h2>รายละเอียดคำร้อง</h2>
-            <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
-            <p>รหัสนักศึกษา: <span class="highlight" id="student_id"></span></p>
-            <p>ชื่อ: <span class="highlight" id="student_name"></span></p>
-            <p>สาขาวิชา: <span class="highlight" id="major"></span></p>
-            <p>ชั้นปี: <span class="highlight" id="year"></span></p>
-            <p>ที่อยู่: <span class="highlight" id="address"></span></p>
-            <p>โทรศัพท์: <span class="highlight" id="student_phone"></span></p>
-            <p>โทรผู้ปกครอง: <span class="highlight" id="guardian_phone"></span></p>
-
-            <h3 class="bold-text">รายละเอียดคำร้อง</h3>
-            <p>ประเภทคำร้อง: <span class="highlight" id="petition_type"></span></p>
-            <p>รหัสวิชา: <span class="highlight" id="subject_code"></span></p>
-            <p>ชื่อวิชา: <span class="highlight" id="subject_name"></span></p>
-            <p>กลุ่มเรียน: <span class="highlight" id="section"></span></p>
-            <p>เหตุผล: <span class="highlight" id="reason"></span></p>
-
-            <h3 class="bold-text">สถานะคำร้อง</h3>
-            <p>สถานะ: <span class="highlight" id="status"></span></p>
-
-            <h3 class="bold-text">ไฟล์แนบ</h3>
-            <table class="file-table" id="attachedFilesTable">
-                <thead>
-                    <tr>
-                        <th>ชื่อไฟล์</th>
-                        <th>คำอธิบาย</th>
-                        <th>ดาวน์โหลด</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr><td colspan="3">ไม่มีไฟล์แนบ</td></tr>
-                </tbody>
-            </table>
+            <h2 class="rounded-border" id="topmain">แบบคำร้องขอจดทะเบียนล่าช้า</h2>
+            <div class="middle">
+            
+                <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
+                <dd>
+                    <p>ผู้ยื่น :<span class="highlight" id="student_name"> นาย ภัทรภูมิ กิ่งชัย</span></p>
+                    <p>เลขทะเบียน :<span class="highlight" id="student_id"> 6609612160</span></p>
+                    <p>ชั้นปีที่ :<span class="highlight" id="year"> 2</span></p>
+                    <p>สาขาวิชา :<span class="highlight" id="major"> ภาควิชาวิทยาการคอมพิวเตอร์</span></p>
+                    <p>ที่อยู่ที่ติดต่อได้ :<span class="highlight" id="house_number"> 24/1</span></p>
+                    <p>แขวง/ตำบล :<span class="highlight" id="sub_district"> ท้ายทุ่ง</span></p>
+                    <p>เขต/อำเภอ :<span class="highlight" id="district"> ทับคล้อ</span></p>
+                    <p>จังหวัด :<span class="highlight" id="province"> พิจิตร</span></p>
+                    <p>รหัสไปรษณีย์ :<span class="highlight" id="postcode"> 66150</span></p>
+                    <p>โทรศัพท์ติดต่อกับนักศึกษา :<span class="highlight" id="student_phone"> 0999632302</span></p>
+                    <p>ติดต่อผู้ปกครอง :<span class="highlight" id="guardian_phone"> 0999632302</span></p>
+                </dd><br>
+                <hr><br>
+                <h3 class="bold-text">คำร้อง</h3>
+                <dd>
+                    <p>ประเภท :<span class="highlight" id="petition_type"> ถอนรายวิชา</span></p>
+                    <p>รหัสวิชา :<span class="highlight" id="subject_code"> CS666</span></p>
+                    <p>ชื่อวิชา :<span class="highlight" id="subject_name"> Com</span></p>
+                    <p>กลุ่มเรียน :<span class="highlight" id="section"> 10002</span></p>
+                    <p class="dasda">เหตุผลในการยื่นคำร้อง :<span class="highlight" id="reason"> ทดสอบ</span></p>
+                </dd>
+                <br>
+                <hr><br>
+                <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
+                <dd>
+                    <p>ไม่มีไฟล์แนบ</p>
+                </dd>
+                <!-- <div class="file">
+                    <table id="attachedFilesBody">
+                        <thead>
+                            <tr>
+                                <th class="asd">ชื่อไฟล์</th>
+                                <th class="asd">คำอธิบาย</th>
+                                <th class="asd">ดาวน์โหลด</th>
+                            </tr>
+                        </thead>
+ 
+                    </table>
+                </div><br><br><br><br><br> -->
+            </div>
         </div>
-    </div>
+        <!-- Status Section -->
+        <div class="right">
+            <h3 style="text-align: left;">สถานะคำร้อง</h3>
+            <div class="rounded-border2">
+                <p class="asad">ยื่นคำร้องเมื่อ : 10/11/2567 23:04<span id="submit_time"> </span></p>
+                <p class="asad">พิจารณาเมื่อ : 11/11/2567 10:04<span id="submit_time"> </span></p>
+                <p id="reviewTimeText" style="display: block;" class="asad"><span id="reviewLabel"></span> <span id="review_time"></span></p>
+                <p class="spanlab" id="status"><span class="status-label status-waiting">รอตรวจสอบ</span></p>
+            </div>
+        </div>
 
-    <script>
+    <!-- <script> 
         const petitionId = new URLSearchParams(window.location.search).get('id');
 
         if (!petitionId) {
@@ -212,6 +233,6 @@
                 default: return 'ไม่ทราบสถานะ';
             }
         }
-    </script>
+    </script> -->
 </body>
 </html>
