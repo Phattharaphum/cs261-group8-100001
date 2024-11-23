@@ -6,6 +6,8 @@
     <title>ตรวจสอบคำร้อง</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
       rel="preload"
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap"
@@ -18,6 +20,7 @@
       as="style"
       onload="this.rel='stylesheet'"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Kanit&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"rel="stylesheet">
     <link rel="stylesheet" href="css/studentPetitionsChecked.css" />
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <script defer src="./js/redirect-handler.js"></script>
@@ -115,46 +118,63 @@
       <div class="scallable">
         <h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
         <div class="middle">
-          <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
+          <h2 class="bold-text">คำร้อง</h2>
+      <!-- Petition Form -->
+        <div class="petitionDetails">
           <dd>
-            <p>ผู้ยื่น : <span class="highlight" id="student_name"></span></p>
-            <p>เลขทะเบียน : <span class="highlight" id="student_id"></span></p>
-            <p>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
+            <div class="header-form">
+              <p>คำร้องนักศึกษา</p>
+              <p>คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต</p>
+            </div>
+            <div class="subheader-text">
+              <p>เรื่อง&emsp;ขอจดทะเบียนล่าช้า</p>
+              <p>เรียน&emsp;คณบดีคณะวิทยาศาสตร์และเทคโนโลยี</p>
+            </div>
+            <br>
+            <p>ข้าพเจ้า <span class="highlight" id="student_name">&ensp;</span>
+              เลขทะเบียน : <span class="highlight" id="student_id">&ensp;</span>
+              ชั้นปีที่ : <span class="highlight" id="year"></span></p>
             <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
+            <br>
+            <p class="subheader-text">ข้อมูลติดต่อ : </p>
             <p>
-              ที่อยู่ที่ติดต่อได้ :
-              <span class="highlight" id="house_number"></span>
-            </p>
-            <p>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
-            <p>เขต/อำเภอ : <span class="highlight" id="district"></span></p>
-            <p>จังหวัด : <span class="highlight" id="province"></span></p>
-            <p>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
+              ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number">&ensp;</span>
+              แขวง/ตำบล : <span class="highlight" id="sub_district">&ensp;</span></p>
+            <p>เขต/อำเภอ : <span class="highlight" id="district">&ensp;</span>
+              จังหวัด : <span class="highlight" id="province">&ensp;</span>
+              รหัสไปรษณีย์ : <span class="highlight" id="postcode">&ensp;</span></p>
             <p>
               โทรศัพท์ติดต่อกับนักศึกษา :
               <span class="highlight" id="student_phone"></span>
             </p>
             <p>
-              ติดต่อผู้ปกครอง :
+              โทรศัพ์ติดต่อผู้ปกครอง :
               <span class="highlight" id="guardian_phone"></span>
             </p>
           </dd>
-          <br />
-          <hr />
-          <br />
-          <h3 class="bold-text">คำร้อง</h3>
+          <br>
+          <p class="subheader-text">ประสงค์ที่จะยื่นคำร้อง : </p>
+
           <dd>
-            <p>ประเภท : <span class="highlight" id="petition_type"></span></p>
+            <p>ประเภท : <span class="highlight" id="petition_type">&ensp;</span>
+              ภาคการศึกษา : <span class="highlight" id="semester"></span></p>
             <p>รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
             <p>ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
             <p>กลุ่มเรียน : <span class="highlight" id="section"></span></p>
-            <p>
+            <br>
+            <p class="subheader-text">
               เหตุผลในการยื่นคำร้อง :
               <span class="highlight" id="reason"></span>
             </p>
+            <br>
           </dd>
-          <br />
-          <hr />
-          <br />
+          <div class="end-form">
+            <p>ขอแสดงความนับถือ</p>
+            <p><span class="highlight" id="student_name"></span>&nbsp;(นักศึกษา)</p>
+            <br>
+            <p class="time-submit">วันยื่นคำร้องผ่านระบบยื่นคำร้อง : <span id="submit_time"></span></p>
+          </div>
+        </div>
           <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
           <div class="file">
             <table id="attachedFilesTable">

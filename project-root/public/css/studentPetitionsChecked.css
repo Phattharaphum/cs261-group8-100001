@@ -61,11 +61,11 @@ body {
 }
 
 #personalInfo {
-    font-weight: bold;
+    font-weight: 500;
 }
 
 #subjectInfo {
-    font-weight: bold; 
+    font-weight: 500; 
 }
 
 #fileInfo {
@@ -76,20 +76,24 @@ body {
     font-weight: bold;
 }
 
-hr {
+/* hr {
     width: 50%; 
     height: 3px; 
     border: none; 
     background-color: #BFBFBF; 
     margin: 0;
     margin-left: 0;
-}
+} */
 
 .file {
     display: flex;
     gap: 20px;
 	padding: 20px;
 	padding-top: 10px;
+}
+
+.file th{
+    font-weight: 400;
 }
 
 .box-container {
@@ -158,3 +162,32 @@ hr {
 	margin-top: 20px;
 	font-size: 15pt;
 }
+
+/*Petition Form*/
+.petitionDetails {
+    background-color: #FFFFFF;
+    margin: 20px 80px;
+    padding: 30px 60px;
+    border-radius: 20px;
+    font-family: "Sarabun", sans-serif;
+}
+
+.header-form {
+    font-size: 20px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.subheader-text{
+    font-weight: 500;
+}
+
+.end-form{
+    text-align: right;
+}
+
+.time-submit {
+    margin-right: -20px;
+    font-size: 12px;
+}
+ 
