@@ -199,7 +199,7 @@
           .then((data) => {
             if (data.status !== 9 && data.status !== 10) {
               // อัปเดตเป็น 8 ถ้าสถานะไม่ใช่ปฏิเสธหรืออนุมัติ
-              fetch(`/advisor/auto-update-status/${petitionId}`, {
+              fetch(`/teacher/auto-update-status/${petitionId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ status: 8 }),
@@ -331,7 +331,7 @@
             document.getElementById("approve-button").style.display = "flex";
           }
           // แสดง review_time เฉพาะเมื่อสถานะเป็น 4 หรือ 5
-          if (data.status === 8 || data.status === 9 || data.status === 10) {
+          if (data.status === 9 || data.status === 10) {
             document.getElementById("review_time").textContent = new Date(
               data.review_time
             ).toLocaleString();
