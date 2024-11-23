@@ -66,7 +66,7 @@
             </div>
 
             <!-- ถ้ามีการดูรายละเอียดอาจารย์ จะแสดงส่วนนี้ -->
-            <div id="additionalInfo" style="display: none;">
+            <div id="additionalInfo" style="display: none;" >
                 <h3>นักศึกษาในที่ปรึกษา</h3>
                 <button onclick="showAddStudentDialog()">เพิ่มนักศึกษาในที่ปรึกษา</button>
                 <table id="advisorStudentsTable">
@@ -101,39 +101,42 @@
     </div>
 
     <!-- Dialog สำหรับเพิ่มนักศึกษาในที่ปรึกษา -->
-    <dialog id="addStudentDialog">
+    <dialog id="addStudentDialog" class="addStudentDialog">
         <h3>เพิ่มนักศึกษาในที่ปรึกษา</h3>
         <form id="addStudentForm">
             <label for="student_id">รหัสนักศึกษา:</label>
-            <input type="text" id="student_id" required>
-            <button type="submit">บันทึก</button>
-            <button type="button" onclick="closeDialog('addStudentDialog')">ยกเลิก</button>
+            <input type="text" id="student_id" required class="aaa">
+            <div>
+                <button type="submit" class="dialog-button--primary">บันทึก</button>
+                <button type="button" onclick="closeDialog('addStudentDialog')" class="dialog-button--secondary">ยกเลิก</button>
+            </div>
+            
         </form>
     </dialog>
 
   <!-- คงเหลือเฉพาะส่วนนี้ -->
-<dialog id="addCourseDialog">
+<dialog id="addCourseDialog" class="addCourseDialog">
     <h3>เพิ่มรายวิชาที่สอน</h3>
     <form id="addCourseForm">
         <label for="courseOption">เลือกวิธีการเพิ่ม:</label>
-        <select id="courseOption" onchange="toggleCourseForm()">
-            <option value="existing">เลือกจากรายวิชาที่มีอยู่แล้ว</option>
+        <select id="courseOption" onchange="toggleCourseForm()" class="aaa">
+            <option value="existing">รายวิชาที่มีอยู่แล้ว</option>
             <option value="new">เพิ่มรายวิชาใหม่</option>
         </select>
 
         <!-- ฟอร์มสำหรับเลือกรายวิชาที่มีอยู่แล้ว -->
         <div id="existingCourseForm">
             <label for="existingCourse">เลือกรายวิชา:</label>
-            <select id="existingCourse" name="existingCourse"></select>
+            <select id="existingCourse" name="existingCourse" class="aaa"></select>
         
             <label for="existingSections">Sections (คั่นด้วยเครื่องหมายจุลภาค):</label>
-            <input type="text" id="existingSections" name="existingSections">
+            <input type="text" id="existingSections" name="existingSections" class="aaa">
         </div>
         
 
         <!-- ฟอร์มสำหรับเพิ่มรายวิชาใหม่ -->
         <div id="newCourseForm" style="display: none;">
-            <label for="new_course_code">รหัสวิชา:</label>
+            <label for="new_course_code" class="aaa">รหัสวิชา:</label>
             <input type="text" id="new_course_code" name="new_course_code">
         
             <label for="new_course_name">ชื่อวิชา:</label>
@@ -141,14 +144,18 @@
         
             <label for="new_curriculum_year">ปีของหลักสูตร:</label>
             <input type="number" id="new_curriculum_year" name="new_curriculum_year">
-        
+          <div>
             <label for="newSections">Sections (คั่นด้วยเครื่องหมายจุลภาค):</label>
             <input type="text" id="newSections" name="newSections">
+          </div>
+            
         </div>
         
-
-        <button type="submit">บันทึก</button>
-        <button type="button" onclick="closeDialog('addCourseDialog')">ยกเลิก</button>
+        <div>
+            <button type="submit" class="dialog-button--primary">บันทึก</button>
+            <button type="button" onclick="closeDialog('addCourseDialog')" class="dialog-button--secondary">ยกเลิก</button>
+        </div>
+        
     </form>
 </dialog>
 
@@ -569,7 +576,8 @@
         function goBack() {
             window.location.href = '/manage_staff.html';
         }
-
+        //showAddStudentDialog();
+        //showAddCourseDialog()
     </script>
 </body>
 </html>
