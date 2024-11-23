@@ -14,22 +14,26 @@
             <div class="sidebar-header">
               <img src="img/logo.svg" alt="University Logo" class="logo" />
               <div class="tops">
-                <p class="hasd">ระบบจัดการบุคลากร</p>
+                <p class="hasd">ระบบสำหรับเจ้าหน้าที่</p>
                 <p class="asdasd">
                   คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
                 </p>
               </div>
             </div>
             <nav class="sidebar-menu">
-              <a href="/editFacultyStaff.html" class="menu-item active">
-                <img src="img/Artboard 1.svg" alt="Logs Icon" />
-                <span class="tee">แก้ไขข้อมูลอาจารย์</span>
-              </a>
-              <a href="/editAdministrativeStaff.html" class="menu-item">
-                <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
-                <span class="tee">แก้ไขข้อมูลเจ้าหน้าที่</span>
-              </a>
-            </nav>
+                <a href="/ITStaffSystemLogs.html" class="menu-item ">
+                  <img src="img/Artboard 1.svg" alt="Logs Icon" />
+                  <span class="tee">ประวัติการใช้ระบบ</span>
+                </a>
+                <a href="/editFacultyStaff.html" class="menu-item active">
+                  <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
+                  <span class="tee">แก้ไขข้อมูลบุคลากรคณะ</span>
+                </a>
+                <a href="/ITStaffPetitions.html" class="menu-item ">
+                  <img src="img/Artboard 1.svg" alt="Petitions Icon" />
+                  <span class="tee">รายการคำร้อง</span>
+                </a>
+              </nav>
             <div class="logout-section">
                 <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
                     <img src="img/back.svg" alt="Back Icon">
@@ -545,6 +549,10 @@
             });
         });
 
+
+        function goBack() {
+            window.location.href = '/manage_staff.html';
+        }
 
     </script>
 </body>

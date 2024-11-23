@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แก้ไขข้อมูลบุคลากร</title>
+    <link rel="stylesheet" href="css/stylesidebar.css">
+    <link rel="stylesheet" href="css/stylemanage_staff.css">
+    <style>
+        /* CSS สำหรับการจัดหน้า */
+
+       
+
+       
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-buttons button {
+            padding: 10px 20px;
+            border: 1px solid #ccc;
+            background-color: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .tab-buttons button.active {
+            background-color: #d63333;
+            color: white;
+        }
+
+        .table-container {
+            display: none;
+        }
+
+        .table-container.active {
+            display: block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #f9f9f9;
+        }
+
+        .add-button {
+            background-color: #d63333;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .add-button:hover {
+            background-color: #a82626;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+              <img src="img/logo.svg" alt="University Logo" class="logo" />
+              <div class="tops">
+                <p class="hasd">ระบบสำหรับเจ้าหน้าที่</p>
+                <p class="asdasd">
+                  คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
+                </p>
+              </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/ITStaffSystemLogs.html" class="menu-item ">
+                  <img src="img/Artboard 1.svg" alt="Logs Icon" />
+                  <span class="tee">ประวัติการใช้ระบบ</span>
+                </a>
+                <a href="/editFacultyStaff.html" class="menu-item active">
+                  <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
+                  <span class="tee">แก้ไขข้อมูลบุคลากรคณะ</span>
+                </a>
+                <a href="/ITStaffPetitions.html" class="menu-item ">
+                  <img src="img/Artboard 1.svg" alt="Petitions Icon" />
+                  <span class="tee">รายการคำร้อง</span>
+                </a>
+              </nav>
+            <div class="logout-section">
+              <a href="/logout" class="menu-item">
+                <img src="img/Artboard 3.svg" alt="Logout Icon" />
+                <span class="tee">ออกจากระบบ</span>
+              </a>
+              <div class="user-info">
+                <div class="asee">
+                  <img src="img/avt (1).svg" alt="User Icon" />
+                </div>
+                <div class="user-details">
+                  <p class="name" id="barname">ชื่อจริง นามสกุล</p>
+                  <p class="idd" id="barid">Admin</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        
+
+        <!-- Main Content -->
+        <div class="scallable">
+            <div class="tab-buttons">
+                <button class="active" onclick="showTab('faculty')">คณาอาจารย์</button>
+                <button onclick="showTab('staff')">บุคลากร</button>
+            </div>
+
+            <div id="faculty" class="table-container active">
+                <button class="add-button" onclick="window.location.href='/facultyAdvisorDetails.html'">+ เพิ่มข้อมูล</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>หมายเลขภายใน</th>
+                            <th>ชื่อบุคลากร</th>
+                            <th>ตำแหน่ง</th>
+                            <th>ดูรายละเอียด</th>
+                        </tr>
+                    </thead>
+                    <tbody id="facultyList">
+                        <!-- จะเติมข้อมูลอาจารย์ที่ดึงมาจาก API -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="staff" class="table-container">
+                <button class="add-button" onclick="window.location.href='/administrativeStaffDetails.html'">+ เพิ่มข้อมูล</button>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>หมายเลขภายใน</th>
+                            <th>ชื่อบุคลากร</th>
+                            <th>ตำแหน่ง</th>
+                            <th>ดูรายละเอียด</th>
+                        </tr>
+                    </thead>
+                    <tbody id="staffList">
+                        <!-- จะเติมข้อมูลบุคลากรที่ดึงมาจาก API -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+        // ฟังก์ชันสำหรับสลับแท็บ
+        function showTab(tabId) {
+            const allTabs = document.querySelectorAll('.table-container');
+            const allButtons = document.querySelectorAll('.tab-buttons button');
+
+            allTabs.forEach(tab => tab.classList.remove('active'));
+            allButtons.forEach(button => button.classList.remove('active'));
+
+            document.getElementById(tabId).classList.add('active');
+            document.querySelector(`button[onclick="showTab('${tabId}')"]`).classList.add('active');
+        }
+
+        // ดึงข้อมูลอาจารย์
+        fetch('/api/faculty-staff')
+            .then(response => response.json())
+            .then(data => {
+                const facultyList = document.getElementById('facultyList');
+                data.forEach(faculty => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${faculty.university_id}</td>
+                        <td>${faculty.academic_title} ${faculty.first_name} ${faculty.last_name}</td>
+                        <td>${faculty.position || 'ไม่ระบุ'}</td>
+                        <td><button onclick="window.location.href='/facultyAdvisorDetails.html?id=${faculty.staff_id}'">ดูรายละเอียด</button></td>
+                    `;
+                    facultyList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching faculty data:', error));
+
+        // ดึงข้อมูลบุคลากร
+        fetch('/api/administrative-staff')
+            .then(response => response.json())
+            .then(data => {
+                const staffList = document.getElementById('staffList');
+                data.forEach(staff => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${staff.university_id}</td>
+                        <td>${staff.first_name} ${staff.last_name}</td>
+                        <td>${staff.role || 'ไม่ระบุ'}</td>
+                        <td><button onclick="window.location.href='/administrativeStaffDetails.html?id=${staff.staff_id}'">ดูรายละเอียด</button></td>
+                    `;
+                    staffList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching staff data:', error));
+    </script>
+</body>
+</html>
