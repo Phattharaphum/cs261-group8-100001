@@ -127,7 +127,7 @@
                 </table>
             </div><br><br><br><br><br>
         </div>
-</div>
+    </div>
         <!-- Status Section -->
         <div class="right">
             <h3 style="text-align: left;">สถานะคำร้อง</h3>
@@ -192,7 +192,6 @@
                 document.getElementById('submit_time').textContent = new Date(data.submit_time).toLocaleString() || '';
                 document.getElementById('status').innerHTML = getStatusText(data.status);
                 document.getElementById('reason').textContent = data.reason || 'ไม่มีเหตุผลระบุไว้'; // เพิ่มการแสดงเหตุผล
-
                 document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(data.petition_type);
 
   

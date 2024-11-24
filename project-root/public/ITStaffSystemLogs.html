@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <link
       href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600&display=swap"
       rel="stylesheet"
@@ -60,16 +61,22 @@
       <div class="container">
         <div class="header">
           <div class="header-button">ประวัติการใช้ระบบ</div>
+          <div class="search-filter">
+            <input type="text" class="search-input" placeholder="ค้นหา" />
+          </div>
         </div>
+
+      
 
         <table class="table">
           <thead>
             <tr class="table-header">
-              <th class="column-log-id">#</th>
-              <th class="column-username">ชื่อผู้ใช้งาน</th>
-              <th class="column-role">บทบาท</th>
-              <th class="column-action">การกระทำ</th>
-              <th class="column-timestamp">เวลา</th>
+              <th class="column-log-id">หมายเลข    <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-username">ชื่อผู้ใช้งาน <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-role">บทบาท       <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-action">การกระทำ   <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-date">วัน/เดือน/ปี    <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-timestamp">เวลา    <i class='bx bx-expand-vertical'></i></th>
               <th class="column-details"></th>
             </tr>
           </thead>
@@ -78,11 +85,12 @@
             <!-- ตัวอย่างข้อมูล -->
             
               <tr class="table-row">
-                <td class="column-log-id">1</td>
+                <td class="column-log-id">2748</td>
                 <td class="column-username">John Doe</td>
                 <td class="column-role">นักศึกษา</td>
                 <td class="column-action">เข้าสู่ระบบ</td>
-                <td class="column-timestamp">2024-11-22 14:30:45</td>
+                <td class="column-date">2024/11/22</td>
+                <td class="column-timestamp"> 14:30:45</td>
                 <td class="column-details"><a href="/systemLogDetail.html?id=1" class="details-link">ดูรายละเอียด</a></td>
               </tr>
           
@@ -107,7 +115,8 @@
               <td class="column-username">${log.tuusername || "N/A"}</td>
               <td class="column-role">${getRoleName(log.role)}</td>
               <td class="column-action">${log.action}</td>
-              <td class="column-timestamp">${new Date(log.timestamp).toLocaleString()}</td>
+              <td class="column-date">${logDate.toLocaleDateString("th-TH")}</td> <!-- วันที่ -->
+              <td class="column-timestamp">${logDate.toLocaleTimeString("th-TH")}</td> <!-- เวลา -->
               <td class="column-details"><a href="/systemLogDetail.html?id=${log.log_id}" class="details-link">ดูรายละเอียด</a></td>
             `;
             logsList.appendChild(row);
