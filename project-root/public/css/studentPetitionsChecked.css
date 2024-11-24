@@ -96,9 +96,7 @@ body {
     border-radius: 15px;
 }
 
-.file th{
-    font-weight: 400;
-}
+
 
 .download-button {
     display: flex;
@@ -179,7 +177,8 @@ body {
 }
 
 .asd {
-	width: 100px;
+	width: 200px;
+	text-align: center;
 }
 
 .asad {
@@ -194,10 +193,12 @@ body {
 /*Petition Form*/
 .petitionDetails {
     background-color: #FFFFFF;
-    margin: 20px 80px;
     padding: 30px 60px;
     border-radius: 20px;
-    font-family: "Sarabun", sans-serif;
+    font-family: "Sarabun";
+	margin: auto;
+	margin-bottom: 50px;
+	width: 700px;
 }
 
 .tab-space {
@@ -235,4 +236,29 @@ body {
     border-radius: 20px;
     padding: 30px 30px 150px 30px;
     text-align: left;
+}
+
+
+.comments-grid {
+	margin-left: 40px;
+	margin-top: 10px;
+}
+
+.combox {
+	margin-top: 10px;
+		resize: none;
+	width: 420px;
+	height: 80px;
+	border-radius: 15px;
+	border:none;
+	padding: 15px;
+	outline: none;
+}
+
+.boxlab {
+	font-weight: 600;
+}
+
+th {
+	font-weight: 600;
 }

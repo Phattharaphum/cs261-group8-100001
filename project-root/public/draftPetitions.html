@@ -197,108 +197,161 @@
       // Fetch draft petitions and populate the draftsContainer
       // ฟังก์ชันเพื่อสร้าง draft card พร้อมสไตล์ตาม petition_type
 
-      function formatTimestamp(timestamp) {
-        const date = new Date(timestamp);
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = String(date.getMonth() + 1).padStart(2, "0"); // เดือนใน JavaScript เริ่มจาก 0
-        const year = String(date.getFullYear()).slice(-2); // เอาเฉพาะสองหลักสุดท้ายของปี
-        const hours = String(date.getHours()).padStart(2, "0");
-        const minutes = String(date.getMinutes()).padStart(2, "0");
+   // ฟังก์ชันบันทึก Log
+   async function logAction({ staff_id, tuusername, role, action, description, ip_address = null, device_info = null }) {
+  const logData = {
+    staff_id,
+    tuusername,
+    role,
+    action,
+    description,
+    ip_address,
+    device_info,
+  };
 
-        return `${day}/${month}/${year} - ${hours}:${minutes}`;
-      }
+  try {
+    const response = await fetch('/api/logs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(logData),
+    });
 
-      function createDraftCard(petition) {
-        const cardColors = {
-          1: {
-            color: "#FB8500",
-            text: "จดทะเบียนล่าช้า",
-            img: "img/pen (1).svg",
-          },
-          2: { color: "#E29578", text: "ถอนรายวิชา", img: "img/pen (3).svg" },
-          3: {
-            color: "#023E8A",
-            text: "จดทะเบียนศึกษารายวิชาข้ามหลักสูตร",
-            img: "img/pen (4).svg",
-          },
-          4: { color: "#BB3E03", text: "ลาออก", img: "img/pen (2).svg" },
-        };
+    if (!response.ok) {
+      const error = await response.json();
+      console.error('Failed to save log:', error);
+    } else {
+      console.log('Log saved successfully.');
+    }
+  } catch (error) {
+    console.error('Error logging action:', error);
+  }
+}
 
-        const { color, text, img } = cardColors[petition.petition_type] || {
-          color: "#000",
-          text: "คำร้อง",
-          img: "img/pen (3).svg",
-        };
-        const isResignation = petition.petition_type === "4";
-        const subasText = isResignation
-          ? "ลาออก"
-          : petition.subject_code || petition.petition_type;
 
-        const draftCardWrapper = document.createElement("div");
-        draftCardWrapper.className = "oucar";
+// เมื่อโหลดหน้า Draft
+document.addEventListener('DOMContentLoaded', () => {
+  // บันทึก Log ว่าผู้ใช้เข้าถึงหน้า "ดูแบบร่าง"
+  logAction({
+    staff_id: 66, // แทนค่าจริงด้วย ID ของผู้ใช้ใน session
+    tuusername: 'student001', // แทนค่าจริงด้วย username จาก session
+    role: 1, // ระบุบทบาท เช่น student
+    action: 'VIEW_DRAFT_PAGE',
+    description: 'ผู้ใช้เข้าถึงหน้าดูแบบร่าง.',
+    ip_address: '192.168.1.1', // แทนค่าจริงด้วย IP จาก request
+    device_info: navigator.userAgent, // ใช้ข้อมูลจาก browser
+  });
 
-        const draftCard = document.createElement("div");
-        draftCard.className = "draftlist-card";
-        draftCard.style.boxShadow = `4px 4px ${color}`;
+  // Fetch draft petitions
+  fetch('/draft-petitions')
+    .then((response) => response.json())
+    .then((data) => {
+      const draftsContainer = document.getElementById('draftsContainer');
+      draftsContainer.innerHTML = ''; // Clear any previous content
 
-        draftCard.innerHTML = `
-        <div class="asaa" style="color: ${color}">
-            <p class="tope">คำร้อง</p>
-            <p class="subtt">${text}</p>
-        </div>
-        <p class="subas" style="color: ${color}">${subasText}</p>
-        <img src="${img}" class="pee">
-    `;
-
-        const timestamp = document.createElement("p");
-        timestamp.className = "assdd";
-        timestamp.textContent = formatTimestamp(petition.submit_time);
-
-        draftCardWrapper.appendChild(draftCard);
-        draftCardWrapper.appendChild(timestamp);
-
-        draftCard.onclick = () => {
-          // Navigate to petitionForm.html with the petition ID for editing
-          window.location.href = `/petitionForm.html?petition_id=${petition.petition_id}`;
-        };
-
-        return draftCardWrapper;
-      }
-
-      // Fetch draft petitions and populate the draftsContainer
-      fetch("/draft-petitions")
-        .then((response) => response.json())
-        .then((data) => {
-          const draftsContainer = document.getElementById("draftsContainer");
-          draftsContainer.innerHTML = ""; // Clear any previous content
-
-          if (data.length === 0) {
-            document.querySelector(".not-found").style.display = "block";
-          } else {
-            document.querySelector(".not-found").style.display = "none";
-            data.forEach((petition) => {
-              const draftCard = createDraftCard(petition);
-              draftsContainer.appendChild(draftCard);
-            });
-          }
-        })
-        .catch((error) => {
-          console.error("Error fetching draft petitions:", error);
+      if (data.length === 0) {
+        document.querySelector('.not-found').style.display = 'block';
+      } else {
+        document.querySelector('.not-found').style.display = 'none';
+        data.forEach((petition) => {
+          const draftCard = createDraftCard(petition);
+          draftsContainer.appendChild(draftCard);
         });
+      }
+    })
+    .catch((error) => {
+      console.error('Error fetching draft petitions:', error);
+    });
 
-      document.addEventListener("DOMContentLoaded", () => {
-        fetch("/api/session-student-info")
-          .then((response) => response.json())
-          .then((data) => {
-            document.getElementById("barname").textContent =
-              data.student_name || "ไม่ทราบชื่อ";
-            document.getElementById("barid").textContent =
-              data.student_id || "ไม่ทราบรหัส";
-          })
-          .catch((error) =>
-            console.error("Error fetching student info:", error)
-          );
-      });
+  // Fetch student session info for the sidebar
+  fetch('/api/session-student-info')
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById('barname').textContent = data.student_name || 'ไม่ทราบชื่อ';
+      document.getElementById('barid').textContent = data.student_id || 'ไม่ทราบรหัส';
+    })
+    .catch((error) => console.error('Error fetching student info:', error));
+});
+
+// ฟังก์ชันสร้าง Card ของ Draft
+function createDraftCard(petition) {
+  const cardColors = {
+    1: {
+      color: '#FB8500',
+      text: 'จดทะเบียนล่าช้า',
+      img: 'img/pen (1).svg',
+    },
+    2: { color: '#E29578', text: 'ถอนรายวิชา', img: 'img/pen (3).svg' },
+    3: {
+      color: '#023E8A',
+      text: 'จดทะเบียนศึกษารายวิชาข้ามหลักสูตร',
+      img: 'img/pen (4).svg',
+    },
+    4: { color: '#BB3E03', text: 'ลาออก', img: 'img/pen (2).svg' },
+  };
+
+  const { color, text, img } = cardColors[petition.petition_type] || {
+    color: '#000',
+    text: 'คำร้อง',
+    img: 'img/pen (3).svg',
+  };
+  const isResignation = petition.petition_type === '4';
+  const subasText = isResignation ? 'ลาออก' : petition.subject_code || petition.petition_type;
+
+  const draftCardWrapper = document.createElement('div');
+  draftCardWrapper.className = 'oucar';
+
+  const draftCard = document.createElement('div');
+  draftCard.className = 'draftlist-card';
+  draftCard.style.boxShadow = `4px 4px ${color}`;
+
+  draftCard.innerHTML = `
+    <div class="asaa" style="color: ${color}">
+        <p class="tope">คำร้อง</p>
+        <p class="subtt">${text}</p>
+    </div>
+    <p class="subas" style="color: ${color}">${subasText}</p>
+    <img src="${img}" class="pee">
+`;
+
+  const timestamp = document.createElement('p');
+  timestamp.className = 'assdd';
+  timestamp.textContent = formatTimestamp(petition.submit_time);
+
+  draftCardWrapper.appendChild(draftCard);
+  draftCardWrapper.appendChild(timestamp);
+
+  draftCard.onclick = () => {
+    // บันทึก Log เมื่อผู้ใช้คลิกดูหรือแก้ไข Draft
+    logAction({
+      staff_id: 66, // แทนค่าจริงด้วย ID ของผู้ใช้ใน session
+      tuusername: 'student001', // แทนค่าจริงด้วย username จาก session
+      role: 1, // ระบุบทบาท เช่น student
+      action: 'EDIT_DRAFT',
+      description: `ผู้ใช้คลิกดูหรือแก้ไขคำร้อง: ${petition.petition_id}`,
+      ip_address: '192.168.1.1', // แทนค่าจริงด้วย IP จาก request
+      device_info: navigator.userAgent, // ใช้ข้อมูลจาก browser
+    });
+
+    // Navigate to petitionForm.html with the petition ID for editing
+    window.location.href = `/petitionForm.html?petition_id=${petition.petition_id}`;
+  };
+
+  return draftCardWrapper;
+}
+
+// ฟังก์ชันจัดรูปแบบ Timestamp
+function formatTimestamp(timestamp) {
+  const date = new Date(timestamp);
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // เดือนใน JavaScript เริ่มจาก 0
+  const year = String(date.getFullYear()).slice(-2); // เอาเฉพาะสองหลักสุดท้ายของปี
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${day}/${month}/${year} - ${hours}:${minutes}`;
+}
+
+
     </script>
   </body>
 </html>

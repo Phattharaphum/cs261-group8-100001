@@ -284,6 +284,7 @@ button:hover {
     font-weight: 600;
     margin-top: 10px;
     font-weight: bold;
+	  border:none;
   }
   
   .dialog-button--secondary {
@@ -297,10 +298,247 @@ button:hover {
     font-weight: 600;
     margin-top: 10px;
     font-weight: bold;
+	  border:none;
+	  
   }
 
 h3 {
     margin-bottom: 10px;
     font-weight: bold;
     color: #000000;
+}
+
+body {
+    font-family: 'Bai Jamjuree', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+.scallable {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+h2, h3 {
+    margin-bottom: 20px;
+}
+
+.facultyDetails, .facultyForm {
+    max-width: 800px;
+    margin: auto;
+}
+
+.facultyDetails .info-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.facultyDetails .info-group {
+    flex: 1 1 45%;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
+.facultyDetails .info-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.facultyDetails .info-group span {
+    display: block;
+}
+
+/* AdditionalInfo Tables */
+
+
+#advisorStudentsTable, #teachingCoursesTable {
+    width: 90%;
+	margin: auto;
+    border-collapse: collapse;
+    margin-top: 10px;
+	    width: 90%; /* ใช้ความกว้างเต็มพื้นที่คอนเทนเนอร์ */
+    margin: auto;
+    border-collapse: collapse;
+    background-color: #ffffff; /* สีพื้นหลัง */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+    border-radius: 8px; /* มุมโค้ง */
+    overflow: hidden; /* ป้องกันการล้น */
+    table-layout: fixed; /* คอลัมน์คงขนาด */
+}
+
+#advisorStudentsTable th, #advisorStudentsTable td,
+#teachingCoursesTable th, #teachingCoursesTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#advisorStudentsTable th, #teachingCoursesTable th {
+    background-color: #EBEBEB;
+	text-align: center;
+}
+
+/* Dialog Styles - Keep existing styles */
+#pageTitle {
+	    font-weight: bold;
+    background-color: #A70C0C;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 25px;
+    cursor: pointer;
+    margin-top: 50px;
+    margin-left: 60px;
+	width: auto;
+	display: inline-flex;
+}
+
+#academic_title {
+	    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+	width: 200px;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+#personal_title {
+		    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+	width: 200px;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.em {
+		    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+	width: 200px;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+	
+}
+
+#profile_link {
+	width: 400px;
+}
+
+.facultyDetails {
+	background-color: white;
+	border-radius: 15px;
+	padding: 20px;
+}
+
+#additionalInfo {
+	margin: auto;
+	width: 1000px;
+}
+
+.uasdd {
+	background-color: white;
+	    margin-top: 40px;
+    padding: 10px;
+	border-radius: 10px;
+}
+
+.ss {
+		    display: inline-block;
+    padding: 5px 10px;
+    background-color: #BDD1EF; /* สีพื้นหลังปุ่ม */
+    text-decoration: none;
+    color: #000000; /* สีตัวอักษร */
+    border-radius: 10px; /* มุมโค้ง */
+    font-size: 12px; /* ขนาดตัวอักษร */
+    font-weight: 700; /* หนาตัวอักษร */
+	border: none;
+	cursor: pointer;
+	margin-left: 600px;
+}
+
+.delete-btn {
+		    display: inline-block;
+    padding: 5px 10px;
+    background-color: #AC3434; /* สีพื้นหลังปุ่ม */
+    text-decoration: none;
+    color: white; /* สีตัวอักษร */
+    border-radius: 10px; /* มุมโค้ง */
+    font-size: 12px; /* ขนาดตัวอักษร */
+    font-weight: 700; /* หนาตัวอักษร */
+	border: none;
+	cursor: pointer;
+	margin: auto;
+	width: 60px;
+	text-align: center;
+}
+
+
+.bot {
+	width: 100px;
+	align-items: center;
+	text-align: center;
+}
+.sss {
+			    display: inline-block;
+    padding: 5px 10px;
+    background-color: #BDD1EF; /* สีพื้นหลังปุ่ม */
+    text-decoration: none;
+    color: #000000; /* สีตัวอักษร */
+    border-radius: 10px; /* มุมโค้ง */
+    font-size: 12px; /* ขนาดตัวอักษร */
+    font-weight: 700; /* หนาตัวอักษร */
+	border: none;
+	cursor: pointer;
+	margin-left: 680px;
+}
+
+#addStudentDialog {
+	margin: auto;
+	border: none;
+	padding: 20px;
+	border-radius: 15px;
+}
+
+#student_id {
+	border-radius: 10px;
+	padding: 3px;
+	border: 2px solid #EBEBEB;
+	outline: none;
+}
+
+#addCourseDialog {
+		margin: auto;
+	border: none;
+	padding: 20px;
+	border-radius: 15px;
+	width: 600px;
+}
+
+#addCourseForm {
+	line-height: 40px;
 }

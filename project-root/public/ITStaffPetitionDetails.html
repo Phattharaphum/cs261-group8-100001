@@ -11,11 +11,8 @@
     <link rel="stylesheet" href="css/studentPetitionsChecked.css">
     <link rel="stylesheet" href="css/stylesidebar.css">
     <style>
-        /* Style adjustments */
-        .highlight {
-            font-weight: bold;
-        }
-        .status-label {
+                /* สไตล์สำหรับแถบสถานะ */
+                .status-label {
             padding: 5px 10px;
             border-radius: 15px;
             color: white;
@@ -26,213 +23,304 @@
         .status-rejected { background-color: #FFCDD2; color: #C62828; }
         .status-approved { background-color: #A5D6A7; color: #2E7D32; }
         .status-canceled { background-color: #BBDEFB; color: #1565C0; }
-        .file-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .file-table th, .file-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-        .file-table th {
-            background-color: #f2f2f2;
+
+        /* Style the attached files table */
+#attachedFilesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#attachedFilesTable th, #attachedFilesTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#attachedFilesTable th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+.highlight {
+            font-weight: 600;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Sidebar -->
-
-        <!-- 
+        <!-- Sidebar Section (20%) -->
         <div class="sidebar">
             <div class="sidebar-header">
-                <img src="img/logo.svg" alt="University Logo" class="logo">
-                <div class="tops">
-                    <p class="hasd">ระบบยื่นคำร้อง</p>
-                    <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
-                </div>
-            </div>
-            <nav class="sidebar-menu">
-                <a href="javascript:void(0);" class="menu-item" onclick="cancelPetition()">
-                    <img src="img/icon (2).svg" alt="Cancel Icon">
-                    <span class="tee">ยกเลิกคำร้อง</span>
-                </a>
-                <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
-                    <img src="img/back.svg" alt="Back Icon">
-                    <span class="tee">ย้อนกลับ</span>
-                </a>
-            </nav>
-        </div> -->
- 
-        <div class="sidebar">
-            <div class="sidebar-header">
-              <img src="img/logo.svg" alt="University Logo" class="logo" />
-              <div class="tops">
-                <p class="hasd">ระบบประวัติการใช้งาน</p>
-                <p class="asdasd">
-                  คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
-                </p>
-              </div>
-            </div>
-            <nav class="sidebar-menu">
-                <a href="javascript:void(0);" class="menu-item" onclick="cancelPetition()">
-                    <img src="img/icon (2).svg" alt="Cancel Icon">
-                    <span class="tee">ยกเลิกคำร้อง</span>
-                </a>
-            </nav>
-            <div class="logout-section">
-
-
-                <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
-                    <img src="img/back.svg" alt="Back Icon">
-                    <span class="tee">ย้อนกลับ</span>
-                </a>
-              <a href="/logout" class="menu-item">
-                <img src="img/Artboard 3.svg" alt="Logout Icon" />
-                <span class="tee">ออกจากระบบ</span>
-              </a>
-              <div class="user-info">
-                <div class="asee">
-                  <img src="img/avt (1).svg" alt="User Icon" />
-                </div>
-                <div class="user-details">
-                  <p class="name" id="barname">ภัทรภูมิ กิ่งชัย</p>
-                  <p class="idd" id="barid">6609612160</p>
-                </div>
-              </div>
-            </div>
+                      <img src="img/logo.svg" alt="University Logo" class="logo">
+                      <div class="tops">
+                      <p class="hasd">ระบบยื่นคำร้อง</p>
+                      <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                      </div>
+                  
+                  </div>
+                  <nav class="sidebar-menu" id="cancelButton" style="display: none;">
+                      <a href="javascript:void(0);" class="menu-item" onclick="updateStatus(6)" >
+                          <img src="img/icon (2).svg" alt="Status Icon">
+                          <span class="tee">ยกเลิกคำร้อง</span>
+                      </a>
+                  </nav>
+                  <div class="logout-section">
+					   <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
+                         <img src="img/back.svg" alt="Status Icon">
+                          <span class="tee">ย้อนกลับ</span>
+                      </a>
+                      <a href="/logout" class="menu-item">
+                          <img src="img/Artboard3.svg" alt="Logout Icon">
+                          <span class="tee">ออกจากระบบ</span>
+                      </a>
+                      <div class="user-info">
+                          <div class="asee"><img src="img/avt (2).svg" alt="Logout Icon"></div>
+                          <div class="user-details">
+                              <p class="name" id="barname"></p>
+                              <p class="idd" id="barid"></p> 
+                          </div>
+                      </div>
+                  </div>
           </div>
-
-
-
-        <!-- Main Content -->
-        <div class="scallable">
-            <h2 class="rounded-border" id="topmain">แบบคำร้องขอจดทะเบียนล่าช้า</h2>
-            <div class="middle">
+        
+        <!-- Main Content Section (80%) -->
+	<div class="scallable"> 
+		<h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
+        <div class="middle">
             
-                <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
-                <dd>
-                    <p>ผู้ยื่น :<span class="highlight" id="student_name"> นาย ภัทรภูมิ กิ่งชัย</span></p>
-                    <p>เลขทะเบียน :<span class="highlight" id="student_id"> 6609612160</span></p>
-                    <p>ชั้นปีที่ :<span class="highlight" id="year"> 2</span></p>
-                    <p>สาขาวิชา :<span class="highlight" id="major"> ภาควิชาวิทยาการคอมพิวเตอร์</span></p>
-                    <p>ที่อยู่ที่ติดต่อได้ :<span class="highlight" id="house_number"> 24/1</span></p>
-                    <p>แขวง/ตำบล :<span class="highlight" id="sub_district"> ท้ายทุ่ง</span></p>
-                    <p>เขต/อำเภอ :<span class="highlight" id="district"> ทับคล้อ</span></p>
-                    <p>จังหวัด :<span class="highlight" id="province"> พิจิตร</span></p>
-                    <p>รหัสไปรษณีย์ :<span class="highlight" id="postcode"> 66150</span></p>
-                    <p>โทรศัพท์ติดต่อกับนักศึกษา :<span class="highlight" id="student_phone"> 0999632302</span></p>
-                    <p>ติดต่อผู้ปกครอง :<span class="highlight" id="guardian_phone"> 0999632302</span></p>
-                </dd><br>
-                <hr><br>
-                <h3 class="bold-text">คำร้อง</h3>
-                <dd>
-                    <p>ประเภท :<span class="highlight" id="petition_type"> ถอนรายวิชา</span></p>
-                    <p>รหัสวิชา :<span class="highlight" id="subject_code"> CS666</span></p>
-                    <p>ชื่อวิชา :<span class="highlight" id="subject_name"> Com</span></p>
-                    <p>กลุ่มเรียน :<span class="highlight" id="section"> 10002</span></p>
-                    <p class="dasda">เหตุผลในการยื่นคำร้อง :<span class="highlight" id="reason"> ทดสอบ</span></p>
-                </dd>
-                <br>
-                <hr><br>
-                <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
-                <dd>
-                    <p>ไม่มีไฟล์แนบ</p>
-                </dd>
-                <!-- <div class="file">
-                    <table id="attachedFilesBody">
-                        <thead>
-                            <tr>
-                                <th class="asd">ชื่อไฟล์</th>
-                                <th class="asd">คำอธิบาย</th>
-                                <th class="asd">ดาวน์โหลด</th>
-                            </tr>
-                        </thead>
+            <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
+            <dd>
+                <p>ผู้ยื่น : <span class="highlight" id="student_name"></span></p>
+                <p>เลขทะเบียน : <span class="highlight" id="student_id"></span></p>
+                <p>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
+                <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
+                <p>ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number"></span></p>
+                <p>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
+                <p>เขต/อำเภอ : <span class="highlight" id="district"></span></p>
+                <p>จังหวัด : <span class="highlight" id="province"></span></p>
+                <p>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
+                <p>โทรศัพท์ติดต่อกับนักศึกษา : <span class="highlight" id="student_phone"></span></p>
+                <p>ติดต่อผู้ปกครอง : <span class="highlight" id="guardian_phone"></span></p>
+            </dd><br>
+            <hr><br>
+            <h3 class="bold-text">คำร้อง</h3>
+            <dd>
+                <p>ประเภท : <span class="highlight" id="petition_type"></span></p>
+                <p>รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
+                <p>ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
+                <p>กลุ่มเรียน : <span class="highlight" id="section"></span></p>
+                <p class="dasda">เหตุผลในการยื่นคำร้อง : <span class="highlight" id="reason"></span></p>
+            </dd>
+            <br>
+            <hr><br>
+            <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
+            <div class="file">
+                <table id="attachedFilesBody">
+                    <thead>
+                        <tr>
+                            <th class="asd">ชื่อไฟล์</th>
+                            <th class="asd">คำอธิบาย</th>
+                            <th class="asd">ดาวน์โหลด</th>
+                        </tr>
+                    </thead>
  
-                    </table>
-                </div><br><br><br><br><br> -->
-            </div>
+                </table>
+            </div><br><br><br><br><br>
         </div>
+        <div class="comments-section">
+            <h3>ความคิดเห็น :</h3>
+            <div class="comments-grid">
+              <div>
+                <label for="acdemicStaff-comment">ความคิดเห็นเจ้าหน้าที่:</label>
+                <textarea id="acdemicStaff-comment" readonly></textarea>
+              </div>
+              <div>
+                <label for="advisor-comment">ความคิดเห็นอาจารย์ที่ปรึกษา:</label>
+                <textarea id="advisor-comment" readonly></textarea>
+              </div>
+              <div>
+                <label for="Lecturer-comment">ความคิดเห็นอาจารย์ผู้สอน:</label>
+                <textarea id="Lecturer-comment" readonly></textarea>
+              </div>
+            </div>
+          </div> 
+
+    </div>
         <!-- Status Section -->
         <div class="right">
             <h3 style="text-align: left;">สถานะคำร้อง</h3>
             <div class="rounded-border2">
-                <p class="asad">ยื่นคำร้องเมื่อ : 10/11/2567 23:04<span id="submit_time"> </span></p>
-                <p class="asad">พิจารณาเมื่อ : 11/11/2567 10:04<span id="submit_time"> </span></p>
-                <p id="reviewTimeText" style="display: block;" class="asad"><span id="reviewLabel"></span> <span id="review_time"></span></p>
-                <p class="spanlab" id="status"><span class="status-label status-waiting">รอตรวจสอบ</span></p>
+        <p class="asad">คำร้องถูกยื่นเมื่อ: <span id="submit_time"></span></p>
+        <p class="asad">พิจารณาเมื่อ:<span id="review_time"></span></p>
+        <p>เวลาพิจารณาเจ้าหน้าที่: <span id="review_time_a"></span></p>
+        <p>เวลาพิจารณาอาจารย์ที่ปรึกษา: <span id="review_time_b"></span></p>
+        <p>เวลาพิจารณาอาจารย์ผู้สอน: <span id="review_time_c"></span></p>
+        <p class="spanlab"><span id="status"></span></p>
             </div>
         </div>
 
-    <!-- <script> 
-        const petitionId = new URLSearchParams(window.location.search).get('id');
+    </div>
 
-        if (!petitionId) {
-            alert('ไม่พบคำร้องที่เลือก');
-            window.location.href = '/ITStaffPetitions.html';
-        }
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const petitionId = urlParams.get('id');
+        const attachedFilesBody = document.getElementById('attachedFilesBody');
 
-        // Fetch petition details
-        fetch(`/api/petitions/${petitionId}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('student_id').textContent = data.student_id;
-                document.getElementById('student_name').textContent = data.student_name;
-                document.getElementById('major').textContent = data.major || 'ไม่ระบุ';
-                document.getElementById('year').textContent = data.year || 'ไม่ระบุ';
-                document.getElementById('address').textContent = `${data.house_number}, ${data.sub_district}, ${data.district}, ${data.province}, ${data.postcode}`;
-                document.getElementById('student_phone').textContent = data.student_phone || 'ไม่ระบุ';
-                document.getElementById('guardian_phone').textContent = data.guardian_phone || 'ไม่ระบุ';
+        
+                // ฟังก์ชันแสดงสถานะพร้อมแถบสี
+                function getStatusText(status) {
+    switch (status) {
+        case 2: return '<span class="status-label status-waiting">รอเจ้าหน้าที่ตรวจสอบ</span>';
+        case 3: return '<span class="status-label status-waiting">ผ่าน/รออาจารย์ที่ปรึกษาตรวจสอบ</span>';
+        case 4: return '<span class="status-label status-rejected">ปฏิเสธ/ให้กลับไปแก้ไข/a</span>';
+        case 5: return '<span class="status-label status-read">อาจารย์ที่ปรึกษาอ่านแล้ว</span>';
+        case 6: return '<span class="status-label status-approved">อนุมัติ/รออาจารย์ผู้สอนตรวจสอบ</span>';
+        case 7: return '<span class="status-label status-rejected">ปฏิเสธ/ให้กลับไปแก้ไข/b</span>';
+        case 8: return '<span class="status-label status-read">อาจารย์ผู้สอนอ่านแล้ว</span>';
+        case 9: return '<span class="status-label status-approved">อนุมัติ/รอเจ้าหน้าที่ยื่นบันทึกคำร้อง</span>';
+        case 10: return '<span class="status-label status-rejected">ปฏิเสธ/c</span>';
+        case 11: return '<span class="status-label status-approved">ผ่านยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
+        case 12: return '<span class="status-label status-rejected">ขอรายละเอียด/กลับไปแก้ไข/d</span>';
+        case 13: return '<span class="status-label status-approved">อนุมัติ</span>';
+        case 14: return '<span class="status-label status-rejected">ปฏิเสธ/ขอรายละเอียด/กลับไปแก้ไข/e</span>';
+        case 15: return '<span class="status-label status-approved">ยื่นเรื่องไปยังสำนักทะเบียนเรียบร้อยแล้ว</span>';
+        case 20: return '<span class="status-label status-canceled">ยกเลิกคำร้องโดยนักศึกษา</span>';
+        case 22: return '<span class="status-label status-canceled">ยกเลิกโดยเจ้าหน้าที่</span>';
+        default: return '<span class="status-label">ไม่ทราบสถานะ</span>';
+    }
+}
 
-                document.getElementById('petition_type').textContent = getPetitionType(data.petition_type);
-                document.getElementById('subject_code').textContent = data.subject_code || 'ไม่ระบุ';
-                document.getElementById('subject_name').textContent = data.subject_name || 'ไม่ระบุ';
-                document.getElementById('section').textContent = data.section || 'ไม่ระบุ';
-                document.getElementById('reason').textContent = data.reason || 'ไม่มีเหตุผล';
 
-                document.getElementById('status').textContent = getStatusText(data.status);
-            })
-            .catch(error => {
-                console.error('Error fetching petition details:', error);
-                alert('ไม่สามารถดึงข้อมูลคำร้องได้');
-            });
-
-        // Cancel petition
-        function cancelPetition() {
-            fetch(`/api/petitions/${petitionId}/cancel`, { method: 'POST' })
-                .then(response => {
-                    if (response.ok) {
-                        alert('ยกเลิกคำร้องสำเร็จ');
-                        window.location.href = '/ITStaffPetitions.html';
-                    } else {
-                        alert('ไม่สามารถยกเลิกคำร้องได้');
-                    }
-                })
-                .catch(error => console.error('Error cancelling petition:', error));
-        }
-
-        function goBack() {
-            window.location.href = '/ITStaffPetitions.html';
-        }
-
-        function getPetitionType(type) {
-            switch (parseInt(type)) {
+                // ฟังก์ชันแสดงประเภทคำร้อง
+                function getPetitionType(type) {
+            switch(parseInt(type)) {
                 case 1: return 'จดทะเบียนล่าช้า';
                 case 2: return 'ถอนรายวิชา';
+                case 3: return 'จดทะเบียนศึกษารายวิชาข้ามหลักสูตร';
+                case 4: return 'ลาออก';
                 default: return 'ไม่ทราบประเภท';
             }
         }
 
-        function getStatusText(status) {
-            switch (parseInt(status)) {
-                case 2: return 'รอตรวจสอบ';
-                case 3: return 'อ่านแล้ว';
-                case 4: return 'ไม่อนุมัติ';
-                case 5: return 'อนุมัติแล้ว';
-                case 22: return 'ยกเลิก';
-                default: return 'ไม่ทราบสถานะ';
-            }
+        // Fetch petition details
+        fetch(`/student/petition-details/${petitionId}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('student_name').textContent = data.student_name || '';
+                document.getElementById('student_id').textContent = data.student_id || '';
+                document.getElementById('year').textContent = data.year || '';
+                document.getElementById('major').textContent = data.major || '';
+                document.getElementById('house_number').textContent = data.house_number || '';
+                document.getElementById('sub_district').textContent = data.sub_district || '';
+                document.getElementById('district').textContent = data.district || '';
+                document.getElementById('province').textContent = data.province || '';
+                document.getElementById('postcode').textContent = data.postcode || '';
+                document.getElementById('student_phone').textContent = data.student_phone || '';
+                document.getElementById('guardian_phone').textContent = data.guardian_phone || '';
+
+                document.getElementById('petition_type').textContent = getPetitionType(data.petition_type) || '';
+                document.getElementById('subject_code').textContent = data.subject_code || '';
+                document.getElementById('subject_name').textContent = data.subject_name || '';
+                document.getElementById('section').textContent = data.section || '';
+                document.getElementById('submit_time').textContent = new Date(data.submit_time).toLocaleString() || '';
+                document.getElementById('status').innerHTML = getStatusText(data.status);
+                document.getElementById('reason').textContent = data.reason || 'ไม่มีเหตุผลระบุไว้'; // เพิ่มการแสดงเหตุผล
+                document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(data.petition_type);
+                          document.getElementById("acdemicStaff-comment").textContent =
+            data.comment_a || "";
+
+          document.getElementById("advisor-comment").textContent =
+            data.comment_b || "";
+
+          document.getElementById("Lecturer-comment").textContent =
+            data.comment_c || "";
+
+          document.getElementById("review_time_a").textContent =
+            data.review_time_a ? new Date(data.review_time_a).toLocaleString() : "ยังไม่มีการพิจารณา";
+          document.getElementById("review_time_b").textContent =
+            data.review_time_b ? new Date(data.review_time_b).toLocaleString() : "ยังไม่มีการพิจารณา";
+          document.getElementById("review_time_c").textContent =
+           data.review_time_c ? new Date(data.review_time_c).toLocaleString() : "ยังไม่มีการพิจารณา";
+
+  
+                if (data.status === 2) {
+                    document.getElementById('cancelButton').style.display = 'block';
+                } else {
+                    document.getElementById('cancelButton').style.display = 'none';
+                }
+
+
+                // ตรวจสอบสถานะและอัปเดตการแสดงผล review_time
+        const reviewTimeText = document.getElementById('reviewTimeText');
+        const reviewLabel = document.getElementById('reviewLabel');
+        
+        if (data.status === 3) {
+            reviewLabel.textContent = 'อ่านแล้วเมื่อ:';
+            reviewTimeText.style.display = 'block';
+            document.getElementById('review_time').textContent = new Date(data.review_time).toLocaleString() || '';
+        } else if (data.status === 4 || data.status === 5) {
+            reviewLabel.textContent = 'พิจารณาเมื่อ:';
+            reviewTimeText.style.display = 'block';
+            document.getElementById('review_time').textContent = new Date(data.review_time).toLocaleString() || '';
+        } else {
+            reviewTimeText.style.display = 'none'; // ซ่อนเมื่อสถานะอื่น
         }
-    </script> -->
-</body>
+
+
+
+                // Display attached files
+
+if (data.attachedFiles && data.attachedFiles.length > 0) {
+    data.attachedFiles.forEach((file, index) => {
+        const row = document.createElement('tr');
+
+        row.innerHTML = `
+            <td>${file.file_name}</td>
+            <td>${file.description}</td>
+            <td><a href="/student/download-file/${file.file_id}" target="_blank">ดาวน์โหลด</a></td>
+        `;
+
+        attachedFilesBody.appendChild(row);
+    });
+} else {
+    attachedFilesBody.innerHTML = '<tr><td colspan="3">ไม่มีไฟล์แนบ</td></tr>';
+}
+        
+            })
+            .catch(error => console.error('Error fetching petition details:', error));
+
+        function goBack() {
+            window.location.href = '/ITStaffPetitions.html';
+        }
+        function updateStatus(newStatus) {
+            fetch(`/advisor/update-petition/${petitionId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('อัปเดตสถานะสำเร็จ');
+                    window.location.href = '/studentPetitions';
+                } else {
+                    alert('ไม่สามารถอัปเดตสถานะได้');
+                }
+            })
+            .catch(error => console.error('Error updating petition status:', error));
+        }
+        document.addEventListener("DOMContentLoaded", () => {
+    fetch('/api/session-student-info')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('barname').textContent = data.student_name || 'ไม่ทราบชื่อ';
+            document.getElementById('barid').textContent = data.student_id || 'ไม่ทราบรหัส';
+        })
+        .catch(error => console.error('Error fetching student info:', error));
+});
+    </script>
+    <script src="/js/sessionTimeout.js"></script>
+  </body>
 </html>

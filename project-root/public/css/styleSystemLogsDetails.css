@@ -45,8 +45,8 @@ body {
     background-color: #A70C0C;
     display: inline-block;    
     color: #FFFFFF; 
-	margin-top: 20px;
-	margin-left: 20px 
+	margin-top: 50px;
+	margin-left: 50px 
 }
 
 .rounded-border2 {
@@ -162,3 +162,16 @@ hr {
 	font-size: 15pt;
 }
 
+
+.log-details {
+	margin: 50px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	line-height: 30px;
+}
+
+
+
+.ss {
+	font-weight: 800;
+}

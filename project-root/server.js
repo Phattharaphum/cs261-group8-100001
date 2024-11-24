@@ -101,7 +101,7 @@ const StartServer = async () => {
       // ตรวจสอบ username และ password สำหรับ userType: 'teacher'
       if (username === "0001" && password === "test") {
         req.session.user = {
-          username: "U001",
+          username: "1",
           email: "teacher@example.com", // ตัวอย่างข้อมูล
           displayname_en: "Teacher",
           displayname_th: "ครู",
@@ -114,6 +114,22 @@ const StartServer = async () => {
         res.json({
           success: true,
           redirectUrl: "/advisorPetitions",
+        });
+      } else if(username === "0002" && password === "test") {
+        req.session.user = {
+          username: username,
+          email: "academicStaff@example.com", // ตัวอย่างข้อมูล
+          displayname_en: "academicStaff",
+          displayname_th: "เจ้าหน้าที่ฝ่ายวิชาการ",
+          faculty: "Faculty of Education",
+          department: "Education Department",
+          userType: "academicStaff",
+        };
+
+        // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า homeacademicStaff
+        res.json({
+          success: true,
+          redirectUrl: "/academicStaffPetitions",
         });
       } else if (username === "0004" && password === "test") {
         req.session.user = {
@@ -131,7 +147,41 @@ const StartServer = async () => {
           success: true,
           redirectUrl: "/deanPetitions",
         });
-      } else {
+      } else if (username === "0005" && password === "test") {
+        req.session.user = {
+          username: "U005",
+          email: "it@example.com",
+          displayname_en: "Teacher",
+          displayname_th: "เจ้าหน้าที่เทคนิค",
+          faculty: "Faculty of Education",
+          department: "Education Department",
+          userType: "it",
+        };
+
+        // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า hometeacher
+        res.json({
+          success: true,
+          redirectUrl: "/ITStaffSystemLogs.html",
+        });
+      
+    } else if (username === "0006" && password === "test") {
+      req.session.user = {
+        username: "600009",
+        email: "it@example.com",
+        displayname_en: "Teacher",
+        displayname_th: "เจ้าหน้าที่เทคนิค",
+        faculty: "Faculty of Education",
+        department: "Education Department",
+        userType: "it",
+      };
+
+      // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า hometeacher
+      res.json({
+        success: true,
+        redirectUrl: "/advisorPetitions",
+      });
+    }
+      else {
         // ถ้า username และ password ไม่ตรงตามเงื่อนไข ให้เรียก TU API
         const response = await fetch(
           "https://restapi.tu.ac.th/api/v1/auth/Ad/verify",
@@ -211,6 +261,8 @@ const StartServer = async () => {
       });
     }
   });
+
+
 
   // Endpoint สำหรับอัปเดตสถานะเป็น "อ่านแล้ว" และตั้งค่า review_time
   app.post("/advisor/auto-update-status/:id", async (req, res) => {
@@ -624,6 +676,8 @@ const StartServer = async () => {
       res.status(500).json({ error: "Failed to fetch draft petitions" });
     }
   });
+
+
 
   // Route สำหรับแสดงหน้า draft petitions
   app.get("/draft-petitions-page", isAuthenticated, isStudent, (req, res) => {
@@ -1213,9 +1267,9 @@ app.post(
   // ดึงข้อมูลคำร้องในรายวิชาที่ยังไม่ได้ตรวจสอบและตรวจสอบแล้ว
   app.get("/teacher/pending-petitions", async (req, res) => {
     try {
-      const teacherId = req.session.user.username; // e.g., 'U001'
+      const teacherId = "600009"; // e.g., 'U001' req.session.user.username
       const pool = await sql.connect(config);
-
+  
       // Pending petitions with status = 6
       const pendingResult = await pool
         .request()
@@ -1233,7 +1287,7 @@ app.post(
               AND fs.university_id = @teacherId
               AND s.section = p.section
           `);
-
+  
       // Reviewed petitions with status IN (8, 9, 10)
       const reviewedResult = await pool
         .request()
@@ -1251,16 +1305,20 @@ app.post(
               AND fs.university_id = @teacherId
               AND s.section = p.section
           `);
-
+  
+      console.log("Pending petitions:", pendingResult.recordset);
+      console.log("Reviewed petitions:", reviewedResult.recordset);
+  
       res.json({
         pending: pendingResult.recordset,
         reviewed: reviewedResult.recordset,
       });
     } catch (err) {
-      console.error(err);
+      console.error("Error:", err);
       res.status(500).json({ error: "Failed to fetch petitions" });
     }
   });
+  
 
   app.get("/teacher/petition-details/:id", async (req, res) => {
     const { id } = req.params;
@@ -1525,7 +1583,7 @@ app.post(
           .request()
           .input("studentId", sql.NVarChar, studentId)
           .query(
-            "SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5, 6)"
+            "SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)"
           );
 
         res.json(result.recordset);
@@ -1860,6 +1918,7 @@ app.get('/api/faculty-staff', async (req, res) => {
               first_name,
               last_name,
               status,
+              branch,
               office,
               role
           FROM faculty_staff
@@ -2235,7 +2294,11 @@ app.get('/api/administrative-staff/:id', async (req, res) => {
                   last_name,
                   status,
                   office,
-                  role
+                  role,
+                  branch,
+                  email,
+                  phone,
+                  profile_link
               FROM faculty_staff
               WHERE staff_id = @staff_id AND role IN (2, 3)
           `);
@@ -2253,10 +2316,10 @@ app.get('/api/administrative-staff/:id', async (req, res) => {
 
 // เพิ่มบุคลากรใหม่
 app.post('/api/administrative-staff', async (req, res) => {
-  const { university_id, academic_title, personal_title, first_name, last_name, office, status, role } = req.body;
+  const { university_id, academic_title, personal_title, first_name, last_name, office, status, role, branch, email, phone, profile_link } = req.body;
 
   // ตรวจสอบข้อมูลที่จำเป็น
-  if (!university_id || !personal_title || !first_name || !last_name || !role || ![2,3].includes(role)) {
+  if (!university_id || !personal_title || !first_name || !last_name || !role || ![2, 3].includes(role)) {
       return res.status(400).json({ error: 'Missing or invalid required fields' });
   }
 
@@ -2271,9 +2334,17 @@ app.post('/api/administrative-staff', async (req, res) => {
           .input('office', sql.NVarChar, office)
           .input('status', sql.Int, status)
           .input('role', sql.Int, role)
+          .input('branch', sql.NVarChar, branch)
+          .input('email', sql.NVarChar, email)
+          .input('phone', sql.NVarChar, phone)
+          .input('profile_link', sql.NVarChar, profile_link)
           .query(`
-              INSERT INTO faculty_staff (university_id, academic_title, personal_title, first_name, last_name, office, status, role)
-              VALUES (@university_id, @academic_title, @personal_title, @first_name, @last_name, @office, @status, @role)
+              INSERT INTO faculty_staff (
+                  university_id, academic_title, personal_title, first_name, last_name, office, status, role, branch, email, phone, profile_link
+              )
+              VALUES (
+                  @university_id, @academic_title, @personal_title, @first_name, @last_name, @office, @status, @role, @branch, @email, @phone, @profile_link
+              )
           `);
       res.json({ success: true });
   } catch (err) {
@@ -2285,13 +2356,13 @@ app.post('/api/administrative-staff', async (req, res) => {
 // แก้ไขข้อมูลบุคลากร
 app.put('/api/administrative-staff/:id', async (req, res) => {
   const { id } = req.params;
-  const { university_id, academic_title, personal_title, first_name, last_name, office, status, role } = req.body;
+  const { university_id, academic_title, personal_title, first_name, last_name, office, status, role, branch, email, phone, profile_link } = req.body;
 
   if (!id || isNaN(Number(id))) {
       return res.status(400).json({ error: 'Invalid staff ID' });
   }
 
-  if (!university_id || !personal_title || !first_name || !last_name || !role || ![2,3].includes(role)) {
+  if (!university_id || !personal_title || !first_name || !last_name || !role || ![2, 3].includes(role)) {
       return res.status(400).json({ error: 'Missing or invalid required fields' });
   }
 
@@ -2307,6 +2378,10 @@ app.put('/api/administrative-staff/:id', async (req, res) => {
           .input('office', sql.NVarChar, office)
           .input('status', sql.Int, status)
           .input('role', sql.Int, role)
+          .input('branch', sql.NVarChar, branch)
+          .input('email', sql.NVarChar, email)
+          .input('phone', sql.NVarChar, phone)
+          .input('profile_link', sql.NVarChar, profile_link)
           .query(`
               UPDATE faculty_staff
               SET
@@ -2317,7 +2392,11 @@ app.put('/api/administrative-staff/:id', async (req, res) => {
                   last_name = @last_name,
                   office = @office,
                   status = @status,
-                  role = @role
+                  role = @role,
+                  branch = @branch,
+                  email = @email,
+                  phone = @phone,
+                  profile_link = @profile_link
               WHERE staff_id = @staff_id AND role IN (2, 3)
           `);
       res.json({ success: true });
@@ -2326,6 +2405,7 @@ app.put('/api/administrative-staff/:id', async (req, res) => {
       res.status(500).json({ error: 'Failed to update staff member' });
   }
 });
+
 
 
 
@@ -2380,6 +2460,195 @@ app.post('/api/petitions/:id/cancel', async (req, res) => {
       res.status(500).json({ error: 'Failed to cancel petition' });
   }
 });
+
+
+
+
+
+
+app.get('/api/courses', async (req, res) => {
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .query(`
+              SELECT 
+                  course_id,
+                  course_code,
+                  course_name
+              FROM courses
+          `);
+      res.json(result.recordset);
+  } catch (err) {
+      console.error('Error fetching courses:', err);
+      res.status(500).json({ error: 'Failed to fetch courses' });
+  }
+});
+
+
+app.get('/api/courses/:course_id/sections', async (req, res) => {
+  const { course_id } = req.params;
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('course_id', sql.Int, course_id)
+          .query(`
+              SELECT sections
+              FROM courses
+              WHERE course_id = @course_id
+          `);
+      if (result.recordset.length === 0) {
+          return res.status(404).json({ error: 'Course not found' });
+      }
+      const course = result.recordset[0];
+      const sections = JSON.parse(course.sections);
+
+      // Get unique staff_ids
+      const staffIds = [...new Set(sections.map(s => s.staff_id))];
+
+      // Fetch instructor names using parameterized queries
+      let instructors = [];
+      if (staffIds.length > 0) {
+          const request = pool.request();
+          // Add each staff_id as an input parameter
+          staffIds.forEach((id, index) => {
+              request.input(`staffId${index}`, sql.Int, id);
+          });
+          // Build the IN clause with parameter placeholders
+          const staffIdPlaceholders = staffIds.map((id, index) => `@staffId${index}`).join(',');
+
+          const query = `
+              SELECT staff_id, first_name, last_name
+              FROM faculty_staff
+              WHERE staff_id IN (${staffIdPlaceholders})
+          `;
+          const instructorsResult = await request.query(query);
+          instructors = instructorsResult.recordset;
+      }
+
+      // Map staff_id to instructor's full name
+      const staffIdToName = {};
+      instructors.forEach(inst => {
+          staffIdToName[inst.staff_id] = `${inst.first_name} ${inst.last_name}`;
+      });
+
+      // Combine sections with instructor names
+      const sectionsWithInstructor = sections.map(sec => ({
+          staff_id: sec.staff_id,
+          section: sec.section,
+          instructor_name: staffIdToName[sec.staff_id] || ''
+      }));
+
+      res.json(sectionsWithInstructor);
+  } catch (err) {
+      console.error('Error fetching sections:', err);
+      res.status(500).json({ error: 'Failed to fetch sections' });
+  }
+});
+
+
+
+
+
+app.get("/api/petitions/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log("Fetching petition ID:", id); // Debugging
+
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .input("id", sql.Int, id)
+      .query(`
+        SELECT * 
+        FROM petition 
+        WHERE petition_id = @id;
+      `);
+
+    if (result.recordset.length === 0) {
+      console.warn("Petition not found:", id);
+      return res.status(404).json({ error: "Petition not found" });
+    }
+
+    res.json(result.recordset[0]);
+  } catch (error) {
+    console.error("Error fetching petition details:", error);
+    res.status(500).json({ error: "Failed to fetch petition details" });
+  }
+});
+
+
+
+app.post("/api/petitions/:id/cancel", async (req, res) => {
+  const { id } = req.params;
+  console.log("Cancelling petition ID:", id); // Debugging
+
+  try {
+    const pool = await sql.connect(config);
+    const result = await pool
+      .request()
+      .input("id", sql.Int, id)
+      .query(`
+        UPDATE petition 
+        SET status = 20, review_time_a = GETDATE() 
+        WHERE petition_id = @id;
+      `);
+
+    if (result.rowsAffected[0] === 0) {
+      console.warn("Petition not found or not updated:", id);
+      return res.status(404).json({ error: "Petition not found or cannot be canceled" });
+    }
+
+    res.json({ success: true, message: "Petition canceled successfully" });
+  } catch (error) {
+    console.error("Error cancelling petition:", error);
+    res.status(500).json({ error: "Failed to cancel petition" });
+  }
+});
+
+
+app.post('/api/logs', async (req, res) => {
+  const { staff_id, tuusername, role, action, description, ip_address, device_info } = req.body;
+
+  // Validate required fields
+  if (!tuusername || !role || !action) {
+    return res.status(400).json({ error: 'Missing required fields: tuusername, role, action.' });
+  }
+
+  // Ensure role is within the valid range
+  if (role < 1 || role > 5) {
+    return res.status(400).json({ error: 'Role must be between 1 and 5.' });
+  }
+
+  try {
+    const pool = await sql.connect(config);
+
+    // Insert log into the system_logs table
+    await pool.request()
+      .input('staff_id', sql.Int, staff_id || null) // staff_id is optional
+      .input('tuusername', sql.NVarChar, tuusername)
+      .input('role', sql.Int, role) // Role is now INT
+      .input('action', sql.NVarChar, action)
+      .input('description', sql.NVarChar, description || null) // Description is optional
+      .input('ip_address', sql.NVarChar, ip_address || null) // IP Address is optional
+      .input('device_info', sql.Text, device_info || null) // Device Info is optional
+      .query(`
+        INSERT INTO system_logs (
+          staff_id, tuusername, role, action, description, ip_address, device_info
+        )
+        VALUES (
+          @staff_id, @tuusername, @role, @action, @description, @ip_address, @device_info
+        )
+      `);
+
+    res.status(200).json({ success: true, message: 'Log saved successfully.' });
+  } catch (error) {
+    console.error('Error saving log:', error);
+    res.status(500).json({ error: 'Failed to save log.' });
+  }
+});
+
+
+
 
 
 

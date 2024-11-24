@@ -183,18 +183,25 @@
                                 <option value="2570">2570</option>
                             </select>
                         </div>
-                        <div class="courseCode-form" id="Ch1">
-                            <p>รหัสวิชา</p>
-                            <input class="courseCode" id="subject_code" type="text">
+                        <div class="course-form" id="Ch1">
+                            <p>รายวิชา</p>
+                            <select class="course" id="course" required>\
+                                <option value="">--- Select ---</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
                         </div>
-                        <div class="courseName-form" id="Ch2">
-                            <p>ชื่อวิชา</p>
-                            <input class="courseName" id="subject_name" type="text">
-                        </div>
-                        <div class="section-form" id="Ch3">
+                        <div class="section-form" id="Ch2">
                             <p>กลุ่มเรียน</p>
-                            <input class="section" id="section" type="text">
+                            <select class="section seeea" id="section" required>
+                                <option value="">--- Select ---</option>
+                                <!-- Options will be populated by JavaScript -->
+                            </select>
                         </div>
+                        <div class="instructor-form" id="Ch3">
+                            <p>ชื่อผู้สอน</p>
+                            <input class="instructor" id="instructor" type="text" readonly>
+                        </div>
+                        
                     </div>
                 </div>
                
@@ -273,6 +280,11 @@
     const urlParams = new URLSearchParams(window.location.search);
     const petitionId = urlParams.get('petition_id');
     const initialPetitionType = urlParams.get("petition_type");
+    let courseMap = {}; // Mapping from course_id to course details
+let subjectCodeToCourseIdMap = {}; // Mapping from subject_code to course_id
+let preselectedSection = null; // For editing existing petitions
+let dataa; // Petition data when editing
+
     let removedFilesArray = [];
 
     function getPetitionType(type) {
@@ -285,59 +297,50 @@
         }
     }
 
-    if (initialPetitionType) {
-        document.getElementById("petition_type").value = initialPetitionType;
-        document.getElementById("petition_type").dispatchEvent(new Event("change"));
-        document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(initialPetitionType);
-    }
-    if(initialPetitionType==4){
-        document.getElementById("Ch1").style.display ="none";
-        document.getElementById("Ch2").style.display ="none";
-        document.getElementById("Ch3").style.display ="none";
+    document.addEventListener('DOMContentLoaded', function() {
+    let coursesLoaded = false;
+    let petitionDataLoaded = false;
+
+    function checkAndPreselect() {
+        if (coursesLoaded && petitionDataLoaded) {
+            preselectCourseAndSection();
+        }
     }
 
-    // Fetch session data and calculate 'year'
-    fetch('/get-session-data')
+    // Fetch courses on page load
+    fetch('/api/courses')
         .then(response => response.json())
-        .then(data => {
-            const fullName = data.student_name || '';
-            const nameParts = fullName.split(' ');
-            
-            const student_name = nameParts[0] || ''; // ชื่อ
-            const student_surname = nameParts[1] || ''; // นามสกุล
+        .then(courses => {
+            const courseSelect = document.getElementById('course');
+            courseSelect.innerHTML = '<option value="">--- Select ---</option>';
+            courses.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.course_id;
+                option.text = `${course.course_code} - ${course.course_name}`;
+                courseSelect.add(option);
 
-            document.getElementById('student_name').value = student_name;
-            document.getElementById('student_surname').value = student_surname;
-            document.getElementById('student_id').value = data.student_id || '';
-            document.getElementById('major').value = data.department || '';
+                // Store in courseMap
+                courseMap[course.course_id] = {
+                    course_code: course.course_code,
+                    course_name: course.course_name
+                };
+                // Store in subjectCodeToCourseIdMap
+                subjectCodeToCourseIdMap[course.course_code] = course.course_id;
+            });
 
-            // Calculate 'year' based on 'student_id' and current year
-            const studentId = data.student_id || '';
-            if (studentId.length >= 2) {
-                const admissionYearShort = studentId.substring(0, 2); // e.g., '66'
-                const admissionYearBE = parseInt('25' + admissionYearShort); // e.g., 2566
-
-                const currentDate = new Date();
-                const currentYear = currentDate.getFullYear(); // e.g., 2023
-                const currentAcademicYearBE = currentYear + 543; // e.g., 2566
-
-                let yearLevel = (currentAcademicYearBE - admissionYearBE) + 1;
-                if (yearLevel < 1) {
-                    yearLevel = 1;
-                }
-                document.getElementById('year').value = yearLevel;
-            } else {
-                document.getElementById('year').value = '';
-            }
+            coursesLoaded = true;
+            checkAndPreselect();
         })
-        .catch(error => console.error('Error fetching session data:', error));
+        .catch(error => console.error('Error fetching courses:', error));
 
-    if (petitionId) {
+ 
+            if (petitionId) {
         document.getElementById('petition_id').value = petitionId;
         document.getElementById('delete-button').style.display = 'flex'; // แสดงปุ่มลบแบบร่าง
         fetch(`/draft-petitions/${petitionId}`)
             .then(response => response.json())
             .then(data => {
+                dataa = data;
                 const fullName = data.student_name || '';
                 const nameParts = fullName.split(' ');
 
@@ -358,10 +361,12 @@
                 document.getElementById('guardian_phone').value = data.guardian_phone || '';
                 document.getElementById('petition_type').value = data.petition_type || '';
                 document.getElementById('semester').value = data.semester || '';
-                document.getElementById('subject_code').value = data.subject_code || '';
-                document.getElementById('subject_name').value = data.subject_name || '';
-                document.getElementById('section').value = data.section || '';
+                //document.getElementById('subject_code').value = data.subject_code || '';
+                //document.getElementById('subject_name').value = data.subject_name || '';
+                //document.getElementById('section').value = data.section || '';
                 document.getElementById('reason').value = data.reason || '';
+                petitionDataLoaded = true;
+                checkAndPreselect();
 
                 const isResignation = data.petition_type === "4";
                     document.getElementById("subject_code").style.display = isResignation ? "none" : "block";
@@ -421,25 +426,166 @@
             })
             .catch(error => console.error('Error fetching draft petition data:', error));
     }
+    else {
+        // If not editing an existing petition, set petitionDataLoaded to true
+        petitionDataLoaded = true;
+        checkAndPreselect();
+    }
+});
+
+
+
+
+
+    
+
+document.getElementById('course').addEventListener('change', function() {
+    const courseId = this.value;
+    fetch(`/api/courses/${courseId}/sections`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(sections => {
+            const sectionSelect = document.getElementById('section');
+            // Clear previous options
+            sectionSelect.innerHTML = '';
+            sections.forEach(section => {
+                const option = document.createElement('option');
+                option.value = section.section;
+                option.text = section.section;
+                option.dataset.staffId = section.staff_id;
+                option.dataset.instructorName = section.instructor_name;
+                sectionSelect.add(option);
+            });
+
+            // Trigger change event to set the first instructor name automatically
+            if (sectionSelect.options.length > 0) {
+                sectionSelect.selectedIndex = 0; // Select the first option
+                const event = new Event('change');
+                sectionSelect.dispatchEvent(event); // Trigger change event
+            }
+
+            // Handle preselected section if exists
+            if (preselectedSection) {
+                sectionSelect.value = preselectedSection;
+                const event = new Event('change');
+                sectionSelect.dispatchEvent(event); // Trigger change event
+                preselectedSection = null; // Reset
+            }
+        })
+        .catch(error => console.error('Error fetching sections:', error));
+});
+
+
+
+document.getElementById('section').addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    const instructorName = selectedOption.dataset.instructorName;
+    document.getElementById('instructor').value = instructorName;
+});
+
+
+
+// Function to preselect course and section when editing a petition
+function preselectCourseAndSection() {
+    // Assuming 'data' contains the petition data fetched earlier
+    const subject_code = dataa.subject_code;
+
+    // Find course_id from subject_code
+    const courseId = subjectCodeToCourseIdMap[subject_code];
+
+    if (courseId) {
+        // Set the course dropdown to courseId
+        document.getElementById('course').value = courseId;
+
+        // Trigger the change event to fetch sections
+        const event = new Event('change');
+        document.getElementById('course').dispatchEvent(event);
+
+        // Set the preselected section
+        preselectedSection = dataa.section;
+    }
+}
+
+
+
+
+
+    if (initialPetitionType) {
+        document.getElementById("petition_type").value = initialPetitionType;
+        document.getElementById("petition_type").dispatchEvent(new Event("change"));
+        document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(initialPetitionType);
+    }
+    if(initialPetitionType==4){
+        document.getElementById("Ch1").style.display ="none";
+        document.getElementById("Ch2").style.display ="none";
+        document.getElementById("Ch3").style.display ="none";
+    }
+
+    // Fetch session data and calculate 'year'
+    fetch('/get-session-data')
+        .then(response => response.json())
+        .then(data => {
+            const fullName = data.student_name || '';
+            const nameParts = fullName.split(' ');
+            
+            const student_name = nameParts[0] || ''; // ชื่อ
+            const student_surname = nameParts[1] || ''; // นามสกุล
+
+            document.getElementById('student_name').value = student_name;
+            document.getElementById('student_surname').value = student_surname;
+            document.getElementById('student_id').value = data.student_id || '';
+            document.getElementById('major').value = data.department || '';
+
+            // Calculate 'year' based on 'student_id' and current year
+            const studentId = data.student_id || '';
+            if (studentId.length >= 2) {
+                const admissionYearShort = studentId.substring(0, 2); // e.g., '66'
+                const admissionYearBE = parseInt('25' + admissionYearShort); // e.g., 2566
+
+                const currentDate = new Date();
+                const currentYear = currentDate.getFullYear(); // e.g., 2023
+                const currentAcademicYearBE = currentYear + 543; // e.g., 2566
+
+                let yearLevel = (currentAcademicYearBE - admissionYearBE) + 1;
+                if (yearLevel < 1) {
+                    yearLevel = 1;
+                }
+                document.getElementById('year').value = yearLevel;
+            } else {
+                document.getElementById('year').value = '';
+            }
+        })
+        .catch(error => console.error('Error fetching session data:', error));
+
+
 
     function submitForm(status) {
         const errors = [];
 
         // Get field values
-        const prefix = document.getElementById('prefix').value;
-        const student_phone = document.getElementById('student_phone').value;
-        const guardian_phone = document.getElementById('guardian_phone').value;
-        const subDistrict = document.getElementById('subDistrict').value;
-        const district = document.getElementById('district').value;
-        const province = document.getElementById('province').value;
-        const postcode = document.getElementById('postcode').value;
-        const petition_type = document.getElementById('petition_type').value;
-        const subject_code = document.getElementById('subject_code').value;
-        const subject_name = document.getElementById('subject_name').value;
-        const section = document.getElementById('section').value;
-        const semester = document.getElementById('semester').value;
-        const academic_year = document.getElementById('academic_year').value;
-        const reason = document.getElementById('reason').value;
+    // Get field values
+    const prefix = document.getElementById('prefix').value;
+    const student_phone = document.getElementById('student_phone').value;
+    const guardian_phone = document.getElementById('guardian_phone').value;
+    const subDistrict = document.getElementById('subDistrict').value;
+    const district = document.getElementById('district').value;
+    const province = document.getElementById('province').value;
+    const postcode = document.getElementById('postcode').value;
+    const petition_type = document.getElementById('petition_type').value;
+    const courseId = document.getElementById('course').value;
+    const section = document.getElementById('section').value;
+    const semester = document.getElementById('semester').value;
+    const academic_year = document.getElementById('academic_year').value;
+    const reason = document.getElementById('reason').value;
+
+    // Get selected course details
+    const selectedCourse = courseMap[courseId];
+    const subject_code = selectedCourse ? selectedCourse.course_code : '';
+    const subject_name = selectedCourse ? selectedCourse.course_name : '';
 
         // Validation when status == 2 (Submit Petition)
         if (status == 2) {
@@ -475,17 +621,13 @@
 
             // Validate subject fields or academic year depending on petition type
             if (petition_type != '4') {
-                // Not resignation
-                if (!subject_code) {
-                    errors.push('กรุณากรอกรหัสวิชา');
-                }
-                if (!subject_name) {
-                    errors.push('กรุณากรอกชื่อวิชา');
-                }
-                if (!section) {
-                    errors.push('กรุณากรอกกลุ่มเรียน');
-                }
-            } else {
+            if (!courseId) {
+                errors.push('กรุณาเลือกรายวิชา');
+            }
+            if (!section) {
+                errors.push('กรุณาเลือกกลุ่มเรียน');
+            }
+        } else {
                 // Resignation
                 if (!semester) {
                     errors.push('กรุณาเลือกภาคการศึกษา');
@@ -531,30 +673,31 @@
             return; // Stop form submission
         }
 
-        // Proceed with form submission
-        const petitionId = document.getElementById('petition_id').value;
-        const isResignation = document.getElementById("petition_type").value === "4";
-        const formData = new FormData();
+         // Proceed with form submission
+    const petitionId = document.getElementById('petition_id').value;
+    const isResignation = petition_type === "4";
+    const formData = new FormData();
 
-        formData.append('student_id', document.getElementById('student_id').value);
-        formData.append('student_name', document.getElementById('prefix').value + ' ' + document.getElementById('student_name').value + ' ' + document.getElementById('student_surname').value);
-        formData.append('major', document.getElementById('major').value);
-        formData.append('year', document.getElementById('year').value);
-        formData.append('house_number', document.getElementById('house_number').value);
-        formData.append('moo', document.getElementById('no').value);
-        formData.append('sub_district', document.getElementById('subDistrict').value);
-        formData.append('district', document.getElementById('district').value);
-        formData.append('province', document.getElementById('province').value);
-        formData.append('postcode', document.getElementById('postcode').value);
-        formData.append('student_phone', document.getElementById('student_phone').value);
-        formData.append('guardian_phone', document.getElementById('guardian_phone').value);
-        formData.append('petition_type', document.getElementById('petition_type').value);
-        formData.append('semester', document.getElementById('semester').value);
-        formData.append('subject_code', isResignation ? document.getElementById('academic_year').value : document.getElementById('subject_code').value);
-        formData.append('subject_name', document.getElementById('subject_name').value);
-        formData.append('section', document.getElementById('section').value);
-        formData.append('status', status);
-        formData.append('reason', document.getElementById('reason').value); // เพิ่มเหตุผลในการยื่นคำร้อง
+    // Append form data
+    formData.append('student_id', document.getElementById('student_id').value);
+    formData.append('student_name', prefix + ' ' + document.getElementById('student_name').value + ' ' + document.getElementById('student_surname').value);
+    formData.append('major', document.getElementById('major').value);
+    formData.append('year', document.getElementById('year').value);
+    formData.append('house_number', document.getElementById('house_number').value);
+    formData.append('moo', document.getElementById('no').value);
+    formData.append('sub_district', subDistrict);
+    formData.append('district', district);
+    formData.append('province', province);
+    formData.append('postcode', postcode);
+    formData.append('student_phone', student_phone);
+    formData.append('guardian_phone', guardian_phone);
+    formData.append('petition_type', petition_type);
+    formData.append('semester', semester);
+    formData.append('subject_code', isResignation ? academic_year : subject_code);
+    formData.append('subject_name', subject_name);
+    formData.append('section', section);
+    formData.append('status', status);
+    formData.append('reason', reason);
 
         // เพิ่มไฟล์ลงใน FormData
         const file1 = document.getElementById('attachFile01').files[0];
@@ -593,9 +736,9 @@
         const isResignation = petitionTypeElement.value === "4";
 
         // ซ่อนหรือแสดงฟิลด์ตามประเภทคำร้อง
-        document.getElementById("subject_code").style.display = isResignation ? "none" : "block";
-        document.getElementById("subject_name").style.display = isResignation ? "none" : "block";
-        document.getElementById("section").style.display = isResignation ? "none" : "block";
+        document.getElementById("course").style.display = isResignation ? "none" : "block";
+document.getElementById("section").style.display = isResignation ? "none" : "block";
+document.getElementById("instructor").style.display = isResignation ? "none" : "block";
         document.querySelector(".academic-year-form").style.display = isResignation ? "block" : "none";
 
         // ตั้งค่าให้ฟังก์ชันนี้ทำงานอีกครั้งเมื่อเปลี่ยนค่า petition_type
@@ -793,6 +936,21 @@ window.addEventListener('load', function () {
             })
             .catch(error => console.error('Error fetching student info:', error));
     });
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
 </script>
 
 

@@ -62,7 +62,7 @@
         <div class="header">
           <div class="header-button">ประวัติการใช้ระบบ</div>
           <div class="search-filter">
-            <input type="text" class="search-input" placeholder="ค้นหา" />
+            <input type="text" class="search-input" id="searchInput" placeholder="ค้นหา" />
           </div>
         </div>
 
@@ -71,18 +71,28 @@
         <table class="table">
           <thead>
             <tr class="table-header">
-              <th class="column-log-id">หมายเลข    <i class='bx bx-expand-vertical'></i></th>
-              <th class="column-username">ชื่อผู้ใช้งาน <i class='bx bx-expand-vertical'></i></th>
-              <th class="column-role">บทบาท       <i class='bx bx-expand-vertical'></i></th>
-              <th class="column-action">การกระทำ   <i class='bx bx-expand-vertical'></i></th>
-              <th class="column-date">วัน/เดือน/ปี    <i class='bx bx-expand-vertical'></i></th>
-              <th class="column-timestamp">เวลา    <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-log-id" onclick="sortTable(0)">หมายเลข <i class="bx bx-expand-vertical"></i></th>
+              <th class="column-username" onclick="sortTable(1)">ชื่อผู้ใช้งาน <i class="bx bx-expand-vertical"></i></th>
+              <th class="column-role" onclick="sortTable(2)">บทบาท <i class="bx bx-expand-vertical"></i></th>
+              <th class="column-action" onclick="sortTable(3)">การกระทำ <i class="bx bx-expand-vertical"></i></th>
+              <th class="column-date" onclick="sortTable(4)">วัน/เดือน/ปี <i class="bx bx-expand-vertical"></i></th>
+              <th class="column-timestamp">เวลา</th>
               <th class="column-details"></th>
             </tr>
           </thead>
-
+        
           <tbody id="logs-list">
-            <!-- ตัวอย่างข้อมูล -->
+            <!-- ข้อมูลจะถูกเติมโดย JavaScript -->
+          </tbody>
+        </table>
+        
+      </div>
+    </div>
+
+
+
+
+           <!-- ตัวอย่างข้อมูล 
             
               <tr class="table-row">
                 <td class="column-log-id">2748</td>
@@ -92,48 +102,119 @@
                 <td class="column-date">2024/11/22</td>
                 <td class="column-timestamp"> 14:30:45</td>
                 <td class="column-details"><a href="/systemLogDetail.html?id=1" class="details-link">ดูรายละเอียด</a></td>
-              </tr>
-          
-          </tbody>
-        </table>
-      </div>
-    </div>
+              </tr>-->
+
+
+    
 
     <script>
-      fetch("/api/system-logs")
-        .then((response) => response.json())
-        .then((data) => {
-          const logsList = document.getElementById("logs-list");
-          logsList.innerHTML = "";
+let logs = [];
+let sortDirection = true; // true = Ascending, false = Descending
+let activeColumnIndex = -1;
+let filteredLogs = []; // To hold the filtered logs separately from the original logs
 
-          data.forEach((log) => {
-            const row = document.createElement("tr");
-            row.classList.add("table-row");
 
-            row.innerHTML = `
-              <td class="column-log-id">${log.log_id}</td>
-              <td class="column-username">${log.tuusername || "N/A"}</td>
-              <td class="column-role">${getRoleName(log.role)}</td>
-              <td class="column-action">${log.action}</td>
-              <td class="column-date">${logDate.toLocaleDateString("th-TH")}</td> <!-- วันที่ -->
-              <td class="column-timestamp">${logDate.toLocaleTimeString("th-TH")}</td> <!-- เวลา -->
-              <td class="column-details"><a href="/systemLogDetail.html?id=${log.log_id}" class="details-link">ดูรายละเอียด</a></td>
-            `;
-            logsList.appendChild(row);
-          });
-        })
-        .catch((error) => console.error("Error fetching system logs:", error));
+fetch("/api/system-logs")
+  .then((response) => response.json())
+  .then((data) => {
+    logs = data.map((log) => ({
+        ...log,
+        timestamp: log.timestamp ? new Date(log.timestamp) : null,
+    }));
+    filteredLogs = [...logs]; // Copy all logs to filteredLogs initially
+    renderTable(filteredLogs);
+})
+  .catch((error) => console.error("Error fetching system logs:", error));
 
-      function getRoleName(role) {
-        const roles = {
-          1: "นักศึกษา",
-          2: "ที่ปรึกษา",
-          3: "อาจารย์",
-          4: "เจ้าหน้าที่",
-          5: "ผู้ดูแลระบบ",
+function renderTable(data) {
+  const logsList = document.getElementById("logs-list");
+  logsList.innerHTML = "";
+
+  data.forEach((log) => {
+    const logDate = log.timestamp;
+
+    const row = document.createElement("tr");
+    row.classList.add("table-row");
+
+    row.innerHTML = `
+      <td class="column-log-id">${log.log_id}</td>
+      <td class="column-username">${log.tuusername || "N/A"}</td>
+      <td class="column-role">${getRoleName(log.role)}</td>
+      <td class="column-action">${log.action}</td>
+      <td class="column-date">${logDate ? logDate.toLocaleDateString("th-TH") : "N/A"}</td>
+      <td class="column-timestamp">${logDate ? logDate.toLocaleTimeString("th-TH") : "N/A"}</td>
+      <td class="column-details"><a href="/systemLogDetail.html?id=${log.log_id}" class="details-link">ดูรายละเอียด</a></td>
+    `;
+    logsList.appendChild(row);
+  });
+}
+
+function getRoleName(role) {
+  const roles = {
+    1: "นักศึกษา",
+    2: "ที่ปรึกษา",
+    3: "อาจารย์",
+    4: "เจ้าหน้าที่",
+    5: "ผู้ดูแลระบบ",
+  };
+  return roles[role] || "ไม่ทราบบทบาท";
+}
+
+function sortTable(columnIndex) {
+    filteredLogs.sort((a, b) => {
+        const getValue = (log) => {
+            switch (columnIndex) {
+                case 0: return log.log_id;
+                case 1: return log.tuusername ? log.tuusername.toLowerCase() : "";
+                case 2: return getRoleName(log.role).toLowerCase();
+                case 3: return log.action.toLowerCase();
+                case 4: return log.timestamp || 0; // Sort by timestamp
+                default: return "";
+            }
         };
-        return roles[role] || "ไม่ทราบบทบาท";
+
+        const valueA = getValue(a);
+        const valueB = getValue(b);
+
+        if (valueA < valueB) return sortDirection ? -1 : 1;
+        if (valueA > valueB) return sortDirection ? 1 : -1;
+        return 0;
+    });
+
+    updateSortIcons(columnIndex);
+    sortDirection = !sortDirection; // Toggle sorting direction
+    renderTable(filteredLogs);
+}
+
+function updateSortIcons(columnIndex) {
+  const headers = document.querySelectorAll(".table-header th");
+  headers.forEach((header, index) => {
+    const icon = header.querySelector("i");
+    if (icon) {
+      if (index === columnIndex) {
+        // เปลี่ยนไอคอนสำหรับคอลัมน์ที่ถูกคลิก
+        icon.className = sortDirection ? "bx bx-chevron-up" : "bx bx-chevron-down";
+      } else {
+        // รีเซ็ตไอคอนสำหรับคอลัมน์อื่น
+        icon.className = "bx bx-expand-vertical";
       }
+    }
+  });
+}
+
+function filterTable() {
+    const query = document.getElementById("searchInput").value.toLowerCase();
+    filteredLogs = logs.filter((log) =>
+        (log.tuusername && log.tuusername.toLowerCase().includes(query)) ||
+        getRoleName(log.role).toLowerCase().includes(query) ||
+        log.action.toLowerCase().includes(query) ||
+        (log.timestamp && log.timestamp.toLocaleDateString("th-TH").includes(query))
+    );
+    renderTable(filteredLogs);
+}
+
+document.getElementById("searchInput").addEventListener("input", filterTable);
+
     </script>
   </body>
 </html>

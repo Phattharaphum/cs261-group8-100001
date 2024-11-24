@@ -98,9 +98,14 @@ BEGIN
         last_name NVARCHAR(100),
         status INT DEFAULT 1,
         office TEXT,
-        role INT CHECK (role BETWEEN 1 AND 3) -- 1=อาจารย์, 2=คณบดี, 3=เจ้าหน้าที่วิชาการ
+        role INT CHECK (role BETWEEN 1 AND 3), -- 1=อาจารย์, 2=คณบดี, 3=เจ้าหน้าที่วิชาการ
+        branch NVARCHAR(100), -- สาขา
+        email NVARCHAR(100), -- อีเมล
+        phone NVARCHAR(20), -- เบอร์
+        profile_link NVARCHAR(MAX) -- ลิ้งค์รูป
     );
 END;
+
 `;
 
 const createSciITStaffTable = `

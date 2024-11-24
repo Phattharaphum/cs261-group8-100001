@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="th">
-  <head>
+<html lang="th"><head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ตรวจสอบคำร้อง</title>
@@ -20,7 +19,8 @@
       as="style"
       onload="this.rel='stylesheet'"
     />
-    <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&family=Kanit&family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap"rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/studentPetitionsChecked.css" />
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <script defer src="./js/redirect-handler.js"></script>
@@ -119,6 +119,9 @@
         <h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
         <div class="middle">
           <h2 class="bold-text">คำร้อง</h2>
+
+
+
       <!-- Petition Form -->
         <div class="petitionDetails">
           <dd>
@@ -172,11 +175,17 @@
           </dd>
           <div class="end-form">
             <p>ขอแสดงความนับถือ</p>
-            <p><span class="highlight" id="student_name"></span>&nbsp;(นักศึกษา)</p>
+            <p><span class="highlight" id="student_nameb"></span>&nbsp;(นักศึกษา)</p>
             <br>
             <p class="time-submit">วันยื่นคำร้องผ่านระบบยื่นคำร้อง : <span id="submit_time"></span></p>
           </div>
         </div>
+
+
+
+
+
+
           <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
           <div class="file">
             <table id="attachedFilesTable">
@@ -185,10 +194,11 @@
                   <th>ชื่อไฟล์ </th>
                   <th>คำอธิบาย</th>
                   <th>
-                    <div class="download-button">
+                    <!-- <div class="download-button">
                       <span>ดาวน์โหลด</span>
                       <img src="img/downloads.png" alt="download Icon" class="download" />
-                    </div>
+                    </div> -->
+                    ดาวน์โหลด
                   </th>
                 </tr>
               </thead>
@@ -220,7 +230,7 @@
     <div class="right">
       <h3 style="text-align: left">สถานะคำร้อง</h3>
       <div class="rounded-border2">
-        <p class="asad">คำร้องถูกยื่นเมื่อ: <span id="submit_time"></span></p>
+        <p class="asad">คำร้องถูกยื่นเมื่อ: <span id="submit_timeb"></span></p>
         <p class="asad">พิจารณาเมื่อ:<span id="review_time"></span></p>
         <p class="spanlab"><span id="status"></span></p>
       </div>
@@ -335,6 +345,8 @@
         .then((data) => {
           document.getElementById("student_name").textContent =
             data.student_name || "";
+		  document.getElementById("student_nameb").textContent =
+            data.student_name || "";
           document.getElementById("student_id").textContent =
             data.student_id || "";
           document.getElementById("year").textContent = data.year || "";
@@ -359,6 +371,8 @@
             data.subject_name || "";
           document.getElementById("section").textContent = data.section || "";
           document.getElementById("submit_time").textContent =
+            new Date(data.submit_time).toLocaleString() || "";
+		  document.getElementById("submit_timeb").textContent =
             new Date(data.submit_time).toLocaleString() || "";
           document.getElementById("status").innerHTML = getStatusText(
             data.status

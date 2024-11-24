@@ -12,183 +12,6 @@
       href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
     />
-    <style>
-        /* CSS สำหรับการจัดหน้า */
-
-        .sss{
-            margin: 0 100px;
-            display: flex;
-            gap: 10px;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .tab{
-            background-color: #D9D9D9;
-            display: inline-flex;
-            padding: 6px 6px;
-            border-radius: 20px;
-            border: none;
-            font-size: 15px;
-            flex-grow: 0;
-        }
-
-        .tab-buttons {
-            padding: 10px 20px;
-            border-radius: 15px;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .tab-buttons button {
-            padding: 10px 20px;
-            font-size: 15px;
-            font-weight: bold;
-            border: none;
-            background-color: #d9d9d9;
-            color: #333;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .tab-buttons button.active {
-            background-color: white;
-            color: black;
-        }
-
-        .searchInput{
-            padding: 10px 50px;
-            margin: 0 20px 0 0;
-            border: none;
-            outline: none;
-            border-radius: 15px;
-            font-size: 15px;
-        }
-
-        .table-container {
-            display: none;
-        }
-
-        .table-container.active {
-            display: block;
-            border: none;
-            outline: none;
-        }
-
-        table {
-           
-            background-color: #fff;
-            border-collapse: collapse;
-            overflow: hidden;
-            margin: auto;
-            margin-top: 20px;
-            width: 87.5%;
-            /* border: 1px solid #eaeaea;*/
-        }
-        thead {
-            background-color: #fff;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 5px solid #EAEAEA;
-            cursor: pointer;
-            height: 50px;
-        }
-        thead tr{
-            border-radius: 10px
-        }
-
-        td {
-            padding: 15px;
-            text-align: center;
-            border-top: 15px solid #EAEAEA;
-        }
-
-        .sort-icon{
-            cursor: pointer;
-            margin-left: 5px;
-            font-size: 0.9em;
-        }
-
-        .column-inside-number{
-            text-align: center;
-            width: 250px;
-        }
-        .column-name{
-            text-align: center;
-            width: 275px;
-        }
-
-        .column-department {
-            padding: 10px;
-            text-align: center;
-        }
-        tbody{
-            background-color: #fff;
-            padding: 15px;
-            height: 50px;
-            text-align: center;
-            border-bottom: 15px solid #EAEAEA;
-        }
-
-        tbody tr {
-            text-align: center;
-            border-radius: 10px
-        }
-
-        /* tbody tr:hover {
-            background-color: #f9f9f9;
-        } */
-
-        tbody tr td:last-child {
-            text-align: center;
-        }
-
-        tbody tr td button {
-            padding: 5px 15px;
-            font-size: 14px;
-            background-color: #e5ecfa;
-            color: #333;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        tbody tr td button :hover {
-            background-color: #cbd8f7;
-        }
-
-        .add-button {
-            background-color: #A70C0C;
-            color: white;
-            border: none;
-            padding: 10px 50px;
-            border-radius: 5px;
-            cursor: pointer;
-            border-radius: 15px;
-            /* margin: 0 50px 0 0; */
-            font-size: 15px;
-
-        }
-
-        .add-button:hover {
-            background-color: #a82626;
-        }
-
-    .header {
-        font-weight: bold;
-        background-color: #A70C0C;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 20px;
-        font-size: 25px;
-        cursor: pointer;
-        margin-top: 50px;
-        margin-left: 60px;
-        margin-bottom: 20px;
-    }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -208,7 +31,7 @@
                   <img src="img/Artboard 1.svg" alt="Logs Icon" />
                   <span class="tee">ประวัติการใช้ระบบ</span>
                 </a>
-                <a href="/editFacultyStaff.html" class="menu-item active">
+                <a href="/manage_staff.html" class="menu-item active">
                   <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
                   <span class="tee">แก้ไขข้อมูลบุคลากรคณะ</span>
                 </a>
@@ -247,7 +70,7 @@
             <div class="sss">
                 <div class="tab">
                     <div class="tab-buttons">
-                        <button onclick="showTab('faculty')">คณาอาจารย์</button>
+                        <button onclick="showTab('faculty')">คณาจารย์</button>
                         <button onclick="showTab('staff')">บุคลากร</button>
                     </div>
                 </div>
@@ -260,57 +83,79 @@
 
             <div id="faculty" class="table-container">
                 <!-- <button id="faculty"  class="add-button" onclick="window.location.href='/facultyAdvisorDetails.html'">+ เพิ่มข้อมูล</button> -->
-                <table>
+                <table class="table">
                     <thead>
-                        <tr class="table-header">
-                            <th class="column-inside-number coan" onclick="sortTable('inside-number')">
-                                หมายเลขภายใน
-                                <span class="sort-icon" id="sort-icon-petition_type">▲▼</span>
-                            </th>
-                            <th class="column-name coan" onclick="sortTable('name')">
-                                ชื่อบุคลากร
-                                <span class="sort-icon" id="sort-icon-name">▲▼</span>
-                            </th>
-                            <th class="column-department coan" onclick="sortTable('department')">
-                                สาขาวิชา
-                                <span class="sort-icon" id="sort-icon-position">▲▼</span>
-                            </th>
-                        </tr>
+                      <tr class="table-header">
+                        <th class="column-log-id" onclick="sortTable('university_id')">เลขทะเบียน <i class="bx bx-expand-vertical"></i></th>
+                        <th class="column-username" onclick="sortTable('name')">ชื่อบุคลากร <i class="bx bx-expand-vertical"></i></th>
+                        <th class="column-role" onclick="sortTable('department')">สาขาวิชา <i class="bx bx-expand-vertical"></i></th>
+                        <th class="column-details">ดูรายละเอียด</th>
+                      </tr>
                     </thead>
                     <tbody id="facultyList">
-                        <!-- จะเติมข้อมูลบุคลากรที่ดึงมาจาก API -->
+                      <!-- Dynamic rows inserted here -->
+						<tr>
+        <td>101</td>
+        <td>ดร. สมชาย ใจดี</td>
+        <td>วิทยาศาสตร์คอมพิวเตอร์</td>
+        <td ><button onclick="window.location.href='/facultyAdvisorDetails.html?id=101'" class="bottad">ดูรายละเอียด</button></td>
+    </tr>
+    <tr>
+        <td>102</td>
+        <td>ผศ. ดร. สมหญิง บุญมาก</td>
+        <td>เคมี</td>
+        <td><button onclick="window.location.href='/facultyAdvisorDetails.html?id=102'">ดูรายละเอียด</button></td>
+    </tr>
+    <tr>
+        <td>103</td>
+        <td>อ. ประเสริฐ พงษ์ศรี</td>
+        <td>ฟิสิกส์</td>
+        <td><button onclick="window.location.href='/facultyAdvisorDetails.html?id=103'">ดูรายละเอียด</button></td>
+    </tr>
+    <tr>
+        <td>104</td>
+        <td>ดร. พรพิมล ใจบุญ</td>
+        <td>คณิตศาสตร์</td>
+        <td><button onclick="window.location.href='/facultyAdvisorDetails.html?id=104'">ดูรายละเอียด</button></td>
+    </tr>
+    <tr>
+        <td>105</td>
+        <td>อ. วิชัย ตั้งใจดี</td>
+        <td>สถิติ</td>
+        <td><button onclick="window.location.href='/facultyAdvisorDetails.html?id=105'">ดูรายละเอียด</button></td>
+    </tr>
                     </tbody>
-                </table>
+                  </table>
             </div>
 
             <div id="staff" class="table-container">
-                <table>
+                <table class="table">
                     <thead>
-                        <tr class="table-header">
-                            <th class="column-inside-number coan" onclick="sortTable('inside-number')">
-                                หมายเลขภายใน
-                                <span class="sort-icon" id="sort-icon-petition_type">▲▼</span>
-                            </th>
-                            <th class="column-name coan" onclick="sortTable('name')">
-                                ชื่อบุคลากร
-                                <span class="sort-icon" id="sort-icon-name">▲▼</span>
-                            </th>
-                            <th class="column-department coan" onclick="sortTable('department')">
-                                ตำแหน่ง
-                                <span class="sort-icon" id="sort-icon-position">▲▼</span>
-                            </th>
-                        </tr>
+                      <tr class="table-header">
+                        <th class="column-log-id" onclick="sortTable('university_id')">เลขทะเบียน <i class="bx bx-expand-vertical"></i></th>
+                        <th class="column-username" onclick="sortTable('name')">ชื่อบุคลากร <i class="bx bx-expand-vertical"></i></th>
+                        <th class="column-role" onclick="sortTable('role')">ตำแหน่ง <i class="bx bx-expand-vertical"></i></th>
+                        <th class="column-details">ดูรายละเอียด</th>
+                      </tr>
                     </thead>
                     <tbody id="staffList">
-                        <!-- จะเติมข้อมูลบุคลากรที่ดึงมาจาก API -->
+                      <!-- Dynamic rows inserted here -->
                     </tbody>
-                </table>
+                  </table>
             </div>
 
         </div>
     </div>
-</div>
+
     <script>
+        let facultyData = [];
+let staffData = [];
+let filteredFacultyData = [];
+let filteredStaffData = [];
+let sortDirection = true; // true = ascending, false = descending
+let activeSortColumn = null;
+
+
         // ฟังก์ชันสำหรับสลับแท็บ
         function showTab(tabId) {
             const allTabs = document.querySelectorAll('.table-container');
@@ -327,155 +172,123 @@
             });
         }
 
-        // ดึงข้อมูลอาจารย์
-            fetch('/api/faculty-staff')
-            .then(response => response.json())
-            .then(data => {
-                const facultyList = document.getElementById('facultyList');
-                data.forEach(faculty => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${faculty.university_id}</td>
-                        <td>${faculty.academic_title} ${faculty.first_name} ${faculty.last_name}</td>
-                        <td>${faculty.position || 'ไม่ระบุ'}</td>
-                        <td><button onclick="window.location.href='/facultyAdvisorDetails.html?id=${faculty.staff_id}'">ดูรายละเอียด</button></td>
-                    `;
-                    facultyList.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error fetching faculty data:', error));   
-            // ดึงข้อมูลบุคลากร
-        fetch('/api/administrative-staff')
-            .then(response => response.json())
-            .then(data => {
-                const staffList = document.getElementById('staffList');
-                data.forEach(staff => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${staff.university_id}</td>
-                        <td>${staff.first_name} ${staff.last_name}</td>
-                        <td>${staff.role || 'ไม่ระบุ'}</td>
-                        <td><button onclick="window.location.href='/administrativeStaffDetails.html?id=${staff.staff_id}'">ดูรายละเอียด</button></td>
-                    `;
-                    staffList.appendChild(row);
-                });
-            })
-            .catch(error => console.error('Error fetching staff data:', error));
+        document.addEventListener('DOMContentLoaded', () => {
+  showTab('faculty'); // แสดงแท็บ faculty เริ่มต้น
+});
 
-    function getLink() {
-            const activeTab = document.querySelector('.table-container.active');
-        const tabId = activeTab.id; // Get the id of the active tab
-        let link;
+fetch('/api/faculty-staff')
+  .then(response => response.json())
+  .then(data => {
+    facultyData = data;
+    filteredFacultyData = [...facultyData];
+    renderFacultyTable(filteredFacultyData);
+  })
+  .catch(error => console.error('Error fetching faculty data:', error));
 
-        if (tabId === 'staff') {
-            link = '/administrativeStaffDetails.html';
-        } else if (tabId === 'faculty') {
-            link = '/facultyAdvisorDetails.html';
-        } else {
-            console.error('Unknown tab ID:', tabId);
-            return;
-        }
+fetch('/api/administrative-staff')
+  .then(response => response.json())
+  .then(data => {
+    staffData = data;
+    filteredStaffData = [...staffData];
+    renderStaffTable(filteredStaffData);
+  })
+  .catch(error => console.error('Error fetching staff data:', error));
 
-        window.location.href = link;
-    }
+// ฟังก์ชันสำหรับการเรนเดอร์ตาราง Faculty
+function renderFacultyTable(data) {
+  const tableBody = document.getElementById('facultyList');
+  tableBody.innerHTML = data.map(person => `
+    <tr>
+      <td>${person.university_id}</td>
+      <td>${person.academic_title || ''} ${person.first_name} ${person.last_name}</td>
+      <td>${person.branch || 'ไม่ระบุ'}</td>
+      <td><button onclick="window.location.href='/facultyAdvisorDetails.html?id=${person.staff_id}'" class="bottad">ดูรายละเอียด</button></td>
+    </tr>
+  `).join('');
+}
 
-    function sortTable(column) {
-        if (sortColumn === column) {
-          // Toggle the sort direction if clicking the same column
-          sortDirection = sortDirection === "asc" ? "desc" : "asc";
-        } else {
-          // Default to descending for new column
-          sortDirection = "desc";
-          sortColumn = column;
-        }
+// ฟังก์ชันสำหรับการเรนเดอร์ตาราง Staff
+function renderStaffTable(data) {
+  const tableBody = document.getElementById('staffList');
+  tableBody.innerHTML = data.map(person => `
+    <tr>
+      <td>${person.university_id}</td>
+      <td>${person.first_name} ${person.last_name}</td>
+      <td>${person.role || 'ไม่ระบุ'}</td>
+      <td><button onclick="window.location.href='/administrativeStaffDetails.html?id=${person.staff_id}'" class="bottad">ดูรายละเอียด</button></td>
+    </tr>
+  `).join('');
+}
 
-        // Sort the petitions array
-        const petitions =
-          currentView === "pending" ? pendingPetitions : reviewedPetitions;
-        petitions.sort((a, b) => {
-          if (column === "submit_time") {
-            return sortDirection === "asc"
-              ? new Date(a.submit_time) - new Date(b.submit_time)
-              : new Date(b.submit_time) - new Date(a.submit_time);
-          } else {
-            let aValue = a[column] || "";
-            let bValue = b[column] || "";
-            if (typeof aValue === "string") aValue = aValue.toLowerCase();
-            if (typeof bValue === "string") bValue = bValue.toLowerCase();
+// ฟังก์ชันสำหรับค้นหาข้อมูล
+document.getElementById('searchInput').addEventListener('input', function () {
+  const query = this.value.toLowerCase();
 
-            if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
-            if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
-            return 0;
-          }
-        });
+  if (document.getElementById('faculty').classList.contains('active')) {
+    filteredFacultyData = facultyData.filter(person =>
+      person.first_name.toLowerCase().includes(query) ||
+      person.last_name.toLowerCase().includes(query) ||
+      person.department?.toLowerCase().includes(query) ||
+      person.university_id.includes(query)
+    );
+    renderFacultyTable(filteredFacultyData);
+  } else if (document.getElementById('staff').classList.contains('active')) {
+    filteredStaffData = staffData.filter(person =>
+      person.first_name.toLowerCase().includes(query) ||
+      person.last_name.toLowerCase().includes(query) ||
+      person.role?.toLowerCase().includes(query) ||
+      person.university_id.includes(query)
+    );
+    renderStaffTable(filteredStaffData);
+  }
+});
 
-        updateSortIcons();
-        renderPetitions();
-      }
+// ฟังก์ชันสำหรับเรียงข้อมูล
+function sortTable(column) {
+  const isFacultyActive = document.getElementById('faculty').classList.contains('active');
+  const data = isFacultyActive ? filteredFacultyData : filteredStaffData;
 
-      // ฟังก์ชันเพื่ออัปเดตสัญลักษณ์การเรียงลำดับที่หัวคอลัมน์
-      function updateSortIcons() {
-        const icons = document.querySelectorAll(".sort-icon");
-        icons.forEach((icon) => (icon.textContent = "▲▼")); // Reset all icons
+  data.sort((a, b) => {
+    let valA = a[column] || '';
+    let valB = b[column] || '';
 
-        const activeIcon = document.getElementById(`sort-icon-${sortColumn}`);
-        if (activeIcon) {
-          activeIcon.textContent = sortDirection === "asc" ? "▲" : "▼";
-        }
-      }
+    if (typeof valA === 'string') valA = valA.toLowerCase();
+    if (typeof valB === 'string') valB = valB.toLowerCase();
 
-      document.addEventListener("DOMContentLoaded", () => {
-        // Default sorting on submit_time (ล่าสุดอยู่บนสุด)
-        sortTable("submit_time");
-      });
+    if (valA < valB) return sortDirection ? -1 : 1;
+    if (valA > valB) return sortDirection ? 1 : -1;
+    return 0;
+  });
 
-      function renderPetitions() {
-        const petitionList = document.getElementById("petition-list");
-        petitionList.innerHTML = ""; // Clear existing rows
+  sortDirection = !sortDirection;
+  activeSortColumn = column;
 
-        const petitions =
-          currentView === "pending" ? pendingPetitions : reviewedPetitions;
-        petitions.forEach((petition) => {
-          const row = document.createElement("tr");
-          row.className = "table-row";
+  if (isFacultyActive) {
+    renderFacultyTable(data);
+  } else {
+    renderStaffTable(data);
+  }
+}
 
-          const submitDate = new Date(petition.submit_time);
-          const petitionType = getPetitionType(petition.petition_type);
-          const statusLabel = getStatusLabel(petition.status); // เรียกใช้ getStatusLabel
+// ฟังก์ชันสำหรับสร้างลิงก์เพิ่มข้อมูล
+function getLink() {
+  const activeTab = document.querySelector('.table-container.active');
+  const tabId = activeTab.id; // Get the id of the active tab
+  let link;
 
-          // ตรวจสอบว่าถ้า petition_type == 4 (ลาออก)
-          const subjectName =
-            petition.petition_type == 4
-              ? `ปี: ${petition.subject_code} ภาคเรียน: ${petition.semester}`
-              : petition.subject_name || "N/A";
-          const subjectCode =
-            petition.petition_type == 4 ? "-" : petition.subject_code || "N/A";
-          const section =
-            petition.petition_type == 4 ? "-" : petition.section || "N/A";
+  if (tabId === 'staff') {
+    link = '/administrativeStaffDetails.html';
+  } else if (tabId === 'faculty') {
+    link = '/facultyAdvisorDetails.html';
+  } else {
+    console.error('Unknown tab ID:', tabId);
+    return;
+  }
 
-          // ใช้ฟังก์ชัน formatStudentName เพื่อตัดคำนำหน้า
-          const studentName = formatStudentName(petition.student_name);
+  window.location.href = link;
+}
 
-          row.innerHTML = `
-    <td class="column-type">${petitionType}</td>
-    <td class="column-subject-name">${subjectName}</td>
-    <td class="column-subject-code">${subjectCode}</td>
-    <td class="column-section">${section}</td>
-    <td class="column-student-name">${studentName}</td>
-    <td class="column-student-id">${petition.student_id}</td>
-    <td class="column-date">${submitDate.toLocaleDateString()}</td>
-    <td class="column-time">${submitDate.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    })}</td>
-    <td class="column-status">${statusLabel}</td>
-    <td class="column-check"><button class="verify-button" onclick="viewPetition(${
-      petition.petition_id
-    })">ตรวจสอบ</button></td>
-`;
-          petitionList.appendChild(row);
-        });
-      }
+
     </script>
 </body>
 </html>
