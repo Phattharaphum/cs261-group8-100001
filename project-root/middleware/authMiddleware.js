@@ -47,4 +47,12 @@ function isTeacher(req, res, next) {
   }
 }
 
-module.exports = { isAuthenticated, isStudent, isTeacher };
+function isAcademicStaff(req, res, next) {
+  if (req.session.user && req.session.user.userType === "academicStaff") {
+    return next();
+  } else {
+    handleUnauthorizedAccess(req, res);
+  }
+}
+
+module.exports = { isAuthenticated, isStudent, isTeacher, isAcademicStaff };

@@ -11,6 +11,7 @@ const {
   isAuthenticated,
   isStudent,
   isTeacher,
+  isAcademicStaff,
 } = require("./middleware/authMiddleware");
 const loggerMiddleware = require("./middleware/loggerMiddleware");
 const errorHandler = require("./middleware/errorHandler");
@@ -114,6 +115,23 @@ const StartServer = async () => {
           success: true,
           redirectUrl: "/advisorPetitions",
         });
+        // ตรวจสอบ username และ password สำหรับ userType: 'academicStaff'
+      } else if(username === "0002" && password === "test") {
+        req.session.user = {
+          username: username,
+          email: "academicStaff@example.com", // ตัวอย่างข้อมูล
+          displayname_en: "academicStaff",
+          displayname_th: "เจ้าหน้าที่ฝ่ายวิชาการ",
+          faculty: "Faculty of Education",
+          department: "Education Department",
+          userType: "academicStaff",
+        };
+
+        // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า homeacademicStaff
+        res.json({
+          success: true,
+          redirectUrl: "/academicStaffPetitions",
+        });
       } else {
         // ถ้า username และ password ไม่ตรงตามเงื่อนไข ให้เรียก TU API
         const response = await fetch(
@@ -171,6 +189,11 @@ const StartServer = async () => {
   // Route สำหรับหน้าของอาจารย์
   app.get("/hometeacher", isAuthenticated, isTeacher, (req, res) => {
     res.sendFile(path.join(__dirname, "views", "hometeacher.html"));
+  });
+
+  // Route สำหรับหน้าของเจ้าหน้าที่ฝ่ายวิชาการ
+  app.get("/homeacademicStaff", isAuthenticated, isAcademicStaff, (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "homeacademicStaff.html"));
   });
 
   // Route สำหรับดึงข้อมูล session
@@ -619,6 +642,417 @@ const StartServer = async () => {
     }
   });
 
+
+  //เจ้าหน้าที่วิชาการ
+  // Endpoint สำหรับอัปเดตสถานะเป็น "อ่านแล้ว" และตั้งค่า review_time
+  app.post(
+    "/academicStaff/auto-update-status/:id",
+    isAuthenticated,
+    isAcademicStaff,
+    async (req, res) => {
+      const { id } = req.params;
+      const { status } = req.body;
+  
+      try {
+        const pool = await sql.connect(config);
+  
+        await pool
+          .request()
+          .input("id", sql.Int, id)
+          .input("status", sql.TinyInt, status)
+          .query(`
+            UPDATE petition 
+            SET status = @status, review_time_a = GETDATE()
+            WHERE petition_id = @id
+          `);
+  
+        res.json({ success: true, message: "Status updated successfully." });
+      } catch (err) {
+        console.error("Error updating petition status:", err);
+        res.status(500).json({ error: "Failed to update petition status" });
+      }
+    }
+  );
+  
+  app.post(
+  "/academicStaff/update-petition/:id",
+  isAuthenticated,
+  isAcademicStaff,
+  async (req, res) => {
+    const { id } = req.params;
+    const { status, comment } = req.body;
+
+    try {
+      const pool = await sql.connect(config);
+
+      await pool
+        .request()
+        .input("id", sql.Int, id)
+        .input("status", sql.TinyInt, status)
+        .input("comment", sql.NVarChar, comment || "")
+        .query(`
+          UPDATE petition
+          SET status = @status, 
+              review_time_a = GETDATE(), 
+              comment_a = @comment
+          WHERE petition_id = @id
+        `);
+
+      res.json({ success: true, message: "Petition status updated successfully." });
+    } catch (err) {
+      console.error("Error updating petition status:", err);
+      res.status(500).json({ error: "Failed to update petition status" });
+    }
+  }
+);
+
+
+  app.get(
+  "/academicStaff/pending-petitions",
+  isAuthenticated,
+  isAcademicStaff,
+  async (req, res) => {
+    try {
+      const pool = await sql.connect(config);
+
+      // Query ดึงคำร้องที่ status = 2
+      const pendingResult = await pool
+        .request()
+        .query(`
+          SELECT *
+          FROM petition
+          WHERE status = 2
+        `);
+
+      res.json(pendingResult.recordset); // ส่งคำร้องทั้งหมดที่ต้องตรวจสอบไปยัง client
+    } catch (err) {
+      console.error("Error fetching pending petitions:", err);
+      res.status(500).json({ error: "Failed to fetch pending petitions" });
+    }
+  }
+);
+
+
+  app.get(
+  "/academicStaff/reviewed-petitions",
+  isAuthenticated,
+  isAcademicStaff,
+  async (req, res) => {
+    try {
+      const pool = await sql.connect(config);
+
+      const reviewedResult = await pool.query(`
+        SELECT * FROM petition WHERE status IN (3, 4) 
+      `);//ไม่รู้ว่าควรมองเห็นแค่ไหน
+
+      res.json(reviewedResult.recordset); // ส่งคำร้องที่ตรวจสอบแล้ว
+    } catch (err) {
+      console.error("Error fetching reviewed petitions:", err);
+      res.status(500).json({ error: "Failed to fetch reviewed petitions" });
+    }
+  }
+);
+
+
+  app.get(
+  "/academicStaff/petition-details/:id",
+  isAuthenticated,
+  isAcademicStaff,
+  async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const pool = await sql.connect(config);
+
+      // ดึงข้อมูลคำร้อง
+      const petitionResult = await pool
+        .request()
+        .input("id", sql.Int, id)
+        .query(`
+          SELECT * FROM petition WHERE petition_id = @id
+        `);
+
+      const petition = petitionResult.recordset[0];
+
+      if (!petition) {
+        return res.status(404).json({ error: "Petition not found" });
+      }
+
+      // ดึงข้อมูลไฟล์แนบ
+      const filesResult = await pool
+        .request()
+        .input("petition_id", sql.Int, id)
+        .query(`
+          SELECT file_id, file_name, description
+          FROM localdoc
+          WHERE petition_id = @petition_id
+        `);
+
+      petition.attachedFiles = filesResult.recordset;
+
+      res.json(petition);
+    } catch (err) {
+      console.error("Error fetching petition details:", err);
+      res.status(500).json({ error: "Failed to fetch petition details" });
+    }
+  }
+);
+
+// Routes for academicStaffForCommittee
+
+app.post(
+"/academicStaffForCommittee/update-petition/:id",
+isAuthenticated,
+isAcademicStaff,
+async (req, res) => {
+  const { id } = req.params;
+  const { status, comment } = req.body;
+
+  try {
+    const pool = await sql.connect(config);
+
+    await pool
+      .request()
+      .input("id", sql.Int, id)
+      .input("status", sql.TinyInt, status)
+      .input("comment", sql.NVarChar, comment || "")
+      .query(`
+        UPDATE petition
+        SET status = @status, 
+            review_time_d = GETDATE(), 
+            comment_d = @comment
+        WHERE petition_id = @id
+      `);
+
+    res.json({ success: true, message: "Petition status updated successfully." });
+  } catch (err) {
+    console.error("Error updating petition status:", err);
+    res.status(500).json({ error: "Failed to update petition status" });
+  }
+}
+);
+
+
+app.get(
+"/academicStaffForCommittee/pending-petitions",
+isAuthenticated,
+isAcademicStaff,
+async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+
+    // Query ดึงคำร้องที่ status = 9และ 14
+    const pendingResult = await pool
+      .request()
+      .query(`
+        SELECT *
+        FROM petition
+        WHERE status IN (9, 14)
+      `);
+
+    res.json(pendingResult.recordset); // ส่งคำร้องทั้งหมดที่ต้องตรวจสอบไปยัง client
+  } catch (err) {
+    console.error("Error fetching pending petitions:", err);
+    res.status(500).json({ error: "Failed to fetch pending petitions" });
+  }
+}
+);
+
+
+app.get(
+"/academicStaffForCommittee/reviewed-petitions",
+isAuthenticated,
+isAcademicStaff,
+async (req, res) => {
+  try {
+    const pool = await sql.connect(config);
+
+    const reviewedResult = await pool.query(`
+      SELECT * FROM petition WHERE status IN (11, 12) 
+    `);//ไม่รู้ว่าควรมองเห็นแค่ไหน
+
+    res.json(reviewedResult.recordset); // ส่งคำร้องที่ตรวจสอบแล้ว
+  } catch (err) {
+    console.error("Error fetching reviewed petitions:", err);
+    res.status(500).json({ error: "Failed to fetch reviewed petitions" });
+  }
+}
+);
+
+
+app.get(
+"/academicStaffForCommittee/petition-details/:id",
+isAuthenticated,
+isAcademicStaff,
+async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const pool = await sql.connect(config);
+
+    // ดึงข้อมูลคำร้อง
+    const petitionResult = await pool
+      .request()
+      .input("id", sql.Int, id)
+      .query(`
+        SELECT * FROM petition WHERE petition_id = @id
+      `);
+
+    const petition = petitionResult.recordset[0];
+
+    if (!petition) {
+      return res.status(404).json({ error: "Petition not found" });
+    }
+
+    // ดึงข้อมูลไฟล์แนบ
+    const filesResult = await pool
+      .request()
+      .input("petition_id", sql.Int, id)
+      .query(`
+        SELECT file_id, file_name, description
+        FROM localdoc
+        WHERE petition_id = @petition_id
+      `);
+
+    petition.attachedFiles = filesResult.recordset;
+
+    res.json(petition);
+  } catch (err) {
+    console.error("Error fetching petition details:", err);
+    res.status(500).json({ error: "Failed to fetch petition details" });
+  }
+}
+);
+
+//สำหรับacademicStaffFinalStage
+app.post(
+  "/academicStaffFinalStage/update-petition/:id",
+  isAuthenticated,
+  isAcademicStaff,
+  async (req, res) => {
+    const { id } = req.params;
+    const { status, comment } = req.body;
+  
+    try {
+      const pool = await sql.connect(config);
+  
+      await pool
+        .request()
+        .input("id", sql.Int, id)
+        .input("status", sql.TinyInt, status)
+        .input("comment", sql.NVarChar, comment || "")
+        .query(`
+          UPDATE petition
+          SET status = @status, 
+              review_time_d = GETDATE(), 
+              comment_d = @comment
+          WHERE petition_id = @id
+        `);
+  
+      res.json({ success: true, message: "Petition status updated successfully." });
+    } catch (err) {
+      console.error("Error updating petition status:", err);
+      res.status(500).json({ error: "Failed to update petition status" });
+    }
+  }
+  );
+  
+  
+  app.get(
+  "/academicStaffFinalStage/pending-petitions",
+  isAuthenticated,
+  isAcademicStaff,
+  async (req, res) => {
+    try {
+      const pool = await sql.connect(config);
+  
+      // Query ดึงคำร้องที่ status = 9และ 14
+      const pendingResult = await pool
+        .request()
+        .query(`
+          SELECT *
+          FROM petition
+          WHERE status = 13
+        `);
+  
+      res.json(pendingResult.recordset); // ส่งคำร้องทั้งหมดที่ต้องตรวจสอบไปยัง client
+    } catch (err) {
+      console.error("Error fetching pending petitions:", err);
+      res.status(500).json({ error: "Failed to fetch pending petitions" });
+    }
+  }
+  );
+  
+  
+  app.get(
+  "/academicStaffFinalStage/reviewed-petitions",
+  isAuthenticated,
+  isAcademicStaff,
+  async (req, res) => {
+    try {
+      const pool = await sql.connect(config);
+  
+      const reviewedResult = await pool.query(`
+        SELECT * FROM petition WHERE status = 15
+      `);//ไม่รู้ว่าควรมองเห็นแค่ไหน
+  
+      res.json(reviewedResult.recordset); // ส่งคำร้องที่ตรวจสอบแล้ว
+    } catch (err) {
+      console.error("Error fetching reviewed petitions:", err);
+      res.status(500).json({ error: "Failed to fetch reviewed petitions" });
+    }
+  }
+  );
+  
+  
+  app.get(
+  "/academicStaffFinalStage/petition-details/:id",
+  isAuthenticated,
+  isAcademicStaff,
+  async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      const pool = await sql.connect(config);
+  
+      // ดึงข้อมูลคำร้อง
+      const petitionResult = await pool
+        .request()
+        .input("id", sql.Int, id)
+        .query(`
+          SELECT * FROM petition WHERE petition_id = @id
+        `);
+  
+      const petition = petitionResult.recordset[0];
+  
+      if (!petition) {
+        return res.status(404).json({ error: "Petition not found" });
+      }
+  
+      // ดึงข้อมูลไฟล์แนบ
+      const filesResult = await pool
+        .request()
+        .input("petition_id", sql.Int, id)
+        .query(`
+          SELECT file_id, file_name, description
+          FROM localdoc
+          WHERE petition_id = @petition_id
+        `);
+  
+      petition.attachedFiles = filesResult.recordset;
+  
+      res.json(petition);
+    } catch (err) {
+      console.error("Error fetching petition details:", err);
+      res.status(500).json({ error: "Failed to fetch petition details" });
+    }
+  }
+  );
+    
+      
+  
+    
+
   // Route สำหรับแสดงคำร้องของอาจารย์
   app.get(
     "/advisor-petitions",
@@ -636,7 +1070,7 @@ const StartServer = async () => {
             SELECT p.*
             FROM petition p
             JOIN advisor_info a ON p.student_id = a.student_id
-            WHERE a.advisor_id = @advisorId AND p.status = 2
+            WHERE a.advisor_id = @advisorId AND p.status = 3
         `;
 
         const pool = await sql.connect(config);
@@ -666,13 +1100,13 @@ const StartServer = async () => {
         const pendingResult = await pool
           .request()
           .input("advisorId", sql.NVarChar, advisorId)
-          .query(`SELECT * FROM petition WHERE status = 2 AND student_id IN 
+          .query(`SELECT * FROM petition WHERE status = 3 AND student_id IN 
                     (SELECT student_id FROM advisor_info WHERE advisor_id = @advisorId)`);
 
         const reviewedResult = await pool
           .request()
           .input("advisorId", sql.NVarChar, advisorId)
-          .query(`SELECT * FROM petition WHERE status IN (3, 4, 5) AND student_id IN 
+          .query(`SELECT * FROM petition WHERE status IN (5, 6, 7) AND student_id IN 
                     (SELECT student_id FROM advisor_info WHERE advisor_id = @advisorId)`);
 
         res.json({
@@ -764,7 +1198,25 @@ const StartServer = async () => {
   app.get("/advisorPetitions", isAuthenticated, isTeacher, (req, res) => {
     res.sendFile(path.join(__dirname, "public", "advisorPetitions.html"));
   });
+  
+  app.get("/academicStaffPetitions", isAuthenticated, isAcademicStaff, (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "academicStaffPetitions.html"));
+  });
+  
+  app.get("/academicStaffForCommitteePetitions", isAuthenticated, isAcademicStaff, (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "academicStaffForCommitteePetitions.html"));
+  });
 
+  app.get("/academicStaffForCommitteePetitionDetail.html",  isAuthenticated, isAcademicStaff,(req, res) => {
+    res.sendFile(path.join(__dirname, "public", "academicStaffForCommitteePetitionDetail.html"));
+  });
+  app.get("/academicStaffFinalStagePetitions", isAuthenticated, isAcademicStaff, (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "academicStaffFinalStagePetitions.html"));
+  });
+
+  app.get("/academicStaffFinalStagePetitionDetail.html",  isAuthenticated, isAcademicStaff,(req, res) => {
+    res.sendFile(path.join(__dirname, "public", "academicStaffFinalStagePetitionDetail.html"));
+  });
   // Fetch petitions for the logged-in student
   app.get(
     "/student/petitions",
