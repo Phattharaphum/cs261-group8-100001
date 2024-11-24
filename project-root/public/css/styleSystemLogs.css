@@ -58,13 +58,15 @@ body, html {
     font-size: 15px;
     height: 40px;
     flex-grow: 1; /* เพิ่ม flex-grow */
+    margin-top: 50px;
+    margin-left: 60px;;
 }
 
 .search-filter input[type="text"] {
     padding: 8px;
     border: 1px solid #ffffff;
-    border-radius: 20px;
-    width: 200px;
+    border-radius: 10px;
+    width: 400px;
     font-size: 15px;
 }
 
@@ -118,40 +120,102 @@ button:hover {
     background-color: #B1B1B1; /* เปลี่ยนสีปุ่มเมื่อ hover */
 }
 
-/* Table Styling */
+/* ปรับปรุงเฉพาะตาราง */
+/* ตาราง */
 .table {
-    border-radius: 20px; /* ขอบโค้งของตาราง */
-    overflow: hidden;
-	margin: auto;
-    margin-top: 20px;
-	width: 90%;
+    width: 90%; /* ใช้ความกว้างเต็มพื้นที่คอนเทนเนอร์ */
+    margin: auto;
+    border-collapse: collapse;
+    background-color: #ffffff; /* สีพื้นหลัง */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+    border-radius: 8px; /* มุมโค้ง */
+    overflow: hidden; /* ป้องกันการล้น */
+    table-layout: fixed; /* คอลัมน์คงขนาด */
 }
 
-.table-header, .table-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-    padding: 15px;
+.table thead, .table tbody {
+    display: table; 
 }
 
-.table-header {
-    background-color: #ffffff;
-    font-weight: bold;
-    color: #000000;
+.table thead {
+    width: 100%;
+    background-color: #f7f7f7; /* สีพื้นหลังส่วนหัว */
+    border-bottom: 2px solid #ddd;
+}
+
+.table tbody {
+    max-height: 400px; /* ความสูงตารางที่ต้องการ */
+    overflow-y: auto; /* เพิ่มสกอลล์แนวตั้ง */
+    width: 100%;
+}
+
+.table-header th, .table td {
+    text-align: center; /* จัดข้อความกึ่งกลาง */
+    padding: 10px;
+    white-space: nowrap; /* ป้องกันข้อความตัด */
+    font-size: 14px; /* ขนาดตัวอักษร */
 }
 
 .table-row {
-    background-color: #ffffff;
-    border-top: 3px solid #EAEAEA;
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* ขนาดคงที่ */
+    border-bottom: 1px solid #ddd; /* เส้นคั่น */
 }
 
 .table-row:nth-child(even) {
-    background-color: #ffffff;
+    background-color: #f9f9f9; /* สีพื้นหลังสลับ */
 }
 
-.table-row span {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
+.table-row:hover {
+    background-color: #f5f5f5; /* สีเมื่อเมาส์ชี้ */
+}
+
+/* กำหนดขนาดของคอลัมน์ */
+.column-log-id {
+    width: 10%; /* ขนาดคอลัมน์ หมายเลข */
+}
+
+.column-username {
+    width: 20%; /* ชื่อผู้ใช้งาน */
+}
+
+.column-role {
+    width: 15%; /* บทบาท */
+}
+
+.column-action {
+    width: 25%; /* การกระทำ */
+}
+
+.column-date {
+    width: 15%; /* วัน/เดือน/ปี */
+}
+
+.column-time {
+    width: 15%; /* เวลา */
+}
+
+.column-details {
+    width: 10%; /* ปุ่มดูรายละเอียด */
+    text-align: center;
+}
+
+/* ปุ่ม "ดูรายละเอียด" */
+.details-link {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #BDD1EF; /* สีพื้นหลังปุ่ม */
+    text-decoration: none;
+    color: #000000; /* สีตัวอักษร */
+    border-radius: 20px; /* มุมโค้ง */
+    font-size: 12px; /* ขนาดตัวอักษร */
+    font-weight: 700; /* หนาตัวอักษร */
+}
+
+.details-link:hover {
+    background-color: #b71c1c; /* สีปุ่มเมื่อเมาส์ชี้ */
+    color: #ffffff; /* สีตัวอักษรเมื่อเมาส์ชี้ */
 }
 
 .verify-button {
@@ -194,11 +258,13 @@ button:hover {
 	width: 100px;
 }
 
-.column-time {
-	text-align: center;
+.column-timestamp {
+    text-align: center;
+	width: 100px;
+
 }
 
-        .status-label {
+.status-label {
     display: flex;
     align-items: center;
     justify-content: center;
