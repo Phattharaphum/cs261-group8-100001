@@ -1,0 +1,343 @@
+/* style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Bai Jamjuree', sans-serif;
+}
+
+body,
+html {
+    font-family: 'Bai Jamjuree', sans-serif;
+    height: 100%;
+}
+
+.wrapper {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* Sidebar (20%) */
+.sidebar {
+    width: 300px;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+/* Main content area (80%) */
+.container {
+    flex: 1;
+    width: 100%;
+    background-color: #EAEAEA;
+}
+
+/* Header and search bar */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-button {
+    font-weight: bold;
+    background-color: #A70C0C;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 25px;
+    cursor: pointer;
+    margin-top: 50px;
+    margin-left: 60px;
+    ;
+}
+
+.search-filter {
+    display: flex;
+    gap: 10px;
+    font-size: 15px;
+    height: 40px;
+    flex-grow: 1;
+    /* เพิ่ม flex-grow */
+}
+
+.search-filter input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ffffff;
+    border-radius: 20px;
+    width: 200px;
+    font-size: 15px;
+}
+
+.filter-button {
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+/* Tabs */
+.tab {
+    background-color: #D9D9D9;
+    display: inline-flex;
+    padding: 8px 8px;
+    border-radius: 25px;
+    border: none;
+    font-size: 15px;
+    flex-grow: 0;
+    /* กำหนด flex-grow ให้คงขนาดเท่าที่กำหนดไว้ */
+}
+
+.tab.Ncheck {
+    font-weight: bold;
+    background-color: white;
+    padding: 10px 20px;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.tab.Check {
+    font-weight: bold;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    margin-left: 7px;
+}
+
+.button:active {
+    background-color: white;
+    color: #000000;
+}
+
+button:hover {
+    background-color: #B1B1B1;
+    /* เปลี่ยนสีปุ่มเมื่อ hover */
+}
+
+/* Table Styling */
+.table {
+    border-radius: 20px;
+    /* ขอบโค้งของตาราง */
+    overflow: hidden;
+    margin: auto;
+    margin-top: 20px;
+    width: 90%;
+}
+
+.table-header,
+.table-row {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    padding: 15px;
+}
+
+.table-header {
+    background-color: #ffffff;
+    font-weight: bold;
+    color: #000000;
+}
+
+.table-row {
+    background-color: #ffffff;
+    border-top: 3px solid #EAEAEA;
+}
+
+.table-row:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.table-row span {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.verify-button {
+    background-color: #A70C0C;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: left;
+    margin: 0;
+}
+
+.sss {
+    margin-left: 30px;
+    display: flex;
+    gap: 10px;
+    /* เพิ่มระยะห่างระหว่าง .tab และ .search-filter */
+    align-items: center;
+    /* จัดให้องค์ประกอบอยู่กึ่งกลางแนวตั้ง */
+}
+
+.column-petition-type {
+    width: 260px;
+}
+
+.column-check {
+    padding: 5px;
+    margin: auto;
+    width: 100px;
+    text-align: center;
+}
+
+.column-status {
+    text-align: center;
+    width: 100px;
+}
+
+.column-subject-code {
+    text-align: center;
+    width: 100px;
+}
+
+.column-time {
+    text-align: center;
+}
+
+.status-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin: auto;
+}
+
+.status-waiting {
+    background-color: #FFE5B5;
+    color: #AB6C22;
+}
+
+.status-read {
+    background-color: #F3E4FF;
+    color: #6A3A9E;
+}
+
+.status-rejected {
+    background-color: #FFD5D6;
+    color: #B41E2D;
+}
+
+.status-approved {
+    background-color: #B0F8AD;
+    color: #1A6837;
+}
+
+.status-canceled {
+    background-color: #DFDFDF;
+    color: #5B5B5B;
+}
+
+.sort-icon {
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
+
+.column-type {
+    width: 250px;
+}
+
+.table tbody {
+    display: block;
+    max-height: 500px;
+    /* Adjust height as needed */
+    overflow-y: auto;
+    width: 100%;
+}
+
+.table thead,
+.table tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.column-subject-name {
+    width: 280px;
+}
+
+.column-section {
+    width: 140px;
+    text-align: center;
+}
+
+.column-student-id {
+    width: 130px;
+}
+
+.column-date {
+    text-align: center;
+    width: 100px;
+}
+
+#petition-list {
+    background-color: #EFEFEF;
+}
+
+.tab-button {
+    padding: 10px 20px;
+    border-radius: 15px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.tab-button.active {
+    background-color: white;
+    color: black;
+}
+
+.tab-button.inactive {
+    background-color: #d9d9d9;
+    color: #333;
+}
+
+.status-label {
+    padding: 5px 10px;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+}
+
+.status-waiting {
+    background-color: #ffe6a7;
+    color: #b68900;
+}
+
+.status-read {
+    background-color: #e0b0ff;
+    color: #8e44ad;
+}
+
+.status-rejected {
+    background-color: #ffcdd2;
+    color: #c62828;
+}
+
+.status-approved {
+    background-color: #a5d6a7;
+    color: #2e7d32;
+}
+
+.status-canceled {
+    background-color: #bbdefb;
+    color: #1565c0;
+}

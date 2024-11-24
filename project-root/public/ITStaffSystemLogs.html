@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ประวัติการใช้ระบบ</title>
+    <link rel="stylesheet" href="css/styleSystemLogs.css" />
+    <link rel="stylesheet" href="css/stylesidebar.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="./js/system-logs-handler.js"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <img src="img/logo.svg" alt="University Logo" class="logo" />
+          <div class="tops">
+            <p class="hasd">ระบบสำหรับเจ้าหน้าที่</p>
+            <p class="asdasd">
+              คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
+            </p>
+          </div>
+        </div>
+        <nav class="sidebar-menu">
+          <a href="/ITStaffSystemLogs.html" class="menu-item active">
+            <img src="img/Artboard 1.svg" alt="Logs Icon" />
+            <span class="tee">ประวัติการใช้ระบบ</span>
+          </a>
+          <a href="/manage_staff.html" class="menu-item">
+            <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
+            <span class="tee">แก้ไขข้อมูลบุคลากรคณะ</span>
+          </a>
+          <a href="/ITStaffPetitions.html" class="menu-item">
+            <img src="img/Artboard 1.svg" alt="Petitions Icon" />
+            <span class="tee">รายการคำร้อง</span>
+          </a>
+        </nav>
+        <div class="logout-section">
+          <a href="/logout" class="menu-item">
+            <img src="img/Artboard 3.svg" alt="Logout Icon" />
+            <span class="tee">ออกจากระบบ</span>
+          </a>
+          <div class="user-info">
+            <div class="asee">
+              <img src="img/avt (1).svg" alt="User Icon" />
+            </div>
+            <div class="user-details">
+              <p class="name" id="barname">ชื่อจริง นามสกุล</p>
+              <p class="idd" id="barid">Admin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <div class="header">
+          <div class="header-button">ประวัติการใช้ระบบ</div>
+          <div class="search-filter">
+            <input type="text" class="search-input" placeholder="ค้นหา" />
+          </div>
+        </div>
+
+      
+
+        <table class="table">
+          <thead>
+            <tr class="table-header">
+              <th class="column-log-id">หมายเลข    <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-username">ชื่อผู้ใช้งาน <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-role">บทบาท       <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-action">การกระทำ   <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-date">วัน/เดือน/ปี    <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-timestamp">เวลา    <i class='bx bx-expand-vertical'></i></th>
+              <th class="column-details"></th>
+            </tr>
+          </thead>
+
+          <tbody id="logs-list">
+            <!-- ตัวอย่างข้อมูล -->
+            
+              <tr class="table-row">
+                <td class="column-log-id">2748</td>
+                <td class="column-username">John Doe</td>
+                <td class="column-role">นักศึกษา</td>
+                <td class="column-action">เข้าสู่ระบบ</td>
+                <td class="column-date">2024/11/22</td>
+                <td class="column-timestamp"> 14:30:45</td>
+                <td class="column-details"><a href="/systemLogDetail.html?id=1" class="details-link">ดูรายละเอียด</a></td>
+              </tr>
+          
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script>
+      fetch("/api/system-logs")
+        .then((response) => response.json())
+        .then((data) => {
+          const logsList = document.getElementById("logs-list");
+          logsList.innerHTML = "";
+
+          data.forEach((log) => {
+            const row = document.createElement("tr");
+            row.classList.add("table-row");
+
+            row.innerHTML = `
+              <td class="column-log-id">${log.log_id}</td>
+              <td class="column-username">${log.tuusername || "N/A"}</td>
+              <td class="column-role">${getRoleName(log.role)}</td>
+              <td class="column-action">${log.action}</td>
+              <td class="column-date">${logDate.toLocaleDateString("th-TH")}</td> <!-- วันที่ -->
+              <td class="column-timestamp">${logDate.toLocaleTimeString("th-TH")}</td> <!-- เวลา -->
+              <td class="column-details"><a href="/systemLogDetail.html?id=${log.log_id}" class="details-link">ดูรายละเอียด</a></td>
+            `;
+            logsList.appendChild(row);
+          });
+        })
+        .catch((error) => console.error("Error fetching system logs:", error));
+
+      function getRoleName(role) {
+        const roles = {
+          1: "นักศึกษา",
+          2: "ที่ปรึกษา",
+          3: "อาจารย์",
+          4: "เจ้าหน้าที่",
+          5: "ผู้ดูแลระบบ",
+        };
+        return roles[role] || "ไม่ทราบบทบาท";
+      }
+    </script>
+  </body>
+</html>

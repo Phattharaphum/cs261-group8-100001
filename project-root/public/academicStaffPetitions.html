@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>รายการคำร้อง</title>
-    <link rel="stylesheet" href="css/styleListofPetitionStudent.css" />
+    <title>รายการคำร้องตรวจสอบเบื้องต้น</title>
+    <link rel="stylesheet" href="css/styleListofPetitionAcademicStaff.css" />
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -13,51 +13,6 @@
       rel="stylesheet"
     />
     <script defer src="./js/redirect-handler.js"></script>
-    <style>
-      .tab-button {
-        padding: 10px 20px;
-        border-radius: 15px;
-        border: none;
-        cursor: pointer;
-        font-weight: bold;
-        margin-right: 10px;
-      }
-      .tab-button.active {
-        background-color: white;
-        color: black;
-      }
-      .tab-button.inactive {
-        background-color: #d9d9d9;
-        color: #333;
-      }
-      .status-label {
-        padding: 5px 10px;
-        border-radius: 15px;
-        color: white;
-        font-weight: bold;
-      }
-
-      .status-waiting {
-        background-color: #ffe6a7;
-        color: #b68900;
-      }
-      .status-read {
-        background-color: #e0b0ff;
-        color: #8e44ad;
-      }
-      .status-rejected {
-        background-color: #ffcdd2;
-        color: #c62828;
-      }
-      .status-approved {
-        background-color: #a5d6a7;
-        color: #2e7d32;
-      }
-      .status-canceled {
-        background-color: #bbdefb;
-        color: #1565c0;
-      }
-    </style>
   </head>
   <body>
     <div class="wrapper">
@@ -73,20 +28,19 @@
           </div>
         </div>
         <nav class="sidebar-menu">
-          <a href="/advisorPetitions" class="menu-item active">
+          <a href="#" class="menu-item active">
             <img src="img/Artboard2.svg" alt="Status Icon" />
-            <span class="tee">รายการคำร้องของนักศึกษาในที่ปรึกษา</span>
+            <span class="tee">รายการคำร้องตรวจสอบเบื้องต้น</span>
           </a>
-          <a href="/teacherPetitions" class="menu-item">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
-            <span class="tee">รายการคำร้องในรายวิชา</span>
+          <a href="/academicStaffForCommitteePetitions " class="menu-item">
+            <img src="img/image 13.svg" alt="Status Icon" />
+            <span class="tee">รายการคำร้องรอยื่นคณบดี</span>
           </a>
-          <a href="" class="menu-item">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
-            <span class="tee">รายการขอนัดหมาย</span>
+          <a href="/academicStaffFinalStagePetitions" class="menu-item ">
+            <img src="img/image 16.svg" alt="Status Icon" />
+            <span class="tee">รายการคำร้องรอยื่นสำนักทะเบียน</span>
           </a>
         </nav>
-
         <div class="logout-section">
           <a href="/logout" class="menu-item">
             <img src="img/Artboard3.svg" alt="Logout Icon" />
@@ -97,14 +51,14 @@
               <img src="img/avt (1).svg" alt="Logout Icon" />
             </div>
             <div class="user-details">
-              <p class="name" id="barname">ธนา สงวนวิชา</p>
-              <p class="idd" id="barid">0001</p>
+              <p class="name" id="barname">เจ้าหน้าที่ ฝ่ายวิชาการ</p>
+              <p class="idd" id="barid">0002</p>
             </div>
           </div>
         </div>
 
         <!-- 
-            <a href="/advisorPetitions" class="active">รายการคำร้อง</a>
+            <a href="/academicStaffPetitions" class="active">รายการคำร้อง</a>
             <a href="/logout">ออกจากระบบ</a>
         -->
       </div>
@@ -112,7 +66,7 @@
       <!-- Main Content Section (80%) -->
       <div class="container">
         <div class="header">
-          <div class="header-button">รายการคำร้อง</div>
+          <div class="header-button">รายการคำร้องตรวจสอบเบื้องต้น</div>
         </div>
 
         <div class="sss">
@@ -161,7 +115,9 @@
                 รหัสวิชา
                 <span class="sort-icon" id="sort-icon-subject_code">▲▼</span>
               </th>
-              <th class="column-section">กลุ่มเรียน</th>
+              <th class="column-section coan">
+                กลุ่มเรียน
+              </th>
               <th
                 class="column-student-name coan"
                 onclick="sortTable('student_name')"
@@ -176,18 +132,26 @@
                 รหัสนักศึกษา
                 <span class="sort-icon" id="sort-icon-student_id">▲▼</span>
               </th>
-              <th class="column-date coan" onclick="sortTable('submit_time')">
+              <th 
+                class="column-date coan" 
+                onclick="sortTable('submit_time')"
+              >
                 วันที่
                 <span class="sort-icon" id="sort-icon-submit_time">▲▼</span>
               </th>
-              <th class="column-time">เวลา</th>
-              <th class="column-status coan" onclick="sortTable('status')">
+              <th class="column-time">
+                เวลา
+              </th>
+              <th 
+                class="column-status coan" 
+                onclick="sortTable('status')"
+              >
                 สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span>
               </th>
               <th class="column-check"></th>
             </tr>
           </thead>
-          <tbody id="petition-list">
+          <tbody id="petition-list">           
             <tr class="table-row">
               <td class="column-type">จดทะเบียนล่าช้า</td>
               <td class="column-subject-name">วิทยาการคอมพิวเตอร์เบื้องต้น</td>
@@ -236,8 +200,26 @@
               <td class="column-status">
                 <span class="status-label status-rejected">ไม่อนุมัติ</span>
               </td>
-              <td class="column-check">
+              <!-- <td class="column-check">
                 <button class="verify-button" onclick="viewPetition(3)">
+                  ตรวจสอบ
+                </button>
+              </td> -->
+            </tr>
+            <tr class="table-row">
+              <td class="column-type">จดทะเบียนล่าช้า</td>
+              <td class="column-subject-name">วิทยาการคอมพิวเตอร์เบื้องต้น</td>
+              <td class="column-subject-code">CS101</td>
+              <td class="column-section">01</td>
+              <td class="column-student-name">สมชาย ใจดี</td>
+              <td class="column-student-id">6600812345</td>
+              <td class="column-date">12/11/2024</td>
+              <td class="column-time">09:30</td>
+              <td class="column-status">
+                <span class="status-label status-waiting">รอตรวจสอบ</span>
+              </td>
+              <td class="column-check">
+                <button class="verify-button" onclick="viewPetition(1)">
                   ตรวจสอบ
                 </button>
               </td>
@@ -254,27 +236,30 @@
       let currentView = "pending";
 
       // Fetch petitions data from server
-      fetch("/advisor/pending-petitions")
+      fetch("/academicStaff/pending-petitions")
         .then((response) => response.json())
         .then((data) => {
-          pendingPetitions = data.pending;
-          reviewedPetitions = data.reviewed;
+          pendingPetitions = data; // เก็บเฉพาะ pending petitions
           renderPetitions();
+         })
+        .catch((error) => console.error("Error fetching pending petitions:", error));
+
+      fetch("/academicStaff/reviewed-petitions")
+        .then((response) => response.json())
+        .then((data) => {
+          reviewedPetitions = data; // เก็บ reviewed petitions แยกกัน
         })
-        .catch((error) => console.error("Error fetching petitions:", error));
+        .catch((error) => console.error("Error fetching reviewed petitions:", error));
 
       // ฟังก์ชันเพื่อแสดงสถานะพร้อมแถบสี
       function getStatusLabel(status) {
         switch (status) {
-          case 3:
+          case 2:
             return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
-          case 5:
-            return '<span class="status-label status-read">อ่านแล้ว</span>';
-          case 7:
-            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
-          case 6:
-            return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
-
+          case 3:
+            return '<span class="status-label status-read">รออาจารย์</span>';
+          case 4:
+            return '<span class="status-label status-rejected">ปฏิเสธ/กลับไปแก้ไข</span>';
           default:
             return '<span class="status-label">ไม่ทราบสถานะ</span>';
         }
@@ -370,7 +355,7 @@
       }
 
       function viewPetition(id) {
-        window.location.href = `/advisorPetitionDetail.html?id=${id}`;
+        window.location.href = `/academicStaffPetitionDetail.html?id=${id}`;
       }
 
       // Filter petitions by search input

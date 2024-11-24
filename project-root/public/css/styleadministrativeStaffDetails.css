@@ -61,11 +61,11 @@ body {
 }
 
 #personalInfo {
-    font-weight: 500;
+    font-weight: bold;
 }
 
 #subjectInfo {
-    font-weight: 500; 
+    font-weight: bold; 
 }
 
 #fileInfo {
@@ -76,53 +76,21 @@ body {
     font-weight: bold;
 }
 
-/* hr {
+hr {
     width: 50%; 
     height: 3px; 
     border: none; 
     background-color: #BFBFBF; 
     margin: 0;
     margin-left: 0;
-} */
+}
 
 .file {
     display: flex;
     gap: 20px;
 	padding: 20px;
-	padding-top: 20px;
-    /*background*/
-    background-color: #D9D9D9;
-    margin: 20px;
-    border-radius: 15px;
+	padding-top: 10px;
 }
-
-.file th{
-    font-weight: 400;
-}
-
-.download-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #EBEBEB;
-    padding: 5px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-
-.download-button span{
-    font-weight: 400;
-    font-size: 16px;
-}
-
-.download-button img.download {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    margin-left: 10px;
-  }
 
 .box-container {
     display: flex;
@@ -190,49 +158,84 @@ body {
 	margin-top: 20px;
 	font-size: 15pt;
 }
-
-/*Petition Form*/
-.petitionDetails {
-    background-color: #FFFFFF;
-    margin: 20px 80px;
-    padding: 30px 60px;
-    border-radius: 20px;
-    font-family: "Sarabun", sans-serif;
-}
-
-.tab-space {
-    margin-left: 10px;
-}
-.header-form {
-    font-size: 20px;
-    font-weight: 500;
-    text-align: center;
-}
-
-.subheader-text{
-    font-weight: 500;
-}
-
-.tab-text {
-    margin-left: 25px;
-}
-.end-form{
-    text-align: right;
-}
-
-.time-submit {
-    margin-right: -20px;
-    font-size: 12px;
-}
- 
-/*comment*/
-.comment-advisor {
+.staffForm {
     display: flex;
-    margin: 20px;
+    flex-direction: column; /* จัดเรียงองค์ประกอบในแนวตั้ง */
+    gap: 10px; /* ระยะห่างระหว่างแถว */
+    margin-left: 100px;
+    font-weight: bold;
+    color: #5F5F5F;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between; /* จัดวางองค์ประกอบให้ห่างกันเท่าๆ กัน */
+  }
+  
+  .form-group {
+    width: 500px; /* กำหนดความกว้างของแต่ละช่อง */
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .container input[type="text"] {
+    background-color: rgb(255, 255, 255);
     border: none;
-    height: 150px;
-    width: 950px;
-    border-radius: 20px;
-    padding: 30px 30px 150px 30px;
-    text-align: left;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+    
+}
+h2 {
+    padding: 20px;
+    color: rgb(0, 0, 0);
+}
+.aaa {
+	font-weight: 600;
+    margin-bottom: 10px;
+    width: 150px;
+	    background-color: #ffffff;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	font-weight: bold;
+	    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+.addButton{
+    width: 100px;
+    height: 30px;
+    background-color: #A70C0C;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    font-weight: bold;
+}
+button:hover {
+    background-color: #9c9c9c; /* เปลี่ยนสีปุ่มเมื่อ hover */
 }

@@ -61,11 +61,11 @@ body {
 }
 
 #personalInfo {
-    font-weight: 500;
+    font-weight: bold;
 }
 
 #subjectInfo {
-    font-weight: 500; 
+    font-weight: bold; 
 }
 
 #fileInfo {
@@ -76,53 +76,21 @@ body {
     font-weight: bold;
 }
 
-/* hr {
+hr {
     width: 50%; 
     height: 3px; 
     border: none; 
     background-color: #BFBFBF; 
     margin: 0;
     margin-left: 0;
-} */
+}
 
 .file {
     display: flex;
     gap: 20px;
 	padding: 20px;
-	padding-top: 20px;
-    /*background*/
-    background-color: #D9D9D9;
-    margin: 20px;
-    border-radius: 15px;
+	padding-top: 10px;
 }
-
-.file th{
-    font-weight: 400;
-}
-
-.download-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #EBEBEB;
-    padding: 5px 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s ease;
-}
-
-.download-button span{
-    font-weight: 400;
-    font-size: 16px;
-}
-
-.download-button img.download {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-    margin-left: 10px;
-  }
 
 .box-container {
     display: flex;
@@ -189,50 +157,4 @@ body {
 .spanlab {
 	margin-top: 20px;
 	font-size: 15pt;
-}
-
-/*Petition Form*/
-.petitionDetails {
-    background-color: #FFFFFF;
-    margin: 20px 80px;
-    padding: 30px 60px;
-    border-radius: 20px;
-    font-family: "Sarabun", sans-serif;
-}
-
-.tab-space {
-    margin-left: 10px;
-}
-.header-form {
-    font-size: 20px;
-    font-weight: 500;
-    text-align: center;
-}
-
-.subheader-text{
-    font-weight: 500;
-}
-
-.tab-text {
-    margin-left: 25px;
-}
-.end-form{
-    text-align: right;
-}
-
-.time-submit {
-    margin-right: -20px;
-    font-size: 12px;
-}
- 
-/*comment*/
-.comment-advisor {
-    display: flex;
-    margin: 20px;
-    border: none;
-    height: 150px;
-    width: 950px;
-    border-radius: 20px;
-    padding: 30px 30px 150px 30px;
-    text-align: left;
 }
