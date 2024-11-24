@@ -101,7 +101,7 @@ const StartServer = async () => {
       // ตรวจสอบ username และ password สำหรับ userType: 'teacher'
       if (username === "0001" && password === "test") {
         req.session.user = {
-          username: username,
+          username: "U001",
           email: "teacher@example.com", // ตัวอย่างข้อมูล
           displayname_en: "Teacher",
           displayname_th: "ครู",
@@ -115,22 +115,21 @@ const StartServer = async () => {
           success: true,
           redirectUrl: "/advisorPetitions",
         });
-        // ตรวจสอบ username และ password สำหรับ userType: 'academicStaff'
-      } else if(username === "0002" && password === "test") {
+      } else if (username === "0004" && password === "test") {
         req.session.user = {
-          username: username,
-          email: "academicStaff@example.com", // ตัวอย่างข้อมูล
-          displayname_en: "academicStaff",
-          displayname_th: "เจ้าหน้าที่ฝ่ายวิชาการ",
+          username: "U004",
+          email: "teacher@example.com",
+          displayname_en: "Teacher",
+          displayname_th: "คณบดี",
           faculty: "Faculty of Education",
           department: "Education Department",
-          userType: "academicStaff",
+          userType: "teacher",
         };
 
-        // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า homeacademicStaff
+        // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า hometeacher
         res.json({
           success: true,
-          redirectUrl: "/academicStaffPetitions",
+          redirectUrl: "/deanPetitions",
         });
       } else {
         // ถ้า username และ password ไม่ตรงตามเงื่อนไข ให้เรียก TU API
@@ -225,7 +224,7 @@ const StartServer = async () => {
         .input("id", sql.Int, id)
         .input("status", sql.TinyInt, status).query(`
                 UPDATE petition 
-                SET status = @status, review_time = GETDATE()
+                SET status = @status, review_time_b = GETDATE()
                 WHERE petition_id = @id
             `);
 
@@ -241,26 +240,47 @@ const StartServer = async () => {
   // Endpoint สำหรับอัปเดตสถานะคำร้องพร้อมอัปเดต review_time
   app.post("/advisor/update-petition/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+    const { status, comment } = req.body;
+
+    // Log incoming data for debugging
+    console.log("Incoming Request:", { id, status, comment });
+
+    // Validate input data
+    if (!id || status === undefined || comment === undefined) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Missing required fields" });
+    }
 
     try {
       const pool = await sql.connect(config);
 
-      await pool
+      // Update the petition's status and comment
+      const result = await pool
         .request()
         .input("id", sql.Int, id)
+        .input("comment", sql.NVarChar, comment)
         .input("status", sql.TinyInt, status).query(`
-                UPDATE petition 
-                SET status = @status, review_time = GETDATE()
-                WHERE petition_id = @id
-            `);
+          UPDATE petition
+          SET status = @status,
+              comment_b = @comment, 
+              review_time_b = GETDATE()
+          WHERE petition_id = @id;
+        `);
 
-      res.json({ success: true });
+      // Check if a row was affected
+      if (result.rowsAffected[0] === 0) {
+        return res
+          .status(404)
+          .json({ success: false, message: "Petition not found" });
+      }
+
+      res.json({ success: true, message: "Petition updated successfully" });
     } catch (err) {
       console.error("Error updating petition status and review time:", err);
       res
         .status(500)
-        .json({ success: false, error: "Failed to update petition status" });
+        .json({ success: false, message: "Failed to update petition status" });
     }
   });
 
@@ -1160,22 +1180,289 @@ app.post(
       res.status(500).json({ error: "Failed to fetch petition details" });
     }
   });
+  // เข้าใจว่า copyมาเกิน เพราะไม่ถูกเรียกใช้
+  // app.post("/advisor/update-petition/:id", async (req, res) => {
+  //   const { id } = req.params;
+  //   const { status, comment } = req.body;
+  //   try {
+  //     const pool = await sql.connect(config);
+  //     console.log("hit 2");
+  //     await pool
+  //       .request()
+  //       .input("id", sql.Int, id)
+  //       .input("comment", sql.NVarChar, comment)
+  //       .input("status", sql.TinyInt, status)
+  //       .query(
+  //         `UPDATE petition
+  //         SET status = @status,
+  //             comment_b = @comment,
+  //             review_time_b = GETDATE()
+  //         WHERE petition_id = @id;`
+  //       );
 
-  app.post("/advisor/update-petition/:id", async (req, res) => {
+  //     res.json({ success: true });
+  //   } catch (err) {
+  //     console.error(err);
+  //     res
+  //       .status(500)
+  //       .json({ success: false, error: "Failed to update petition status" });
+  //   }
+  // });
+
+  //route สำหรับคำร้องของอาจารย์ในรายวิชา
+  // ดึงข้อมูลคำร้องในรายวิชาที่ยังไม่ได้ตรวจสอบและตรวจสอบแล้ว
+  app.get("/teacher/pending-petitions", async (req, res) => {
+    try {
+      const teacherId = req.session.user.username; // e.g., 'U001'
+      const pool = await sql.connect(config);
+
+      // Pending petitions with status = 6
+      const pendingResult = await pool
+        .request()
+        .input("teacherId", sql.NVarChar, teacherId).query(`
+            SELECT p.*
+            FROM petition p
+            INNER JOIN courses c ON p.subject_code = c.course_code
+            CROSS APPLY OPENJSON(c.sections)
+            WITH (
+              staff_id INT '$.staff_id',
+              section NVARCHAR(50) '$.section'
+            ) AS s
+            INNER JOIN faculty_staff fs ON s.staff_id = fs.staff_id
+            WHERE p.status = 6
+              AND fs.university_id = @teacherId
+              AND s.section = p.section
+          `);
+
+      // Reviewed petitions with status IN (8, 9, 10)
+      const reviewedResult = await pool
+        .request()
+        .input("teacherId", sql.NVarChar, teacherId).query(`
+            SELECT p.*
+            FROM petition p
+            INNER JOIN courses c ON p.subject_code = c.course_code
+            CROSS APPLY OPENJSON(c.sections)
+            WITH (
+              staff_id INT '$.staff_id',
+              section NVARCHAR(50) '$.section'
+            ) AS s
+            INNER JOIN faculty_staff fs ON s.staff_id = fs.staff_id
+            WHERE p.status IN (8, 9, 10)
+              AND fs.university_id = @teacherId
+              AND s.section = p.section
+          `);
+
+      res.json({
+        pending: pendingResult.recordset,
+        reviewed: reviewedResult.recordset,
+      });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Failed to fetch petitions" });
+    }
+  });
+
+  app.get("/teacher/petition-details/:id", async (req, res) => {
     const { id } = req.params;
-    const { status } = req.body;
+
     try {
       const pool = await sql.connect(config);
 
-      await pool
+      // Fetch the petition by ID
+      const petitionResult = await pool.request().input("id", sql.Int, id)
+        .query(`
+          SELECT * 
+          FROM petition
+          WHERE petition_id = @id;
+        `);
+
+      const petition = petitionResult.recordset[0];
+
+      if (!petition) {
+        return res.status(404).json({ error: "Petition not found" });
+      }
+
+      // Optionally, fetch attached files for the petition
+      const filesResult = await pool.request().input("petition_id", sql.Int, id)
+        .query(`
+          SELECT file_id, file_name, description
+          FROM localdoc
+          WHERE petition_id = @petition_id;
+        `);
+
+      petition.attachedFiles = filesResult.recordset;
+
+      // Return the petition with any attached files
+      res.json(petition);
+    } catch (err) {
+      console.error("Error fetching petition details:", err);
+      res.status(500).json({ error: "Failed to fetch petition details" });
+    }
+  });
+
+  app.post("/teacher/update-petition/:id", async (req, res) => {
+    const { id } = req.params;
+    const { status, comment } = req.body;
+
+    // Validate input
+    if (!id || status === undefined || comment === undefined) {
+      return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    try {
+      const pool = await sql.connect(config);
+
+      // Update the petition's status and comment
+      const result = await pool
         .request()
         .input("id", sql.Int, id)
-        .input("status", sql.TinyInt, status)
-        .query("UPDATE petition SET status = @status WHERE petition_id = @id");
+        .input("comment", sql.NVarChar, comment)
+        .input("status", sql.TinyInt, status).query(`
+          UPDATE petition
+          SET status = @status,
+              comment_c = @comment,
+              review_time_c = GETDATE()
+          WHERE petition_id = @id;
+        `);
+
+      // Check if a row was affected
+      if (result.rowsAffected[0] === 0) {
+        return res.status(404).json({ error: "Petition not found" });
+      }
 
       res.json({ success: true });
     } catch (err) {
-      console.error(err);
+      console.error("Error updating petition status:", err);
+      res
+        .status(500)
+        .json({ success: false, error: "Failed to update petition status" });
+    }
+  });
+
+  app.post("/teacher/auto-update-status/:id", async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    try {
+      const pool = await sql.connect(config);
+      await pool
+        .request()
+        .input("id", sql.Int, id)
+        .input("status", sql.TinyInt, status).query(`
+                UPDATE petition 
+                SET status = @status, review_time_c = GETDATE()
+                WHERE petition_id = @id
+            `);
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Error updating petition status and review time:", err);
+      res
+        .status(500)
+        .json({ success: false, message: "Failed to update petition status" });
+    }
+  });
+
+  // route สำหรับคณบดี
+  app.get("/dean/pending-petitions", async (req, res) => {
+    try {
+      const deanId = req.session.user.username; // e.g., 'U001'
+      const pool = await sql.connect(config);
+
+      // Fetch pending petitions with status = 11
+      const pendingPetitions = await pool
+        .request()
+        .input("deanId", sql.NVarChar, deanId) // Dean ID input if needed
+        .query(`
+          SELECT p.*
+          FROM petition p
+          WHERE p.status = 11
+        `);
+      // Fetch reviewed petitions with status IN (12, 13)
+      const reviewedPetitions = await pool
+        .request()
+        .input("deanId", sql.NVarChar, deanId) // Dean ID input if needed
+        .query(`
+          SELECT p.*
+          FROM petition p
+          WHERE p.status IN (12, 13)
+        `);
+
+      res.json({
+        pendingPetitions: pendingPetitions.recordset,
+        reviewedPetitions: reviewedPetitions.recordset,
+      });
+    } catch (err) {
+      console.error("Error fetching petitions:", err);
+      res.status(500).json({ error: "Failed to fetch petitions" });
+    }
+  });
+  app.get("/dean/petition-details/:id", async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      const pool = await sql.connect(config);
+
+      // Fetch the petition by ID
+      const petitionResult = await pool.request().input("id", sql.Int, id)
+        .query(`
+          SELECT * 
+          FROM petition
+          WHERE petition_id = @id;
+        `);
+
+      const petition = petitionResult.recordset[0];
+
+      if (!petition) {
+        return res.status(404).json({ error: "Petition not found" });
+      }
+
+      // Optionally, fetch attached files for the petition
+      const filesResult = await pool.request().input("petition_id", sql.Int, id)
+        .query(`
+          SELECT file_id, file_name, description
+          FROM localdoc
+          WHERE petition_id = @petition_id;
+        `);
+
+      petition.attachedFiles = filesResult.recordset;
+
+      // Return the petition with any attached files
+      res.json(petition);
+    } catch (err) {
+      console.error("Error fetching petition details:", err);
+      res.status(500).json({ error: "Failed to fetch petition details" });
+    }
+  });
+
+  app.post("/dean/update-petition/:id", async (req, res) => {
+    const { id } = req.params;
+    const { status, comment } = req.body;
+
+    try {
+      const pool = await sql.connect(config);
+
+      // Update the petition's status
+      const result = await pool
+        .request()
+        .input("id", sql.Int, id)
+        .input("comment", sql.NVarChar, comment)
+        .input("status", sql.TinyInt, status).query(`
+          UPDATE petition
+          SET status = @status,
+              comment_e = @comment,
+              review_time_e = GETDATE()
+          WHERE petition_id = @id;
+        `);
+
+      // Check if a row was affected
+      if (result.rowsAffected[0] === 0) {
+        return res.status(404).json({ error: "Petition not found" });
+      }
+
+      res.json({ success: true });
+    } catch (err) {
+      console.error("Error updating petition status:", err);
       res
         .status(500)
         .json({ success: false, error: "Failed to update petition status" });
@@ -1214,9 +1501,17 @@ app.post(
     res.sendFile(path.join(__dirname, "public", "academicStaffFinalStagePetitions.html"));
   });
 
-  app.get("/academicStaffFinalStagePetitionDetail.html",  isAuthenticated, isAcademicStaff,(req, res) => {
-    res.sendFile(path.join(__dirname, "public", "academicStaffFinalStagePetitionDetail.html"));
+  app.get("/teacherPetitions", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "teacherPetitions.html"));
   });
+  app.get("/teacherAppointment", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "teacherAppointment.html"));
+  });
+  app.get("/deanPetitions", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "deanPetitions.html"));
+  });
+
+
   // Fetch petitions for the logged-in student
   app.get(
     "/student/petitions",

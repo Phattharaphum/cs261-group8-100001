@@ -73,16 +73,16 @@
           </div>
         </div>
         <nav class="sidebar-menu">
-          <a href="/advisorPetitions" class="menu-item active">
+          <a href="/advisorPetitions" class="menu-item">
             <img src="img/Artboard2.svg" alt="Status Icon" />
             <span class="tee">รายการคำร้องของนักศึกษาในที่ปรึกษา</span>
           </a>
           <a href="/teacherPetitions" class="menu-item">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
+            <img src="img/Artboard2.svg" alt="Approved Icon" />
             <span class="tee">รายการคำร้องในรายวิชา</span>
           </a>
-          <a href="" class="menu-item">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
+          <a href="/teacherAppointment" class="menu-item active">
+            <img src="img/Artboard2.svg" alt="Rejected Icon" />
             <span class="tee">รายการขอนัดหมาย</span>
           </a>
         </nav>
@@ -266,15 +266,16 @@
       // ฟังก์ชันเพื่อแสดงสถานะพร้อมแถบสี
       function getStatusLabel(status) {
         switch (status) {
-          case 3:
+          case 2:
             return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
-          case 5:
+          case 3:
             return '<span class="status-label status-read">อ่านแล้ว</span>';
-          case 7:
+          case 4:
             return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
-          case 6:
+          case 5:
             return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
-
+          case 6:
+            return '<span class="status-label status-canceled">ยกเลิก</span>';
           default:
             return '<span class="status-label">ไม่ทราบสถานะ</span>';
         }
