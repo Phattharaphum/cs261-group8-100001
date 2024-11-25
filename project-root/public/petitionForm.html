@@ -174,7 +174,7 @@
                         
                     </div>
                     <div class="petition-form02">
-                        <div class="academic-year-form" style="display: none;">
+                        <div class="academic-year-form" style="display: none;" >
                             <p>ปีการศึกษา</p>
                             <select class="academicYear" id="academic_year">
                                 <option value="2567">2567</option>
@@ -183,7 +183,7 @@
                                 <option value="2570">2570</option>
                             </select>
                         </div>
-                        <div class="course-form" id="Ch1">
+                        <div class="course-form" id="Ch1" >
                             <p>รายวิชา</p>
                             <select class="course" id="course" required>\
                                 <option value="">--- Select ---</option>
@@ -214,19 +214,23 @@
                 <div class="file">
                     <p>เอกสารแนบที่ 1</p>
                     <div class="file-form01">
+						<div id="existingFile1"></div>
                         <!-- Existing file input -->
                         <input class="attachFile01" id="attachFile01" name="attachFile01" type="file" style="display:block;">
                         
                         <!-- Placeholder for existing attached file -->
-                        <div id="existingFile1"></div>
+                        <textarea id="fileDescription1" name="fileDescription1" placeholder="คำอธิบายไฟล์แนบที่ 1" rows="2" class="textaa"></textarea>
+                        
                     </div>
                     <p>เอกสารแนบที่ 2</p>
                     <div class="file-form02">
                         <!-- Existing file input -->
+						<div id="existingFile2"></div>
                         <input class="attachFile02" id="attachFile02" name="attachFile02" type="file" style="display:block;">
                         
                         <!-- Placeholder for existing attached file -->
-                        <div id="existingFile2"></div>
+                        <textarea id="fileDescription2" name="fileDescription2" placeholder="คำอธิบายไฟล์แนบที่ 2" rows="2" class="textaa"></textarea>
+                        
                     </div>
                 </div>
 				<div class="lineee"></div>
@@ -369,9 +373,8 @@ let dataa; // Petition data when editing
                 checkAndPreselect();
 
                 const isResignation = data.petition_type === "4";
-                    document.getElementById("subject_code").style.display = isResignation ? "none" : "block";
-                    document.getElementById("subject_name").style.display = isResignation ? "none" : "block";
-                    document.getElementById("section").style.display = isResignation ? "none" : "block";
+                    document.getElementById("Ch1").style.display = isResignation ? "none" : "block";
+                    document.getElementById("Ch2").style.display = isResignation ? "none" : "block";
                     document.querySelector(".academic-year-form").style.display = isResignation ? "block" : "none";
                     document.getElementById("topmain").innerText = "แบบคำร้อง"+getPetitionType(data.petition_type);
                 if(isResignation){
@@ -382,47 +385,55 @@ let dataa; // Petition data when editing
                     data.attachedFiles.forEach((file, index) => {
                         const fileNumber = index + 1;
                         const existingFileDiv = document.getElementById(`existingFile${fileNumber}`);
+                        const fileDescriptionTextarea = document.getElementById(`fileDescription${fileNumber}`);
                         if (existingFileDiv) {
                             existingFileDiv.innerHTML = `
                                 <p>ไฟล์ที่แนบไว้: ${file.file_name}</p>
                                 <button type="button" onclick="removeAttachedFile(${file.file_id}, ${fileNumber})">ลบไฟล์นี้</button>
                                 <a href="/download-file/${file.file_id}">ดาวน์โหลด</a>
                             `;
+                            fileDescriptionTextarea.value = file.description || '';
                         }
                     });
                 }
 
-                // สำหรับเอกสารแนบที่ 1
-                if (data.attachedFiles && data.attachedFiles.length > 0) {
-                    // ถ้ามีไฟล์แนบ
-                    const file1 = data.attachedFiles[0];
-                    
-                    document.getElementById('attachFile01').style.display = 'none';  // ซ่อน input
-                   
-                    document.getElementById('existingFile1').innerHTML = `
-                        <p>ไฟล์ที่แนบไว้: ${file1.file_name}</p>
-                        <button type="button" onclick="removeAttachedFile(${file1.file_id}, 1)">ลบไฟล์นี้</button>
-                        <a href="/download-file/${file1.file_id}">ดาวน์โหลด</a>
-                    `;
-                }else{
-                    document.getElementById('attachFile01').style.display = 'block';  
-                }
+               // สำหรับเอกสารแนบที่ 1
+if (data.attachedFiles && data.attachedFiles.length > 0) {
+    // ถ้ามีไฟล์แนบ
+    const file1 = data.attachedFiles[0];
 
-                // สำหรับเอกสารแนบที่ 2
-                if (data.attachedFiles && data.attachedFiles.length > 1) {
-                    const file2 = data.attachedFiles[1];
-                    
-                    document.getElementById('attachFile02').style.display = 'none';  // ซ่อน input
-                   
-                    document.getElementById('existingFile2').innerHTML = `
-                        <p>ไฟล์ที่แนบไว้: ${file2.file_name}</p>
-                        <button type="button" onclick="removeAttachedFile(${file2.file_id}, 2)">ลบไฟล์นี้</button>
-                        <a href="/download-file/${file2.file_id}">ดาวน์โหลด</a>
-                    `;
-                }
-                else{
-                    document.getElementById('attachFile02').style.display = 'block';  
-                }
+    document.getElementById('attachFile01').style.display = 'none';  // ซ่อน input
+
+    document.getElementById('existingFile1').innerHTML = `
+        <p>ไฟล์ที่แนบไว้: ${file1.file_name}</p>
+        <button type="button" onclick="removeAttachedFile(${file1.file_id}, 1)">ลบไฟล์นี้</button>
+        <a href="/download-file/${file1.file_id}">ดาวน์โหลด</a>
+    `;
+
+    // ตั้งค่าคำอธิบายไฟล์
+    document.getElementById('fileDescription1').value = file1.description || ''; // ใส่คำอธิบายไฟล์
+} else {
+    document.getElementById('attachFile01').style.display = 'block';
+}
+
+// สำหรับเอกสารแนบที่ 2
+if (data.attachedFiles && data.attachedFiles.length > 1) {
+    const file2 = data.attachedFiles[1];
+
+    document.getElementById('attachFile02').style.display = 'none';  // ซ่อน input
+
+    document.getElementById('existingFile2').innerHTML = `
+        <p>ไฟล์ที่แนบไว้: ${file2.file_name}</p>
+        <button type="button" onclick="removeAttachedFile(${file2.file_id}, 2)">ลบไฟล์นี้</button>
+        <a href="/download-file/${file2.file_id}">ดาวน์โหลด</a>
+    `;
+
+    // ตั้งค่าคำอธิบายไฟล์
+    document.getElementById('fileDescription2').value = file2.description || ''; // ใส่คำอธิบายไฟล์
+} else {
+    document.getElementById('attachFile02').style.display = 'block';
+}
+
             })
             .catch(error => console.error('Error fetching draft petition data:', error));
     }
@@ -701,9 +712,14 @@ function preselectCourseAndSection() {
 
         // เพิ่มไฟล์ลงใน FormData
         const file1 = document.getElementById('attachFile01').files[0];
+        const description1 = document.getElementById('fileDescription1').value;
         const file2 = document.getElementById('attachFile02').files[0];
+        const description2 = document.getElementById('fileDescription2').value;
         if (file1) formData.append('attachFile01', file1);
+        if (description1) formData.append('fileDescription1', description1);
         if (file2) formData.append('attachFile02', file2);
+        if (description2) formData.append('fileDescription2', description2);
+        
 
         // Add information about removed files (if any)
         formData.append('removedFiles', JSON.stringify(removedFilesArray));

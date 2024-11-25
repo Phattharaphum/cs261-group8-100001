@@ -211,14 +211,8 @@
             <h3>เพิ่มความคิดเห็น</h3>
             <textarea
               id="commentField"
-              placeholder="comment b"
-              style="
-                width: 50%;
-                height: 80px;
-                border-radius: 8px;
-                border: 1px solid #ccc;
-                padding: 10px;
-              "
+              placeholder="เพิ่มความเห็น"
+               class="addcomm"
             ></textarea>
           </div>
           <br /><br />
@@ -373,7 +367,7 @@
           document.getElementById("submit_time").textContent =
             new Date(data.submit_time).toLocaleString() || "";
 		  document.getElementById("submit_timeb").textContent =
-            new Date(data.submit_time).toLocaleString() || "";
+            new Date(data.review_time).toLocaleString() || "";
           document.getElementById("status").innerHTML = getStatusText(
             data.status
           );
@@ -383,8 +377,7 @@
           document.getElementById("topmain").innerText =
             "แบบคำร้อง" + getPetitionType(data.petition_type);
 
-          // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 4 หรือ 5
-          if (data.status === 5) {
+          if (data.status === 5 || data.status === 3){
 
             document.getElementById("reject-button").style.display = "flex";
             document.getElementById("approve-button").style.display = "flex";
@@ -401,7 +394,7 @@
 
           if (data.status === 6 || data.status === 7) {
             document.getElementById("review_time").textContent = new Date(
-              data.review_time
+              data.review_time_a
             ).toLocaleString();
           } else {
             document.getElementById("review_time").parentElement.style.display =
@@ -456,6 +449,9 @@
           location.reload();
         }
       }); */
+
+
+      
     </script>
   </body>
 </html>

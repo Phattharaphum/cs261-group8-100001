@@ -200,14 +200,8 @@
             <h3>เพิ่มความคิดเห็น</h3>
             <textarea
               id="commentField"
-              placeholder="comment c"
-              style="
-                width: 50%;
-                height: 80px;
-                border-radius: 8px;
-                border: 1px solid #ccc;
-                padding: 10px;
-              "
+              placeholder="เพิ่มความเห็น"
+              class="addcomm"
             ></textarea>
           </div>
           <br /><br />
@@ -287,7 +281,7 @@
       }
 
       function goBack() {
-        window.history.back();
+        window.history.back(); // ย้อนกลับไปยังหน้าก่อนหน้า
       }
 
       // เรียกใช้ฟังก์ชันอัปเดตสถานะทันทีที่โหลดหน้านี้
@@ -368,7 +362,7 @@
           document.getElementById("topmain").innerText =
             "แบบคำร้อง" + getPetitionType(data.petition_type);
           // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 4 หรือ 5
-          if (data.status === 8) {
+          if (data.status === 8||data.status === 6 ) {
             document.getElementById("reject-button").style.display = "flex";
             document.getElementById("approve-button").style.display = "flex";
 
@@ -382,7 +376,7 @@
           // แสดง review_time เฉพาะเมื่อสถานะเป็น 4 หรือ 5
           if (data.status === 9 || data.status === 10) {
             document.getElementById("review_time").textContent = new Date(
-              data.review_time
+              data.review_time_c
             ).toLocaleString();
           } else {
             document.getElementById("review_time").parentElement.style.display =

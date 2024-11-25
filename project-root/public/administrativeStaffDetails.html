@@ -9,31 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        .form-container {
-            display: none; /* ซ่อนฟอร์มไว้ */
-        }
-        .details-container {
-            margin: 20px;
-        }
-        .details-container p {
-            margin-bottom: 10px;
-            font-size: 16px;
-        }
-        .edit-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #A70C0C;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .edit-button:hover {
-            background-color: #8b0a0a;
-        }
-    </style>
+  
 </head>
 <body>
     <div class="container">
@@ -88,6 +64,8 @@
             <h2 id="pageTitle">รายละเอียดบุคลากร</h2>
             <div id="detailsContainer" class="details-container">
                 <!-- ข้อมูลจะแสดงที่นี่ -->
+	
+
             </div>
             <button class="edit-button" id="editButton">แก้ไขข้อมูล</button>
             
@@ -194,18 +172,23 @@
         function displayStaffDetails(staff) {
     const detailsContainer = document.getElementById('detailsContainer');
     detailsContainer.innerHTML = `
-        <p><strong>รหัสมหาวิทยาลัย:</strong> ${staff.university_id}</p>
-        <p><strong>ตำแหน่งทางวิชาการ:</strong> ${staff.academic_title || 'ไม่มี'}</p>
-        <p><strong>คำนำหน้า:</strong> ${staff.personal_title}</p>
-        <p><strong>ชื่อ:</strong> ${staff.first_name}</p>
-        <p><strong>นามสกุล:</strong> ${staff.last_name}</p>
-        <p><strong>ห้องทำงาน:</strong> ${staff.office || 'ไม่มีข้อมูล'}</p>
-        <p><strong>ประเภท:</strong> ${staff.role == 2 ? 'คณบดี' : 'เจ้าหน้าที่วิชาการ'}</p>
-        <p><strong>สถานะ:</strong> ${staff.status == 1 ? 'Active' : 'Inactive'}</p>
-        <p><strong>สาขา:</strong> ${staff.branch || 'ไม่มีข้อมูล'}</p>
-        <p><strong>อีเมล:</strong> ${staff.email || 'ไม่มีข้อมูล'}</p>
-        <p><strong>เบอร์โทรศัพท์:</strong> ${staff.phone || 'ไม่มีข้อมูล'}</p>
-        <p><strong>ลิงก์โปรไฟล์:</strong> ${staff.profile_link ? `<a href="${staff.profile_link}" target="_blank">ดูโปรไฟล์</a>` : 'ไม่มีข้อมูล'}</p>
+<div class="staff-details">
+    <p class="staff-university-id"><strong>รหัสมหาวิทยาลัย:</strong> ${staff.university_id}</p>
+    <p class="staff-academic-title"><strong>ตำแหน่งทางวิชาการ:</strong> ${staff.academic_title || 'ไม่มี'}</p>
+    <p class="staff-personal-title"><strong>คำนำหน้า:</strong> ${staff.personal_title}</p>
+    <p class="staff-first-name"><strong>ชื่อ:</strong> ${staff.first_name}</p>
+    <p class="staff-last-name"><strong>นามสกุล:</strong> ${staff.last_name}</p>
+    <p class="staff-office"><strong>ห้องทำงาน:</strong> ${staff.office || 'ไม่มีข้อมูล'}</p>
+    <p class="staff-role"><strong>ประเภท:</strong> ${staff.role == 2 ? 'คณบดี' : 'เจ้าหน้าที่วิชาการ'}</p>
+    <p class="staff-status"><strong>สถานะ:</strong> ${staff.status == 1 ? 'Active' : 'Inactive'}</p>
+    <p class="staff-branch"><strong>สาขา:</strong> ${staff.branch || 'ไม่มีข้อมูล'}</p>
+    <p class="staff-email"><strong>อีเมล:</strong> ${staff.email || 'ไม่มีข้อมูล'}</p>
+    <p class="staff-phone"><strong>เบอร์โทรศัพท์:</strong> ${staff.phone || 'ไม่มีข้อมูล'}</p>
+    <p class="staff-profile-link"><strong>ลิงก์โปรไฟล์:</strong> 
+        ${staff.profile_link ? `<a href="${staff.profile_link}" target="_blank">ดูโปรไฟล์</a>` : 'ไม่มีข้อมูล'}
+    </p>
+</div>
+
     `;
     populateForm(staff); // เตรียมข้อมูลฟอร์ม
 }
@@ -306,6 +289,10 @@ document.getElementById('staffForm').addEventListener('submit', function(event) 
         });
     }
 });
+
+function goBack() {
+            window.location.href = '/manage_staff.html';
+        }
 
     </script>
 </body>

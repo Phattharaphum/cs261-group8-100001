@@ -274,16 +274,80 @@ button:hover {
     text-align: center;
     margin: auto;
         }
+
+
         .status-waiting { background-color: #FFE5B5; color: #AB6C22; }
         .status-read { background-color: #F3E4FF; color: #6A3A9E; }
         .status-rejected { background-color: #FFD5D6; color: #B41E2D; }
         .status-approved { background-color: #B0F8AD; color: #1A6837; }
         .status-canceled { background-color: #DFDFDF; color: #5B5B5B; }
+
+
+
+        .status-waiting-advisor {
+            background-color: #FFF4CC; /* สีพื้นหลังที่ดูเป็นกลางสำหรับรออาจารย์ที่ปรึกษา */
+            color: #CC8C00; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-read-advisor {
+            background-color: #DDEAFF; /* สีพื้นหลังสำหรับอาจารย์ที่ปรึกษาอ่านแล้ว */
+            color: #3367CC; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-read-instructor {
+            background-color: #CCFFF0; /* สีพื้นหลังสำหรับอาจารย์ผู้สอนอ่านแล้ว */
+            color: #008060; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-approved-final {
+            background-color: #CCE5FF; /* สีพื้นหลังสำหรับสถานะอนุมัติขั้นสุดท้าย */
+            color: #0056B3; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-detail-request {
+            background-color: #FFF5E6; /* สีพื้นหลังสำหรับการขอรายละเอียดเพิ่มเติม */
+            color: #E67E22; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-rejected-detail {
+            background-color: #FFEBE8; /* สีพื้นหลังสำหรับปฏิเสธพร้อมขอรายละเอียด */
+            color: #E74C3C; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-sent-dean {
+            background-color: #E8F6F3; /* สีพื้นหลังสำหรับส่งคำร้องถึงคณบดี */
+            color: #16A085; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-completed {
+            background-color: #EAF7D5; /* สีพื้นหลังสำหรับสถานะสำเร็จ */
+            color: #2ECC71; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-canceled-student {
+            background-color: #FFEDED; /* สีพื้นหลังสำหรับการยกเลิกโดยนักศึกษา */
+            color: #FF4D4D; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-canceled-staff {
+            background-color: #F5F5F5; /* สีพื้นหลังสำหรับการยกเลิกโดยเจ้าหน้าที่ */
+            color: #7F8C8D; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+        .status-unknown {
+            background-color: #F8F9F9; /* สีพื้นหลังสำหรับสถานะที่ไม่ทราบ */
+            color: #95A5A6; /* สีตัวอักษรที่เข้ากับพื้นหลัง */
+        }
+        
+
         .sort-icon {
             cursor: pointer;
             margin-left: 5px;
             font-size: 0.9em;
         }
+
+
+        
 
 
 .column-type {

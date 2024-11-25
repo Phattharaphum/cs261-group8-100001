@@ -137,7 +137,7 @@ button:hover {
 .table-header,
 .table-row {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     padding: 15px;
 }
 
@@ -271,7 +271,7 @@ button:hover {
 }
 
 .column-subject-name {
-    width: 280px;
+    width: 180px;
 }
 
 .column-student-id {

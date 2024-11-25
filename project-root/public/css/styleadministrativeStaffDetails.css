@@ -193,6 +193,7 @@ hr {
     line-height: 1.5; /* Adjust line height to give room for diacritics */
     padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
     padding-bottom: 5px; /* Optional: same as above */
+	  font-family: 'Bai jamjuree';
     
 }
 h2 {
@@ -235,7 +236,83 @@ h2 {
     font-weight: 600;
     margin-top: 10px;
     font-weight: bold;
+	font-family: 'Bai Jamjuree';
 }
 button:hover {
     background-color: #9c9c9c; /* เปลี่ยนสีปุ่มเมื่อ hover */
+}
+
+#email {
+	    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+#profile_link {
+	    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+        .form-container {
+            display: none; /* ซ่อนฟอร์มไว้ */
+        }
+      
+        .details-container p {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .edit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #A70C0C;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+			font-family: 'Bai jamjuree';
+			font-weight: 600;
+			margin-left: 400px;
+			margin-top: 10px;
+        }
+        .edit-button:hover {
+            background-color: #8b0a0a;
+        }
+#pageTitle {
+    border: 2px solid #A70C0C;     
+    border-radius: 20px;       
+    padding: 5px 30px;        
+    background-color: #A70C0C;
+    display: inline-block;    
+    color: #FFFFFF; 
+	margin-top: 20px;
+	margin-left: 20px
+}
+
+.staff-details {
+	       margin: 50px;
+		background-color: white;
+			width: 500px;
+			border-radius: 25px;
+			padding: 20px;
+}
+
+select {
+	font-family: 'Bai jamjuree';
 }

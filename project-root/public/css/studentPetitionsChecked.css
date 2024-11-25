@@ -27,7 +27,7 @@ body {
 }
 
 .right {
-    width: 450px;
+    width: 560px;
     padding: 30px;
 	margin: 30px;
     position: fixed;   
@@ -57,7 +57,9 @@ body {
     display: inline-block;    
     color: #000000;
     font-weight: bold;
-	font-size: 12pt;
+	font-size: 10pt;
+	width: 500px;
+	text-align: left;
 }
 
 #personalInfo {
@@ -188,6 +190,7 @@ body {
 .spanlab {
 	margin-top: 20px;
 	font-size: 15pt;
+	text-align: center;
 }
 
 /*Petition Form*/
@@ -261,4 +264,20 @@ body {
 
 th {
 	font-weight: 600;
+}
+
+textarea {
+	font-family: 'Bai Jamjuree';
+}
+
+.addcomm {
+	            width: 400px;
+	resize: none;
+                height: 80px;
+                border-radius: 15px;
+                border: 1px solid #ccc;
+                padding: 10px;
+	margin-top: 10px;
+	margin-left: 25px;
+	font-family: 'Bai jamjuree';
 }

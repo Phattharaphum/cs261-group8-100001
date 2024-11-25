@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>รายการคำร้องรอยื่นคณบดี</title>
-    <link rel="stylesheet" href="css/styleListofPetitionAcademicStaffForCommittee.css" />
+    <link rel="stylesheet" href="css/styleListofPetitionAcademicStaff.css" />   <!-- css/styleListofPetitionAcademicStaffForCommittee.css -->
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -150,7 +150,7 @@
               >
                 สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span>
               </th>
-              <th class="column-check"></th>
+              <th class="column-check">ตรวจสอบ</th>
             </tr>
           </thead>
           <tbody id="petition-list">
@@ -237,11 +237,13 @@
 
       // ฟังก์ชันเพื่อแสดงสถานะพร้อมแถบสี
       function getStatusLabel(status) {
-        switch (status) {
+        switch (parseInt(status)) {
+          case 9:
+            return '<span class="status-label status-read">รอตรวจสอบ</span>';
           case 11:
             return '<span class="status-label status-read">ยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
           case 12:
-            return '<span class="status-label status-rejected">ปฏิเสธ/ส่งกลับไปแก้ไข</span>';
+            return '<span class="status-label status-rejected">ปฏิเสธ</span>';
           default:
             return '<span class="status-label">ไม่ทราบสถานะ</span>';
         }

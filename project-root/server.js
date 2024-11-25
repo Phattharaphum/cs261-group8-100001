@@ -446,6 +446,7 @@ const StartServer = async () => {
           fileRequest1.input("petition_id", sql.Int, petitionId);
           fileRequest1.input("file_type", sql.NVarChar, file1.mimetype);
           fileRequest1.input("file_name", sql.NVarChar, file1.originalname);
+          fileRequest1.input('description', sql.NVarChar, req.body.fileDescription1  || '');
           fileRequest1.input(
             "description",
             sql.NVarChar,
@@ -465,6 +466,7 @@ const StartServer = async () => {
           fileRequest2.input("petition_id", sql.Int, petitionId);
           fileRequest2.input("file_type", sql.NVarChar, file2.mimetype);
           fileRequest2.input("file_name", sql.NVarChar, file2.originalname);
+          fileRequest2.input('description', sql.NVarChar, req.body.fileDescription2  || '');
           fileRequest2.input(
             "description",
             sql.NVarChar,
@@ -565,6 +567,7 @@ const StartServer = async () => {
           .input("section", sql.NVarChar, section || "")
           .input("status", sql.TinyInt, status || 0)
           .input("reason", sql.NVarChar, reason || "") // เพิ่ม reason
+          
           .query(`
                 UPDATE petition SET
                     student_id = @student_id,
@@ -589,6 +592,28 @@ const StartServer = async () => {
                     submit_time = GETDATE() -- อัปเดตเวลาส่งคำร้องเป็นเวลาปัจจุบัน
                 WHERE petition_id = @id
             `);
+
+
+            const existingFilesResult = await pool.request()
+            .input("petitionId", sql.Int, id)
+            .query("SELECT file_id, file_name, description FROM localdoc WHERE petition_id = @petitionId");
+        
+        const existingFiles = existingFilesResult.recordset;
+        
+        // อัปเดตคำอธิบายไฟล์ที่มีอยู่
+        for (const file of existingFiles) {
+            const fileNumber = existingFiles.indexOf(file) + 1; // คำนวณหมายเลขไฟล์ (1 หรือ 2)
+            const descriptionFieldName = `fileDescription${fileNumber}`;
+            const newDescription = req.body[descriptionFieldName];
+        
+            if (newDescription !== undefined && newDescription !== file.description) {
+                // อัปเดตคำอธิบายไฟล์ในฐานข้อมูล
+                await pool.request()
+                    .input("fileId", sql.Int, file.file_id)
+                    .input("description", sql.NVarChar, newDescription)
+                    .query("UPDATE localdoc SET description = @description WHERE file_id = @fileId");
+            }
+        }
 
         // Handle removed files
         for (const fileId of removedFiles) {
@@ -616,7 +641,7 @@ const StartServer = async () => {
             .input("petition_id", sql.Int, id)
             .input("file_type", sql.NVarChar, file1.mimetype)
             .input("file_name", sql.NVarChar, file1.originalname)
-            .input("description", sql.NVarChar, req.body.description || "")
+            .input('description', sql.NVarChar, req.body.fileDescription1  || '')
             .input("file_path", sql.NVarChar, file1.path).query(`
                     INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
                     VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
@@ -630,12 +655,15 @@ const StartServer = async () => {
             .input("petition_id", sql.Int, id)
             .input("file_type", sql.NVarChar, file2.mimetype)
             .input("file_name", sql.NVarChar, file2.originalname)
-            .input("description", sql.NVarChar, req.body.description02 || "")
+            .input('description', sql.NVarChar, req.body.fileDescription2  || '')
             .input("file_path", sql.NVarChar, file2.path).query(`
                     INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
                     VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
                 `);
         }
+
+
+
 
         res.json({ success: true });
       } catch (err) {
@@ -1443,7 +1471,7 @@ app.post(
         .query(`
           SELECT p.*
           FROM petition p
-          WHERE p.status IN (12, 13)
+          WHERE p.status IN (13, 14)
         `);
 
       res.json({
@@ -1583,7 +1611,7 @@ app.post(
           .request()
           .input("studentId", sql.NVarChar, studentId)
           .query(
-            "SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20)"
+            "SELECT * FROM petition WHERE student_id = @studentId AND status IN (2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22)"
           );
 
         res.json(result.recordset);
@@ -1933,7 +1961,7 @@ app.get('/api/faculty-staff', async (req, res) => {
 
 
 app.post('/api/faculty-staff', async (req, res) => {
-  const { university_id, academic_title, personal_title, first_name, last_name, office, status, role } = req.body;
+  const { university_id, academic_title, personal_title, first_name, last_name, branch, email, phone, office, profile_link, status, role } = req.body;
 
   try {
       const pool = await sql.connect(config);
@@ -1943,12 +1971,17 @@ app.post('/api/faculty-staff', async (req, res) => {
           .input('personal_title', sql.NVarChar, personal_title)
           .input('first_name', sql.NVarChar, first_name)
           .input('last_name', sql.NVarChar, last_name)
+          .input('branch', sql.NVarChar, branch)
+          .input('email', sql.NVarChar, email)
+          .input('phone', sql.NVarChar, phone)
           .input('office', sql.NVarChar, office)
+          .input('profile_link', sql.NVarChar, profile_link)
           .input('status', sql.Int, status)
           .input('role', sql.Int, role)
           .query(`
-              INSERT INTO faculty_staff (university_id, academic_title, personal_title, first_name, last_name, office, status, role)
-              VALUES (@university_id, @academic_title, @personal_title, @first_name, @last_name, @office, @status, @role)
+              INSERT INTO faculty_staff 
+              (university_id, academic_title, personal_title, first_name, last_name, branch, email, phone, office, profile_link, status, role)
+              VALUES (@university_id, @academic_title, @personal_title, @first_name, @last_name, @branch, @email, @phone, @office, @profile_link, @status, @role)
           `);
       res.json({ success: true });
   } catch (err) {
@@ -1956,6 +1989,7 @@ app.post('/api/faculty-staff', async (req, res) => {
       res.status(500).json({ error: 'Failed to add new faculty' });
   }
 });
+
 
 
 app.get('/api/faculty-staff/:id', async (req, res) => {
@@ -1973,8 +2007,12 @@ app.get('/api/faculty-staff/:id', async (req, res) => {
                   personal_title,
                   first_name,
                   last_name,
-                  status,
+                  branch,
+                  email,
+                  phone,
                   office,
+                  profile_link,
+                  status,
                   role
               FROM faculty_staff
               WHERE staff_id = @staff_id AND role = 1
@@ -1989,6 +2027,7 @@ app.get('/api/faculty-staff/:id', async (req, res) => {
       res.status(500).json({ error: 'Failed to fetch faculty details' });
   }
 });
+
 
 
 app.post('/api/advisor-students', async (req, res) => {
@@ -2650,7 +2689,128 @@ app.post('/api/logs', async (req, res) => {
 
 
 
+// GET: คืนค่าข้อมูลทั้งหมดด้วย staff_id
+app.get('/api/staff/:id', async (req, res) => {
+  const { id } = req.params;
 
+  if (!id || isNaN(Number(id))) {
+      return res.status(400).json({ error: 'Invalid staff ID' });
+  }
+
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('staff_id', sql.Int, id)
+          .query(`
+              SELECT *
+              FROM faculty_staff
+              WHERE staff_id = @staff_id
+          `);
+
+      if (result.recordset.length > 0) {
+          res.json(result.recordset[0]);
+      } else {
+          res.status(404).json({ error: 'Staff not found' });
+      }
+  } catch (err) {
+      console.error('Error fetching staff details:', err);
+      res.status(500).json({ error: 'Failed to fetch staff details' });
+  }
+});
+
+
+// GET: คืนค่า university_id ด้วย staff_id
+app.get('/api/staff/:id/university_id', async (req, res) => {
+  const { id } = req.params;
+
+  if (!id || isNaN(Number(id))) {
+      return res.status(400).json({ error: 'Invalid staff ID' });
+  }
+
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('staff_id', sql.Int, id)
+          .query(`
+              SELECT university_id
+              FROM faculty_staff
+              WHERE staff_id = @staff_id
+          `);
+
+      if (result.recordset.length > 0) {
+          res.json({ university_id: result.recordset[0].university_id });
+      } else {
+          res.status(404).json({ error: 'Staff not found' });
+      }
+  } catch (err) {
+      console.error('Error fetching university_id:', err);
+      res.status(500).json({ error: 'Failed to fetch university_id' });
+  }
+});
+
+
+// Endpoint สำหรับดึงข้อมูลทั้งหมดที่อยู่ใน session
+app.get("/api/session", (req, res) => {
+  if (req.session && req.session.user) {
+    // ถ้ามี session อยู่ ให้ส่งข้อมูลใน session กลับไป
+    res.json({
+      success: true,
+      data: {
+        username: req.session.user.username || "",
+        email: req.session.user.email || "",
+        displayname_en: req.session.user.displayname_en || "",
+        displayname_th: req.session.user.displayname_th || "",
+        faculty: req.session.user.faculty || "",
+        department: req.session.user.department || "",
+        userType: req.session.user.userType || "",
+      },
+    });
+  } else {
+    // ถ้าไม่มี session ให้ส่งค่าเริ่มต้นกลับไป
+    res.json({
+      success: false,
+      message: "No session found",
+      data: {
+        username: "",
+        email: "",
+        displayname_en: "",
+        displayname_th: "",
+        faculty: "",
+        department: "",
+        userType: "",
+      },
+    });
+  }
+});
+
+
+app.get('/api/staff-id', async (req, res) => {
+  const { university_id } = req.query;
+
+  if (!university_id) {
+      return res.status(400).json({ error: 'Missing university_id parameter' });
+  }
+
+  try {
+      const pool = await sql.connect(config);
+      const result = await pool.request()
+          .input('university_id', sql.NVarChar, university_id)
+          .query(`
+              SELECT staff_id
+              FROM faculty_staff
+              WHERE university_id = @university_id
+          `);
+
+      if (result.recordset.length > 0) {
+          res.json({ staff_id: result.recordset[0].staff_id });
+      } else {
+          res.status(404).json({ error: 'No staff found with the provided university_id' });
+      }
+  } catch (error) {
+      console.error('Error fetching staff ID:', error);
+      res.status(500).json({ error: 'Failed to fetch staff ID' });
+  }
+});
 
 
 

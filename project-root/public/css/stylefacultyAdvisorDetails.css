@@ -194,6 +194,7 @@ hr {
     line-height: 1.5; /* Adjust line height to give room for diacritics */
     padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
     padding-bottom: 5px; /* Optional: same as above */
+	  font-family: 'Bai Jamjuree';
     
 }
 h2 {
@@ -236,6 +237,7 @@ h2 {
     font-weight: 600;
     margin-top: 10px;
     font-weight: bold;
+	font-family: 'Bai Jamjuree';
 }
 button:hover {
     background-color: #9c9c9c; /* เปลี่ยนสีปุ่มเมื่อ hover */
@@ -285,6 +287,7 @@ button:hover {
     margin-top: 10px;
     font-weight: bold;
 	  border:none;
+	  font-family: 'Bai Jamjuree';
   }
   
   .dialog-button--secondary {
@@ -299,7 +302,7 @@ button:hover {
     margin-top: 10px;
     font-weight: bold;
 	  border:none;
-	  
+	  font-family: 'Bai Jamjuree'
   }
 
 h3 {
@@ -479,6 +482,7 @@ h2, h3 {
 	border: none;
 	cursor: pointer;
 	margin-left: 600px;
+	font-family: 'Bai Jamjuree'
 }
 
 .delete-btn {
@@ -495,6 +499,7 @@ h2, h3 {
 	margin: auto;
 	width: 60px;
 	text-align: center;
+	font-family: 'Bai Jamjuree'
 }
 
 
@@ -515,6 +520,7 @@ h2, h3 {
 	border: none;
 	cursor: pointer;
 	margin-left: 680px;
+	font-family: 'Bai Jamjuree'
 }
 
 #addStudentDialog {
@@ -537,8 +543,17 @@ h2, h3 {
 	padding: 20px;
 	border-radius: 15px;
 	width: 600px;
+	
 }
 
 #addCourseForm {
 	line-height: 40px;
+}
+
+select {
+	font-family: 'Bai Jamjuree'
+}
+
+input {
+	font-family: 'Bai Jamjuree'
 }

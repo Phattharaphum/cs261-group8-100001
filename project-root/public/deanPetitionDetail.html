@@ -252,15 +252,11 @@
       function getStatusText(status) {
         switch (status) {
           case 11:
-            return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
-          case 11:
-            return '<span class="status-label status-read">อ่านแล้ว</span>';
+            return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
           case 14:
             return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
-          case 13:
-            return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
           default:
-            return '<span class="status-label">ไม่ทราบสถานะ</span>';
+            return '<span class="status-label" status-approved">อนุมัติแล้ว</span>';
         }
       }
 

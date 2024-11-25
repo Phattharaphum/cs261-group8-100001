@@ -141,29 +141,35 @@
         }
 
         function getPetitionType(type) {
-            switch (type) {
-                case 1: return "จดทะเบียนล่าช้า";
-                case 2: return "ถอนรายวิชา";
-                case 3: return "เปลี่ยนกลุ่มเรียน";
-                default: return "ประเภทไม่ทราบ";
-            }
+        switch (Number(type)) {
+          case 1:
+            return "จดทะเบียนล่าช้า";
+          case 2:
+            return "ถอนรายวิชา";
+          case 3:
+            return "จดทะเบียนศึกษารายวิชาข้ามหลักสูตร";
+          case 4:
+            return "ลาออก";
+          default:
+            return "ไม่ทราบประเภท";
         }
+      }
 
         function getStatusText(status) {
             switch (status) {
                 case 2: return '<span class="status-label status-waiting">รอเจ้าหน้าที่ตรวจสอบ</span>';
-                case 3: return '<span class="status-label status-waiting-advisor">ผ่าน/รออาจารย์ที่ปรึกษาตรวจสอบ</span>';
-                case 4: return '<span class="status-label status-rejected">ปฏิเสธ/ให้กลับไปแก้ไข/a</span>';
+                case 3: return '<span class="status-label status-waiting-advisor">อนุมัติโดยเจ้าหน้าที่</span>';
+                case 4: return '<span class="status-label status-rejected">ปฏิเสธโดยเจ้าหน้าที่</span>';
                 case 5: return '<span class="status-label status-read-advisor">อาจารย์ที่ปรึกษาอ่านแล้ว</span>';
-                case 6: return '<span class="status-label status-approved">อนุมัติ/รออาจารย์ผู้สอนตรวจสอบ</span>';
-                case 7: return '<span class="status-label status-rejected">ปฏิเสธ/ให้กลับไปแก้ไข/b</span>';
+                case 6: return '<span class="status-label status-approved">อนุมัติโดยอาจารย์ที่ปรึกษา</span>';
+                case 7: return '<span class="status-label status-rejected">ปฏิเสธโดยอาจารย์ที่ปรึกษา</span>';
                 case 8: return '<span class="status-label status-read-instructor">อาจารย์ผู้สอนอ่านแล้ว</span>';
-                case 9: return '<span class="status-label status-approved">อนุมัติ/รอเจ้าหน้าที่ยื่นบันทึกคำร้อง</span>';
-                case 10: return '<span class="status-label status-rejected">ปฏิเสธ/c</span>';
-                case 11: return '<span class="status-label status-sent-dean">ผ่านยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
-                case 12: return '<span class="status-label status-detail-request">ขอรายละเอียด/กลับไปแก้ไข/d</span>';
-                case 13: return '<span class="status-label status-approved-final">อนุมัติ</span>';
-                case 14: return '<span class="status-label status-rejected-detail">ปฏิเสธ/ขอรายละเอียด/กลับไปแก้ไข/e</span>';
+                case 9: return '<span class="status-label status-approved">อนุมัติโดยอาจารย์ผู้สอน</span>';
+                case 10: return '<span class="status-label status-rejected">ปฏิเสธโดยอาจารย์ผู้สอน</span>';
+                case 11: return '<span class="status-label status-sent-dean">ยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
+                case 12: return '<span class="status-label status-detail-request">ปฏิเสธโดยเจ้าหน้าที่</span>';
+                case 13: return '<span class="status-label status-approved-final">อนุมัติโดยคณบดี</span>';
+                case 14: return '<span class="status-label status-rejected-detail">ปฏิเสธโดยคณบดี</span>';
                 case 15: return '<span class="status-label status-completed">ยื่นเรื่องไปยังสำนักทะเบียนเรียบร้อยแล้ว</span>';
                 case 20: return '<span class="status-label status-canceled-student">ยกเลิกคำร้องโดยนักศึกษา</span>';
                 case 22: return '<span class="status-label status-canceled-staff">ยกเลิกโดยเจ้าหน้าที่</span>';

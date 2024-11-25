@@ -149,7 +149,7 @@
               >
                 สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span>
               </th>
-              <th class="column-check"></th>
+              <th class="column-check">ตรวจสอบ</th>
             </tr>
           </thead>
           <tbody id="petition-list">           
@@ -258,9 +258,9 @@
           case 2:
             return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
           case 3:
-            return '<span class="status-label status-read">รออาจารย์</span>';
+            return '<span class="status-label status-approved">อนุมัติ</span>';
           case 4:
-            return '<span class="status-label status-rejected">ปฏิเสธ/กลับไปแก้ไข</span>';
+            return '<span class="status-label status-rejected">ปฏิเสธ</span>';
           default:
             return '<span class="status-label">ไม่ทราบสถานะ</span>';
         }

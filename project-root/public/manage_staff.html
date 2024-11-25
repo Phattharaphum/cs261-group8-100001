@@ -156,25 +156,35 @@ let sortDirection = true; // true = ascending, false = descending
 let activeSortColumn = null;
 
 
-        // ฟังก์ชันสำหรับสลับแท็บ
-        function showTab(tabId) {
-            const allTabs = document.querySelectorAll('.table-container');
-            const allButtons = document.querySelectorAll('.tab-buttons button');
+function showTab(tabId) {
+    const allTabs = document.querySelectorAll('.table-container');
+    const allButtons = document.querySelectorAll('.tab-buttons button');
 
-            allTabs.forEach(tab => tab.classList.remove('active'));
-            allButtons.forEach(button => button.classList.remove('active'));
+    // ลบ class 'active' ทั้งหมด
+    allTabs.forEach(tab => tab.classList.remove('active'));
+    allButtons.forEach(button => button.classList.remove('active'));
 
-            document.getElementById(tabId).classList.add('active');
-            allButtons.forEach(button => {
-                if (button.getAttribute('onclick').includes(tabId)) {
-                    button.classList.add('active');
-                }
-            });
+    // เพิ่ม class 'active' ให้แท็บที่เลือก
+    document.getElementById(tabId).classList.add('active');
+    allButtons.forEach(button => {
+        if (button.getAttribute('onclick').includes(tabId)) {
+            button.classList.add('active');
         }
+    });
 
-        document.addEventListener('DOMContentLoaded', () => {
-  showTab('faculty'); // แสดงแท็บ faculty เริ่มต้น
+    // เก็บแท็บที่เลือกไว้ใน sessionStorage
+    sessionStorage.setItem('activeTab', tabId);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // ดึงแท็บที่เลือกไว้ล่าสุดจาก sessionStorage
+    const lastActiveTab = sessionStorage.getItem('activeTab') || 'faculty'; // ค่าเริ่มต้นคือ 'faculty'
+    showTab(lastActiveTab); // แสดงแท็บที่เลือกไว้ล่าสุด
 });
+
+
+
+
 
 fetch('/api/faculty-staff')
   .then(response => response.json())

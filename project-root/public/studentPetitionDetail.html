@@ -128,7 +128,7 @@
 
         <dd>
           <p class="tab-text">ประเภท : <span class="highlight" id="petition_type"></span>
-            <span class="tab-space"></span>ภาคการศึกษา : <span class="highlight" id="semester"></span></p>
+            <span class="tab-space"></span>ภาคการศึกษาที่ : <span class="highlight" id="semester"></span></p>
           <p class="tab-text">รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
           <p class="tab-text">ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
           <p class="tab-text">กลุ่มเรียน : <span class="highlight" id="section"></span></p>
@@ -142,7 +142,7 @@
           <br>
         </dd>
         <div class="end-form">
-          <p>ขอแสดงความนับถือ</p>
+          <p>ขอแสดงความนับถือ</p><br>
           <p><span class="highlight" id="student_nameb"></span>&nbsp;(นักศึกษา)</p>
           <br>
           <p class="time-submit">วันยื่นคำร้องผ่านระบบยื่นคำร้อง : <span id="submit_time"></span></p>
@@ -184,14 +184,23 @@
             </div>
           </div> 
 		
+
+
+
+
+
+
+
  </div>
     </div>
+
+
         <!-- Status Section -->
         <div class="right">
             <h3 style="text-align: left;">สถานะคำร้อง</h3>
             <div class="rounded-border2">
         <p class="asad">คำร้องถูกยื่นเมื่อ: <span id="submit_timea"></span></p>
-        <p class="asad">พิจารณาเมื่อ:<span id="review_time"></span></p>
+        <!-- <p class="asad">พิจารณาเมื่อ:<span id="review_time"></span></p> -->
         <p>เวลาพิจารณาเจ้าหน้าที่: <span id="review_time_a"></span></p>
         <p>เวลาพิจารณาอาจารย์ที่ปรึกษา: <span id="review_time_b"></span></p>
         <p>เวลาพิจารณาอาจารย์ผู้สอน: <span id="review_time_c"></span></p>
@@ -199,6 +208,9 @@
             </div>
         </div>
 
+        <!-- Status Section -->
+
+        
     </div>
 
     <script>
@@ -211,18 +223,18 @@
                 function getStatusText(status) {
     switch (status) {
         case 2: return '<span class="status-label status-waiting">รอเจ้าหน้าที่ตรวจสอบ</span>';
-        case 3: return '<span class="status-label status-waiting">ผ่าน/รออาจารย์ที่ปรึกษาตรวจสอบ</span>';
-        case 4: return '<span class="status-label status-rejected">ปฏิเสธ/ให้กลับไปแก้ไข/a</span>';
+        case 3: return '<span class="status-label status-waiting">อนุมัติโดยเจ้าหน้าที่</span>';
+        case 4: return '<span class="status-label status-rejected">ปฏิเสธโดยเจ้าหน้าที่</span>';
         case 5: return '<span class="status-label status-read">อาจารย์ที่ปรึกษาอ่านแล้ว</span>';
-        case 6: return '<span class="status-label status-approved">อนุมัติ/รออาจารย์ผู้สอนตรวจสอบ</span>';
-        case 7: return '<span class="status-label status-rejected">ปฏิเสธ/ให้กลับไปแก้ไข/b</span>';
+        case 6: return '<span class="status-label status-approved">อนุมัติโดยอาจารย์ที่ปรึกษา</span>';
+        case 7: return '<span class="status-label status-rejected">ปฏิเสธโดยอาจารย์ที่ปรึกษา</span>';
         case 8: return '<span class="status-label status-read">อาจารย์ผู้สอนอ่านแล้ว</span>';
-        case 9: return '<span class="status-label status-approved">อนุมัติ/รอเจ้าหน้าที่ยื่นบันทึกคำร้อง</span>';
-        case 10: return '<span class="status-label status-rejected">ปฏิเสธ/c</span>';
-        case 11: return '<span class="status-label status-approved">ผ่านยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
-        case 12: return '<span class="status-label status-rejected">ขอรายละเอียด/กลับไปแก้ไข/d</span>';
-        case 13: return '<span class="status-label status-approved">อนุมัติ</span>';
-        case 14: return '<span class="status-label status-rejected">ปฏิเสธ/ขอรายละเอียด/กลับไปแก้ไข/e</span>';
+        case 9: return '<span class="status-label status-approved">อนุมัติโดยอาจารย์ผู้สอน</span>';
+        case 10: return '<span class="status-label status-rejected">ปฏิเสธโดยอาจารย์ผู้สอน/c</span>';
+        case 11: return '<span class="status-label status-approved">ยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
+        case 12: return '<span class="status-label status-rejected">ปฏิเสธโดยเจ้าหน้าที่</span>';
+        case 13: return '<span class="status-label status-approved">อนุมัติโดยคณบดี</span>';
+        case 14: return '<span class="status-label status-rejected">ปฏิเสธโดยคณบดี</span>';
         case 15: return '<span class="status-label status-approved">ยื่นเรื่องไปยังสำนักทะเบียนเรียบร้อยแล้ว</span>';
         case 20: return '<span class="status-label status-canceled">ยกเลิกคำร้องโดยนักศึกษา</span>';
         case 22: return '<span class="status-label status-canceled">ยกเลิกโดยเจ้าหน้าที่</span>';
@@ -247,8 +259,9 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById('student_name').textContent = data.student_name || '';
-			 document.getElementById('student_nameb').textContent = data.student_name || '';
+			 document.getElementById('student_nameb').textContent = data.student_name || '';            //
                 document.getElementById('student_id').textContent = data.student_id || '';
+			document.getElementById('semester').textContent = data.semester || '';                      //
                 document.getElementById('year').textContent = data.year || '';
                 document.getElementById('major').textContent = data.major || '';
                 document.getElementById('house_number').textContent = data.house_number || '';

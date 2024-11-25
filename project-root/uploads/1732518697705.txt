@@ -1,0 +1,36 @@
+phattha_test2
+phattha_ggg0265
+K*m4hs501
+
+
+
+# โหลดไลบรารี
+import pandas as pd
+import seaborn as sns
+import numpy as np
+import matplotlib.pyplot as plt
+
+from google.colab import drive
+
+# นำเข้าฟังก์ชัน train_test_split จาก sklearn.model_selection
+from sklearn.model_selection import train_test_split
+
+
+# นำเข้าไลบรารี
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, confusion_matrix
+
+
+# นำเข้าไลบรารี
+from xgboost import XGBClassifier
+from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, confusion_matrix, roc_curve, auc
+
+# นำเข้าไลบรารี
+from lightgbm import LGBMClassifier
+from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, confusion_matrix
+
+# นำเข้าไลบรารีที่จำเป็น
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score, recall_score, precision_score, f1_score, confusion_matrix
+

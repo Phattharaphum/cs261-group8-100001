@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>รายการคำร้องรอยื่นสำนักทะเบียน</title>
-    <link rel="stylesheet" href="css/styleListofPetitionAcademicStaffFinalStage.css" />
+    <link rel="stylesheet" href="css/styleListofPetitionAcademicStaff.css" /> <!-- css/styleListofPetitionAcademicStaffFinalStage.css -->
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -150,7 +150,7 @@
               >
                 สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span>
               </th>
-              <th class="column-check"></th>
+              <th class="column-check">ตรวจสอบ</th>
             </tr>
           </thead>
           <tbody id="petition-list">
@@ -237,11 +237,13 @@
 
       // ฟังก์ชันเพื่อแสดงสถานะพร้อมแถบสี
       function getStatusLabel(status) {
-        switch (status) {
+        switch (parseInt(status)) {
+          case 13:
+          return '<span class="status-label status-waiting">รอยืนเรื่องไปยังสำนักทะเบียน</span>';
           case 15:
-            return '<span class="status-label status-read">ยืนเรื่องไปยังสำนักทะเบียนแล้ว</span>';
+            return '<span class="status-label status-approved">ยืนเรื่องไปยังสำนักทะเบียนแล้ว</span>';
           default:
-            return '<span class="status-label">ไม่ทราบสถานะ</span>';
+            return '<span class="status-label ">ไม่ทราบสถานะ</span>';
         }
       }
 
