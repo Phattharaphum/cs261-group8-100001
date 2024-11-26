@@ -453,41 +453,36 @@ if (data.attachedFiles && data.attachedFiles.length > 1) {
 document.getElementById('course').addEventListener('change', function() {
     const courseId = this.value;
     fetch(`/api/courses/${courseId}/sections`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(sections => {
-            const sectionSelect = document.getElementById('section');
-            // Clear previous options
-            sectionSelect.innerHTML = '';
-            sections.forEach(section => {
-                const option = document.createElement('option');
-                option.value = section.section;
-                option.text = section.section;
-                option.dataset.staffId = section.staff_id;
-                option.dataset.instructorName = section.instructor_name;
-                sectionSelect.add(option);
-            });
+    .then(response => response.json())
+    .then(sections => {
+        // Ensure sections is an array
+        if (!Array.isArray(sections)) {
+            console.warn('Sections is not an array, wrapping in array:', sections);
+            sections = [sections];
+        }
 
-            // Trigger change event to set the first instructor name automatically
-            if (sectionSelect.options.length > 0) {
-                sectionSelect.selectedIndex = 0; // Select the first option
-                const event = new Event('change');
-                sectionSelect.dispatchEvent(event); // Trigger change event
-            }
+        const sectionSelect = document.getElementById('section');
+        sectionSelect.innerHTML = ''; // Clear previous options
 
-            // Handle preselected section if exists
-            if (preselectedSection) {
-                sectionSelect.value = preselectedSection;
-                const event = new Event('change');
-                sectionSelect.dispatchEvent(event); // Trigger change event
-                preselectedSection = null; // Reset
-            }
-        })
-        .catch(error => console.error('Error fetching sections:', error));
+        sections.forEach(section => {
+            const option = document.createElement('option');
+            option.value = section.section;
+            option.text = section.section;
+            option.dataset.staffId = section.staff_id;
+            option.dataset.instructorName = section.instructor_name || '';
+            sectionSelect.add(option);
+        });
+
+        // Trigger change event to set the first instructor name automatically
+        if (sectionSelect.options.length > 0) {
+            sectionSelect.selectedIndex = 0; // Select the first option
+            const event = new Event('change');
+            sectionSelect.dispatchEvent(event); // Trigger change event
+        }
+    })
+    .catch(error => console.error('Error fetching sections:', error));
+
+
 });
 
 

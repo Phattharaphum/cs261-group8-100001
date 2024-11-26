@@ -1081,6 +1081,21 @@ const insertMockData = async () => {
       comment_f: "Registry finalized the petition for approval",
     },
   ];
+  const advisorInfoData = [
+    { id: 1, student_id: "6609611112", advisor_id: "U001" },
+    { id: 2, student_id: "6609611113", advisor_id: "U0001" },
+    { id: 3, student_id: "6609611113", advisor_id: "U001" },
+    { id: 4, student_id: "6609667890", advisor_id: "U001" },
+    { id: 5, student_id: "6609656789", advisor_id: "U001" },
+    { id: 6, student_id: "6609678901", advisor_id: "U001" },
+    { id: 7, student_id: "6609689012", advisor_id: "U001" },
+    { id: 8, student_id: "6609687654", advisor_id: "U001" },
+    { id: 9, student_id: "6609684321", advisor_id: "U001" },
+    { id: 10, student_id: "6609681298", advisor_id: "U001" },
+    { id: 11, student_id: "6609687654", advisor_id: "U001" },
+    { id: 12, student_id: "6609685432", advisor_id: "U001" },
+    { id: 13, student_id: "6609689123", advisor_id: "U001" },
+  ];
 
   let pool;
   try {
@@ -1133,9 +1148,9 @@ const insertMockData = async () => {
         sections,
         curriculum_year
       ) VALUES 
-        (1, 'CS101', 'Introduction to Computer Science', '{"staff_id": 1, "section": "001"}', 2024),
-        (2, 'MATH101', 'Calculus I', '{"staff_id": 2, "section": "001"}', 2024),
-        (3, 'PHYS101', 'Mechanics', '{"staff_id": 3, "section": "001"}', 2024);
+        (1, 'CS101', 'Introduction to Computer Science', '[{"staff_id": 1, "section": "001"}, {"staff_id": 2, "section": "002"}, {"staff_id": 3, "section": "003"}]', 2024),
+        (2, 'MATH101', 'Calculus I', '[{"staff_id": 4, "section": "001"}, {"staff_id": 5, "section": "002"}, {"staff_id": 6, "section": "003"}]', 2024),
+        (3, 'PHYS101', 'Mechanics', '[{"staff_id": 7, "section": "001"}, {"staff_id": 8, "section": "002"}, {"staff_id": 9, "section": "003"}]', 2024);
       SET IDENTITY_INSERT courses OFF;
     `);
     console.log("Inserted mock data into courses.");
@@ -1216,6 +1231,24 @@ const insertMockData = async () => {
 
     await transaction.commit();
     console.log("Inserted mock data into petition.");
+
+    await transaction.begin();
+
+    for (const advisorInfo of advisorInfoData) {
+      const advisorRequest = new sql.Request(transaction);
+      advisorRequest.input("id", sql.Int, advisorInfo.id);
+      advisorRequest.input("student_id", sql.NVarChar, advisorInfo.student_id);
+      advisorRequest.input("advisor_id", sql.NVarChar, advisorInfo.advisor_id);
+
+      await advisorRequest.query(`
+        UPDATE advisor_info
+        SET student_id = @student_id, advisor_id = @advisor_id
+        WHERE id = @id;
+      `);
+    }
+
+    await transaction.commit();
+    console.log("Updated advisor_info table successfully!");
 
     console.log("All mock data inserted successfully!");
   } catch (err) {
