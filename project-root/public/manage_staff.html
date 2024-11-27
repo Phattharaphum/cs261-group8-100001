@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>แก้ไขข้อมูลบุคลากร</title>
+    <link rel="stylesheet" href="css/stylesidebar.css" />
+    <link rel="stylesheet" href="css/stylemanage_staff.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <img src="img/logo.svg" alt="University Logo" class="logo" />
+          <div class="tops">
+            <p class="hasd">ระบบสำหรับเจ้าหน้าที่</p>
+            <p class="asdasd">
+              คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
+            </p>
+          </div>
+        </div>
+        <nav class="sidebar-menu">
+          <a href="/ITStaffSystemLogs.html" class="menu-item">
+            <img src="img/Artboard 1.svg" alt="Logs Icon" />
+            <span class="tee">ประวัติการใช้ระบบ</span>
+          </a>
+          <a href="/manage_staff.html" class="menu-item active">
+            <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
+            <span class="tee">แก้ไขข้อมูลบุคลากรคณะ</span>
+          </a>
+          <a href="/ITStaffPetitions.html" class="menu-item">
+            <img src="img/Artboard 1.svg" alt="Petitions Icon" />
+            <span class="tee">รายการคำร้อง</span>
+          </a>
+        </nav>
+        <div class="logout-section">
+          <a href="/logout" class="menu-item">
+            <img src="img/Artboard 3.svg" alt="Logout Icon" />
+            <span class="tee">ออกจากระบบ</span>
+          </a>
+          <div class="user-info">
+            <div class="asee">
+              <img src="img/avt (1).svg" alt="User Icon" />
+            </div>
+            <div class="user-details">
+              <p class="name" id="barname">เจ้าหน้าที่ดูแลระบบ</p>
+              <p class="idd" id="barid">Admin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+
+      <div class="scallable">
+        <div class="container">
+          <div class="header">
+            <div class="header-button">แก้ไขข้อมูลบุคลากร</div>
+          </div>
+        </div>
+        <div class="sss">
+          <div class="tab">
+            <div class="tab-buttons">
+              <button onclick="showTab('faculty')">คณาจารย์</button>
+              <button onclick="showTab('staff')">บุคลากร</button>
+            </div>
+          </div>
+
+          <div class="search-filter">
+            <input
+              type="text"
+              placeholder="ค้นหา"
+              id="searchInput"
+              class="searchInput"
+            />
+            <button class="add-button" onclick="getLink()">
+              + เพิ่มข้อมูล
+            </button>
+          </div>
+        </div>
+
+        <div id="faculty" class="table-container">
+          <!-- <button id="faculty"  class="add-button" onclick="window.location.href='/facultyAdvisorDetails.html'">+ เพิ่มข้อมูล</button> -->
+          <table class="table">
+            <thead>
+              <tr class="table-header">
+                <th class="column-log-id" onclick="sortTable('university_id')">
+                  เลขทะเบียน <i class="bx bx-expand-vertical"></i>
+                </th>
+                <th class="column-username" onclick="sortTable('name')">
+                  ชื่อบุคลากร <i class="bx bx-expand-vertical"></i>
+                </th>
+                <th class="column-role" onclick="sortTable('department')">
+                  สาขาวิชา <i class="bx bx-expand-vertical"></i>
+                </th>
+                <th class="column-details">ดูรายละเอียด</th>
+              </tr>
+            </thead>
+            <tbody id="facultyList">
+              <!-- Dynamic rows inserted here -->
+              <tr>
+                <td>101</td>
+                <td>ดร. สมชาย ใจดี</td>
+                <td>วิทยาศาสตร์คอมพิวเตอร์</td>
+                <td>
+                  <button
+                    onclick="window.location.href='/facultyAdvisorDetails.html?id=101'"
+                    class="bottad"
+                  >
+                    ดูรายละเอียด
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>102</td>
+                <td>ผศ. ดร. สมหญิง บุญมาก</td>
+                <td>เคมี</td>
+                <td>
+                  <button
+                    onclick="window.location.href='/facultyAdvisorDetails.html?id=102'"
+                  >
+                    ดูรายละเอียด
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>103</td>
+                <td>อ. ประเสริฐ พงษ์ศรี</td>
+                <td>ฟิสิกส์</td>
+                <td>
+                  <button
+                    onclick="window.location.href='/facultyAdvisorDetails.html?id=103'"
+                  >
+                    ดูรายละเอียด
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>104</td>
+                <td>ดร. พรพิมล ใจบุญ</td>
+                <td>คณิตศาสตร์</td>
+                <td>
+                  <button
+                    onclick="window.location.href='/facultyAdvisorDetails.html?id=104'"
+                  >
+                    ดูรายละเอียด
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td>105</td>
+                <td>อ. วิชัย ตั้งใจดี</td>
+                <td>สถิติ</td>
+                <td>
+                  <button
+                    onclick="window.location.href='/facultyAdvisorDetails.html?id=105'"
+                  >
+                    ดูรายละเอียด
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id="staff" class="table-container">
+          <table class="table">
+            <thead>
+              <tr class="table-header">
+                <th class="column-log-id" onclick="sortTable('university_id')">
+                  เลขทะเบียน <i class="bx bx-expand-vertical"></i>
+                </th>
+                <th class="column-username" onclick="sortTable('name')">
+                  ชื่อบุคลากร <i class="bx bx-expand-vertical"></i>
+                </th>
+                <th class="column-role" onclick="sortTable('role')">
+                  ตำแหน่ง <i class="bx bx-expand-vertical"></i>
+                </th>
+                <th class="column-details">ดูรายละเอียด</th>
+              </tr>
+            </thead>
+            <tbody id="staffList">
+              <!-- Dynamic rows inserted here -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let facultyData = [];
+      let staffData = [];
+      let filteredFacultyData = [];
+      let filteredStaffData = [];
+      let sortDirection = true; // true = ascending, false = descending
+      let activeSortColumn = null;
+
+      function showTab(tabId) {
+        const allTabs = document.querySelectorAll(".table-container");
+        const allButtons = document.querySelectorAll(".tab-buttons button");
+
+        // ลบ class 'active' ทั้งหมด
+        allTabs.forEach((tab) => tab.classList.remove("active"));
+        allButtons.forEach((button) => button.classList.remove("active"));
+
+        // เพิ่ม class 'active' ให้แท็บที่เลือก
+        document.getElementById(tabId).classList.add("active");
+        allButtons.forEach((button) => {
+          if (button.getAttribute("onclick").includes(tabId)) {
+            button.classList.add("active");
+          }
+        });
+
+        // เก็บแท็บที่เลือกไว้ใน sessionStorage
+        sessionStorage.setItem("activeTab", tabId);
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        // ดึงแท็บที่เลือกไว้ล่าสุดจาก sessionStorage
+        const lastActiveTab = sessionStorage.getItem("activeTab") || "faculty"; // ค่าเริ่มต้นคือ 'faculty'
+        showTab(lastActiveTab); // แสดงแท็บที่เลือกไว้ล่าสุด
+      });
+
+      fetch("/api/faculty-staff")
+        .then((response) => response.json())
+        .then((data) => {
+          facultyData = data;
+          filteredFacultyData = [...facultyData];
+          renderFacultyTable(filteredFacultyData);
+        })
+        .catch((error) => console.error("Error fetching faculty data:", error));
+
+      fetch("/api/administrative-staff")
+        .then((response) => response.json())
+        .then((data) => {
+          staffData = data;
+          filteredStaffData = [...staffData];
+          renderStaffTable(filteredStaffData);
+        })
+        .catch((error) => console.error("Error fetching staff data:", error));
+
+      // ฟังก์ชันสำหรับการเรนเดอร์ตาราง Faculty
+      function renderFacultyTable(data) {
+        const tableBody = document.getElementById("facultyList");
+        tableBody.innerHTML = data
+          .map(
+            (person) => `
+          <tr>
+            <td>${person.university_id}</td>
+            <td>${person.academic_title || ""} ${person.first_name} ${
+              person.last_name
+            }</td>
+            <td>${person.branch || "ไม่ระบุ"}</td>
+            <td><button onclick="window.location.href='/facultyAdvisorDetails.html?id=${
+              person.staff_id
+            }'" class="bottad">ดูรายละเอียด</button></td>
+          </tr>
+        `
+          )
+          .join("");
+      }
+
+      // ฟังก์ชันสำหรับการเรนเดอร์ตาราง Staff
+      function renderStaffTable(data) {
+        const tableBody = document.getElementById("staffList");
+        tableBody.innerHTML = data
+          .map(
+            (person) => `
+          <tr>
+            <td>${person.university_id}</td>
+            <td>${person.first_name} ${person.last_name}</td>
+            <td>${
+              person.role == 1
+                ? person.role
+                : person.role == 2
+                ? "คณบดี"
+                : person.role == 3
+                ? "เจ้าหน้าที่วิชาการ"
+                : "ไม่ระบุ"
+            }</td>
+
+            <td><button onclick="window.location.href='/administrativeStaffDetails.html?id=${
+              person.staff_id
+            }'" class="bottad">ดูรายละเอียด</button></td>
+          </tr>
+        `
+          )
+          .join("");
+      }
+
+      // ฟังก์ชันสำหรับค้นหาข้อมูล
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", function () {
+          const query = this.value.toLowerCase();
+
+          if (document.getElementById("faculty").classList.contains("active")) {
+            filteredFacultyData = facultyData.filter(
+              (person) =>
+                person.first_name.toLowerCase().includes(query) ||
+                person.last_name.toLowerCase().includes(query) ||
+                person.department?.toLowerCase().includes(query) ||
+                person.university_id.includes(query)
+            );
+            renderFacultyTable(filteredFacultyData);
+          } else if (
+            document.getElementById("staff").classList.contains("active")
+          ) {
+            filteredStaffData = staffData.filter(
+              (person) =>
+                person.first_name.toLowerCase().includes(query) ||
+                person.last_name.toLowerCase().includes(query) ||
+                person.role?.toLowerCase().includes(query) ||
+                person.university_id.includes(query)
+            );
+            renderStaffTable(filteredStaffData);
+          }
+        });
+
+      // ฟังก์ชันสำหรับเรียงข้อมูล
+      function sortTable(column) {
+        const isFacultyActive = document
+          .getElementById("faculty")
+          .classList.contains("active");
+        const data = isFacultyActive ? filteredFacultyData : filteredStaffData;
+
+        data.sort((a, b) => {
+          let valA = a[column] || "";
+          let valB = b[column] || "";
+
+          if (typeof valA === "string") valA = valA.toLowerCase();
+          if (typeof valB === "string") valB = valB.toLowerCase();
+
+          if (valA < valB) return sortDirection ? -1 : 1;
+          if (valA > valB) return sortDirection ? 1 : -1;
+          return 0;
+        });
+
+        sortDirection = !sortDirection;
+        activeSortColumn = column;
+
+        if (isFacultyActive) {
+          renderFacultyTable(data);
+        } else {
+          renderStaffTable(data);
+        }
+      }
+
+      // ฟังก์ชันสำหรับสร้างลิงก์เพิ่มข้อมูล
+      function getLink() {
+        const activeTab = document.querySelector(".table-container.active");
+        const tabId = activeTab.id; // Get the id of the active tab
+        let link;
+
+        if (tabId === "staff") {
+          link = "/administrativeStaffDetails.html";
+        } else if (tabId === "faculty") {
+          link = "/facultyAdvisorDetails.html";
+        } else {
+          console.error("Unknown tab ID:", tabId);
+          return;
+        }
+
+        window.location.href = link;
+      }
+    </script>
+  </body>
+</html>

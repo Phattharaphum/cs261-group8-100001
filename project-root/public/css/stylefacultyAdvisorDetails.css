@@ -1,0 +1,559 @@
+dd p {
+    margin: 10px 0; /* เพิ่มระยะห่างด้านบนและด้านล่าง */
+    line-height: 1.5; /* กำหนด line-height ให้บรรทัดดูโปร่งขึ้น */
+}
+
+body {
+    font-family: 'Bai Jamjuree', sans-serif;  
+	margin: 0;
+   background-color: #EDEDED;
+}
+.container {
+    display: flex;
+    margin: 0;
+}
+  
+.left {
+    width: 300px;
+    background-color: #ffffff;
+	margin: 0;
+}
+  
+.middle {
+	flex: 1;
+    width: 100%;
+    padding: 70px;
+	padding-top: 20px;
+}
+
+.right {
+    width: 450px;
+    padding: 30px;
+	margin: 30px;
+    position: fixed;   
+    bottom: 0;          
+    right: 0;  
+    padding: 20px;      
+    text-align: center; 
+    
+}
+
+.rounded-border {
+    border: 2px solid #A70C0C;     
+    border-radius: 20px;       
+    padding: 5px 30px;        
+    background-color: #A70C0C;
+    display: inline-block;    
+    color: #FFFFFF; 
+	margin-top: 20px;
+	margin-left: 20px 
+}
+
+.rounded-border2 {
+    border: 2px solid #FFFFFF;     
+    border-radius: 20px;       
+    padding: 20px 40px;        
+    background-color: #FFFFFF;
+    display: inline-block;    
+    color: #000000;
+    font-weight: bold;
+	font-size: 12pt;
+}
+
+#personalInfo {
+    font-weight: bold;
+}
+
+#subjectInfo {
+    font-weight: bold; 
+}
+
+#fileInfo {
+    font-weight: bold;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+hr {
+    width: 50%; 
+    height: 3px; 
+    border: none; 
+    background-color: #BFBFBF; 
+    margin: 0;
+    margin-left: 0;
+}
+
+.file {
+    display: flex;
+    gap: 20px;
+	padding: 20px;
+	padding-top: 10px;
+}
+
+.box-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top, .bottom {
+    text-align: center;
+    font-weight: bold;
+    margin: 15px;
+}
+
+.box {
+    width: 200px;
+    height: 200px;
+    background-color: #BFBFBF;
+    border: 1px solid #BFBFBF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px; 
+}
+
+.content {
+    text-align: center;
+}
+
+.back-botton {
+    padding: 20px 30px;
+    font-size: 22px;
+    border: 3px solid #023047; 
+    background-color: #F4F4F4;
+    color: #023047;
+    cursor: pointer;
+    border-radius: 16px; 
+    transition: background-color 0.3s ease, color 0.3s ease;  
+    position: fixed; 
+    bottom: 0px;  
+    right: 150px;   
+    padding-top: 0%;
+    padding-bottom: 0%;
+    margin-left:60px ;
+    
+    margin-top: auto;
+}
+
+.back-botton:hover {
+    background-color: lightblue; 
+    color: #023047; 
+}
+.dasda {
+	width: 600px;
+}
+
+.asd {
+	width: 100px;
+}
+
+.asad {
+	text-align: left;
+}
+
+.spanlab {
+	margin-top: 20px;
+	font-size: 15pt;
+}
+
+.facultyForm {
+    display: flex;
+    flex-direction: column; /* จัดเรียงองค์ประกอบในแนวตั้ง */
+    gap: 10px; /* ระยะห่างระหว่างแถว */
+    margin-left: 100px;
+    font-weight: bold;
+    color: #5F5F5F;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between; /* จัดวางองค์ประกอบให้ห่างกันเท่าๆ กัน */
+  }
+  
+  .form-group {
+    width: 500px; /* กำหนดความกว้างของแต่ละช่อง */
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .container input[type="text"] {
+    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+	  font-family: 'Bai Jamjuree';
+    
+}
+h2 {
+    padding: 20px;
+    color: rgb(0, 0, 0);
+}
+.aaa {
+	font-weight: 600;
+    margin-bottom: 10px;
+    width: 150px;
+	    background-color: #ffffff;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	font-weight: bold;
+	    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+.addButton{
+    width: 100px;
+    height: 30px;
+    background-color: #A70C0C;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    font-weight: bold;
+	font-family: 'Bai Jamjuree';
+}
+button:hover {
+    background-color: #9c9c9c; /* เปลี่ยนสีปุ่มเมื่อ hover */
+}
+.addStudentDialog, .addCourseDialog{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #e0e0e0;
+    border: 1px solid #33333311;
+    padding: 20px;
+    border-radius: 20px; 
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    font-weight: bold;
+    color: #5F5F5F;
+  }
+  
+  dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .dialog-content {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+  
+  
+  
+  .dialog-button--primary {
+    background-color: #3590e6;
+    color: #fff;
+    border-radius: 12px; 
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    font-weight: bold;
+	  border:none;
+	  font-family: 'Bai Jamjuree';
+  }
+  
+  .dialog-button--secondary {
+    background-color: #ccc;
+    color: #333;
+    border-radius: 12px; 
+    width: 100px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 10px;
+    font-weight: bold;
+	  border:none;
+	  font-family: 'Bai Jamjuree'
+  }
+
+h3 {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #000000;
+}
+
+body {
+    font-family: 'Bai Jamjuree', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+}
+
+.scallable {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+h2, h3 {
+    margin-bottom: 20px;
+}
+
+.facultyDetails, .facultyForm {
+    max-width: 800px;
+    margin: auto;
+}
+
+.facultyDetails .info-row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.facultyDetails .info-group {
+    flex: 1 1 45%;
+    margin-right: 10px;
+    margin-bottom: 15px;
+}
+
+.facultyDetails .info-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.facultyDetails .info-group span {
+    display: block;
+}
+
+/* AdditionalInfo Tables */
+
+
+#advisorStudentsTable, #teachingCoursesTable {
+    width: 90%;
+	margin: auto;
+    border-collapse: collapse;
+    margin-top: 10px;
+	    width: 90%; /* ใช้ความกว้างเต็มพื้นที่คอนเทนเนอร์ */
+    margin: auto;
+    border-collapse: collapse;
+    background-color: #ffffff; /* สีพื้นหลัง */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* เพิ่มเงา */
+    border-radius: 8px; /* มุมโค้ง */
+    overflow: hidden; /* ป้องกันการล้น */
+    table-layout: fixed; /* คอลัมน์คงขนาด */
+}
+
+#advisorStudentsTable th, #advisorStudentsTable td,
+#teachingCoursesTable th, #teachingCoursesTable td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+#advisorStudentsTable th, #teachingCoursesTable th {
+    background-color: #EBEBEB;
+	text-align: center;
+}
+
+/* Dialog Styles - Keep existing styles */
+#pageTitle {
+	    font-weight: bold;
+    background-color: #A70C0C;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    font-size: 25px;
+    cursor: pointer;
+    margin-top: 50px;
+    margin-left: 60px;
+	width: auto;
+	display: inline-flex;
+}
+
+#academic_title {
+	    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+	width: 200px;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+#personal_title {
+		    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+	width: 200px;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.em {
+		    background-color: rgb(255, 255, 255);
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+	width: 200px;
+    font-weight: bold;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+	
+}
+
+#profile_link {
+	width: 400px;
+}
+
+.facultyDetails {
+	background-color: white;
+	border-radius: 15px;
+	padding: 20px;
+}
+
+#additionalInfo {
+	margin: auto;
+	width: 1000px;
+}
+
+.uasdd {
+	background-color: white;
+	    margin-top: 40px;
+    padding: 10px;
+	border-radius: 10px;
+}
+
+.ss {
+		    display: inline-block;
+    padding: 5px 10px;
+    background-color: #BDD1EF; /* สีพื้นหลังปุ่ม */
+    text-decoration: none;
+    color: #000000; /* สีตัวอักษร */
+    border-radius: 10px; /* มุมโค้ง */
+    font-size: 12px; /* ขนาดตัวอักษร */
+    font-weight: 700; /* หนาตัวอักษร */
+	border: none;
+	cursor: pointer;
+	margin-left: 600px;
+	font-family: 'Bai Jamjuree'
+}
+
+.delete-btn {
+		    display: inline-block;
+    padding: 5px 10px;
+    background-color: #AC3434; /* สีพื้นหลังปุ่ม */
+    text-decoration: none;
+    color: white; /* สีตัวอักษร */
+    border-radius: 10px; /* มุมโค้ง */
+    font-size: 12px; /* ขนาดตัวอักษร */
+    font-weight: 700; /* หนาตัวอักษร */
+	border: none;
+	cursor: pointer;
+	margin: auto;
+	width: 60px;
+	text-align: center;
+	font-family: 'Bai Jamjuree'
+}
+
+
+.bot {
+	width: 100px;
+	align-items: center;
+	text-align: center;
+}
+.sss {
+			    display: inline-block;
+    padding: 5px 10px;
+    background-color: #BDD1EF; /* สีพื้นหลังปุ่ม */
+    text-decoration: none;
+    color: #000000; /* สีตัวอักษร */
+    border-radius: 10px; /* มุมโค้ง */
+    font-size: 12px; /* ขนาดตัวอักษร */
+    font-weight: 700; /* หนาตัวอักษร */
+	border: none;
+	cursor: pointer;
+	margin-left: 680px;
+	font-family: 'Bai Jamjuree'
+}
+
+#addStudentDialog {
+	margin: auto;
+	border: none;
+	padding: 20px;
+	border-radius: 15px;
+}
+
+#student_id {
+	border-radius: 10px;
+	padding: 3px;
+	border: 2px solid #EBEBEB;
+	outline: none;
+}
+
+#addCourseDialog {
+		margin: auto;
+	border: none;
+	padding: 20px;
+	border-radius: 15px;
+	width: 600px;
+	
+}
+
+#addCourseForm {
+	line-height: 40px;
+}
+
+select {
+	font-family: 'Bai Jamjuree'
+}
+
+input {
+	font-family: 'Bai Jamjuree'
+}

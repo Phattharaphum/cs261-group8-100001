@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="th"><head>
+<html lang="th">
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ตรวจสอบคำร้อง</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
       rel="preload"
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap"
@@ -19,8 +18,8 @@
       as="style"
       onload="this.rel='stylesheet'"
     />
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
 
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/studentPetitionsChecked.css" />
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <script defer src="./js/redirect-handler.js"></script>
@@ -74,7 +73,7 @@
           <a
             href="javascript:void(0);"
             class="menu-item"
-            onclick="updateStatus(6)"
+            onclick="updateStatus(9)"
             style="display: none"
             id="approve-button"
           >
@@ -85,7 +84,7 @@
           <a
             href="javascript:void(0);"
             class="menu-item"
-            onclick="updateStatus(7)"
+            onclick="updateStatus(10)"
             style="display: none"
             id="reject-button"
           >
@@ -118,71 +117,67 @@
       <div class="scallable">
         <h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
         <div class="middle">
-          <h2 class="bold-text">คำร้อง</h2>
-
+          <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
 
 
       <!-- Petition Form -->
-        <div class="petitionDetails">
-          <dd>
-            <div class="header-form">
-              <p>คำร้องนักศึกษา</p>
-              <p>คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต</p>
-            </div>
-            <div class="subheader-text">
-              <p>เรื่อง&emsp;ขอจดทะเบียนล่าช้า</p>
-              <p>เรียน&emsp;คณบดีคณะวิทยาศาสตร์และเทคโนโลยี</p>
-            </div>
-            <br>
-            <p class="tab-text">ข้าพเจ้า <span class="highlight" id="student_name"></span>
-              <span class="tab-space"></span>เลขทะเบียน : <span class="highlight" id="student_id">&ensp;&emsp;</span>
-              <span class="tab-space"></span>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
-            <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
-            <br>
-            <p class="subheader-text">ข้อมูลติดต่อ : </p>
-            <p class="tab-text">
-              ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number"></span>
-              <span class="tab-space"></span>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
-            <p class="tab-text">เขต/อำเภอ : <span class="highlight" id="district"></span>
-              <span class="tab-space"></span>จังหวัด : <span class="highlight" id="province"></span>
-              <span class="tab-space"></span>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
-            <p class="tab-text">
-              โทรศัพท์ติดต่อกับนักศึกษา :
-              <span class="highlight" id="student_phone"></span>
-            </p>
-            <p class="tab-text">
-              โทรศัพ์ติดต่อผู้ปกครอง :
-              <span class="highlight" id="guardian_phone"></span>
-            </p>
-          </dd>
-          <br>
-          <p class="subheader-text">ประสงค์ที่จะยื่นคำร้อง : </p>
-
-          <dd>
-            <p class="tab-text">ประเภท : <span class="highlight" id="petition_type"></span>
-              <span class="tab-space"></span>ภาคการศึกษา : <span class="highlight" id="semester"></span></p>
-            <p class="tab-text">รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
-            <p class="tab-text">ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
-            <p class="tab-text">กลุ่มเรียน : <span class="highlight" id="section"></span></p>
-            <br>
-            <p class="subheader-text">
-              เหตุผลในการยื่นคำร้อง :
-              <p class="tab-text">
-                <span class="highlight" id="reason"></span>
-              </p>
-            </p>
-            <br>
-          </dd>
-          <div class="end-form">
-            <p>ขอแสดงความนับถือ</p>
-            <p><span class="highlight" id="student_nameb"></span>&nbsp;(นักศึกษา)</p>
-            <br>
-            <p class="time-submit">วันยื่นคำร้องผ่านระบบยื่นคำร้อง : <span id="submit_time"></span></p>
+      <div class="petitionDetails">
+        <dd>
+          <div class="header-form">
+            <p>คำร้องนักศึกษา</p>
+            <p>คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต</p>
           </div>
+          <div class="subheader-text">
+            <p>เรื่อง&emsp;ขอจดทะเบียนล่าช้า</p>
+            <p>เรียน&emsp;คณบดีคณะวิทยาศาสตร์และเทคโนโลยี</p>
+          </div>
+          <br>
+          <p class="tab-text">ข้าพเจ้า <span class="highlight" id="student_name"></span>
+            <span class="tab-space"></span>เลขทะเบียน : <span class="highlight" id="student_id">&ensp;&emsp;</span>
+            <span class="tab-space"></span>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
+          <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
+          <br>
+          <p class="subheader-text">ข้อมูลติดต่อ : </p>
+          <p class="tab-text">
+            ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number"></span>
+            <span class="tab-space"></span>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
+          <p class="tab-text">เขต/อำเภอ : <span class="highlight" id="district"></span>
+            <span class="tab-space"></span>จังหวัด : <span class="highlight" id="province"></span>
+            <span class="tab-space"></span>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
+          <p class="tab-text">
+            โทรศัพท์ติดต่อกับนักศึกษา :
+            <span class="highlight" id="student_phone"></span>
+          </p>
+          <p class="tab-text">
+            โทรศัพ์ติดต่อผู้ปกครอง :
+            <span class="highlight" id="guardian_phone"></span>
+          </p>
+        </dd>
+        <br>
+        <p class="subheader-text">ประสงค์ที่จะยื่นคำร้อง : </p>
+
+        <dd>
+          <p class="tab-text">ประเภท : <span class="highlight" id="petition_type"></span>
+            <span class="tab-space"></span>ภาคการศึกษา : <span class="highlight" id="semester"></span></p>
+          <p class="tab-text">รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
+          <p class="tab-text">ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
+          <p class="tab-text">กลุ่มเรียน : <span class="highlight" id="section"></span></p>
+          <br>
+          <p class="subheader-text">
+            เหตุผลในการยื่นคำร้อง :
+            <p class="tab-text">
+              <span class="highlight" id="reason"></span>
+            </p>
+          </p>
+          <br>
+        </dd>
+        <div class="end-form">
+          <p>ขอแสดงความนับถือ</p>
+          <p><span class="highlight" id="student_nameb"></span>&nbsp;(นักศึกษา)</p>
+          <br>
+          <p class="time-submit">วันยื่นคำร้องผ่านระบบยื่นคำร้อง : <span id="submit_time"></span></p>
         </div>
-
-
-
+      </div>
 
 
 
@@ -191,15 +186,9 @@
             <table id="attachedFilesTable">
               <thead>
                 <tr>
-                  <th>ชื่อไฟล์ </th>
+                  <th>ชื่อไฟล์</th>
                   <th>คำอธิบาย</th>
-                  <th>
-                    <!-- <div class="download-button">
-                      <span>ดาวน์โหลด</span>
-                      <img src="img/downloads.png" alt="download Icon" class="download" />
-                    </div> -->
-                    ดาวน์โหลด
-                  </th>
+                  <th>ดาวน์โหลด</th>
                 </tr>
               </thead>
               <tbody id="attachedFilesBody">
@@ -212,7 +201,7 @@
             <textarea
               id="commentField"
               placeholder="เพิ่มความเห็น"
-               class="addcomm"
+              class="addcomm"
             ></textarea>
           </div>
           <br /><br />
@@ -239,17 +228,15 @@
       const petitionId = urlParams.get("id");
 
       function updateStatusOnLoad() {
-        fetch(`/advisor/petition-details/${petitionId}`)
+        fetch(`/teacher/petition-details/${petitionId}`)
           .then((response) => response.json())
           .then((data) => {
-            if (data.status !== 6 && data.status !== 7) {
-
-              // อัปเดตเป็น 3 ถ้าสถานะไม่ใช่ปฏิเสธหรืออนุมัติ
-
-              fetch(`/advisor/auto-update-status/${petitionId}`, {
+            if (data.status !== 9 && data.status !== 10) {
+              // อัปเดตเป็น 8 ถ้าสถานะไม่ใช่ปฏิเสธหรืออนุมัติ
+              fetch(`/teacher/auto-update-status/${petitionId}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ status: 5 }),
+                body: JSON.stringify({ status: 8 }),
               })
                 .then((response) => response.json())
                 .then((updateData) => {
@@ -274,7 +261,7 @@
 
       function updateStatus(newStatus) {
         const comment = document.getElementById("commentField").value;
-        fetch(`/advisor/update-petition/${petitionId}`, {
+        fetch(`/teacher/update-petition/${petitionId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ status: newStatus, comment: comment }),
@@ -294,7 +281,7 @@
       }
 
       function goBack() {
-        window.history.back();
+        window.history.back(); // ย้อนกลับไปยังหน้าก่อนหน้า
       }
 
       // เรียกใช้ฟังก์ชันอัปเดตสถานะทันทีที่โหลดหน้านี้
@@ -319,14 +306,13 @@
       // ฟังก์ชันแสดงสถานะพร้อมแถบสี
       function getStatusText(status) {
         switch (status) {
-          case 3:
-
-            return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
-          case 5:
-            return '<span class="status-label status-read">อ่านแล้ว</span>';
-          case 7:
-            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
           case 6:
+            return '<span class="status-label status-waiting">ยื่นไปแล้ว รออยู่</span>';
+          case 8:
+            return '<span class="status-label status-read">อ่านแล้ว</span>';
+          case 10:
+            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
+          case 9:
             return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
           default:
             return '<span class="status-label">ไม่ทราบสถานะ</span>';
@@ -334,12 +320,12 @@
       }
 
       // ดึงข้อมูลคำร้องจากเซิร์ฟเวอร์
-      fetch(`/advisor/petition-details/${petitionId}`)
+      fetch(`/teacher/petition-details/${petitionId}`)
         .then((response) => response.json())
         .then((data) => {
           document.getElementById("student_name").textContent =
             data.student_name || "";
-		  document.getElementById("student_nameb").textContent =
+            document.getElementById("student_nameb").textContent =
             data.student_name || "";
           document.getElementById("student_id").textContent =
             data.student_id || "";
@@ -356,7 +342,8 @@
             data.student_phone || "";
           document.getElementById("guardian_phone").textContent =
             data.guardian_phone || "";
-
+            document.getElementById("submit_timeb").textContent =
+            new Date(data.submit_time).toLocaleString() || "";
           document.getElementById("petition_type").textContent =
             getPetitionType(data.petition_type);
           document.getElementById("subject_code").textContent =
@@ -366,8 +353,6 @@
           document.getElementById("section").textContent = data.section || "";
           document.getElementById("submit_time").textContent =
             new Date(data.submit_time).toLocaleString() || "";
-		  document.getElementById("submit_timeb").textContent =
-            new Date(data.review_time).toLocaleString() || "";
           document.getElementById("status").innerHTML = getStatusText(
             data.status
           );
@@ -376,9 +361,8 @@
 
           document.getElementById("topmain").innerText =
             "แบบคำร้อง" + getPetitionType(data.petition_type);
-
-          if (data.status === 5 || data.status === 3){
-
+          // ซ่อนปุ่มอนุมัติและปฏิเสธถ้าสถานะเป็น 4 หรือ 5
+          if (data.status === 8||data.status === 6 ) {
             document.getElementById("reject-button").style.display = "flex";
             document.getElementById("approve-button").style.display = "flex";
 
@@ -389,16 +373,14 @@
             }
           }
 
-
           // แสดง review_time เฉพาะเมื่อสถานะเป็น 4 หรือ 5
-
-          if (data.status === 6 || data.status === 7) {
+          if (data.status === 9 || data.status === 10) {
             document.getElementById("review_time").textContent = new Date(
-              data.review_time_a
+              data.review_time_c
             ).toLocaleString();
           } else {
             document.getElementById("review_time").parentElement.style.display =
-              "none"; // ซ่อนถ้าสถานะไม่ใช่ 6 หรือ 7
+              "none"; // ซ่อนถ้าสถานะไม่ใช่ 4 หรือ 5
           }
 
           // แสดงไฟล์แนบในรูปแบบตาราง
@@ -451,6 +433,7 @@
       }); */
 
 
+
      // ดึงข้อมูลจาก API session
      document.addEventListener("DOMContentLoaded", () => {
   // ดึงข้อมูลจาก API session-user-info โดยส่ง cookies
@@ -497,7 +480,6 @@
 });
 
 
-      
     </script>
   </body>
 </html>

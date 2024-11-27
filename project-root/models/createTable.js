@@ -65,7 +65,7 @@ BEGIN
         tuusername NVARCHAR(50),
         role INT CHECK (role BETWEEN 1 AND 5), -- 1=student, 2=advisor, 3=lecturer, 4=staff, 5=admin
         action NVARCHAR(100),
-        description TEXT,
+        description NVARCHAR(MAX),
         timestamp DATETIME DEFAULT GETDATE(),
         ip_address NVARCHAR(45),
         device_info TEXT
@@ -98,7 +98,12 @@ BEGIN
         last_name NVARCHAR(100),
         status INT DEFAULT 1,
         office TEXT,
-        role INT CHECK (role BETWEEN 1 AND 3) -- 1=อาจารย์, 2=คณบดี, 3=เจ้าหน้าที่วิชาการ
+        role INT CHECK (role BETWEEN 1 AND 3), -- 1=อาจารย์, 2=คณบดี, 3=เจ้าหน้าที่วิชาการ
+        branch NVARCHAR(100), -- สาขา
+        email NVARCHAR(100), -- อีเมล
+        phone NVARCHAR(20), -- เบอร์
+        profile_link NVARCHAR(MAX), -- ลิ้งค์รูป
+        password NVARCHAR(255) -- รหัสผ่าน
     );
 END;
 `;

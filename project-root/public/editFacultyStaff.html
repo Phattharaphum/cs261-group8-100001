@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แก้ไขข้อมูลอาจารย์</title>
+    <link rel="stylesheet" href="css/stylesidebar.css">
+    <link rel="stylesheet" href="css/styleeditFacultyStaff.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ส่วนของ Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+              <img src="img/logo.svg" alt="University Logo" class="logo" />
+              <div class="tops">
+                <p class="hasd">ระบบจัดการบุคลากร</p>
+                <p class="asdasd">
+                  คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
+                </p>
+              </div>
+            </div>
+            <nav class="sidebar-menu">
+              <a href="/editFacultyStaff.html" class="menu-item active">
+                <img src="img/Artboard 1.svg" alt="Logs Icon" />
+                <span class="tee">แก้ไขข้อมูลอาจารย์</span>
+              </a>
+              <a href="/editAdministrativeStaff.html" class="menu-item">
+                <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
+                <span class="tee">แก้ไขข้อมูลเจ้าหน้าที่</span>
+              </a>
+            </nav>
+            <div class="logout-section">
+                <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
+                    <img src="img/back.svg" alt="Back Icon">
+                    <span class="tee">ย้อนกลับ</span>
+                </a>
+              <a href="/logout" class="menu-item">
+                <img src="img/Artboard 3.svg" alt="Logout Icon" />
+                <span class="tee">ออกจากระบบ</span>
+              </a>
+              <div class="user-info">
+                <div class="asee">
+                  <img src="img/avt (1).svg" alt="User Icon" />
+                </div>
+                <div class="user-details">
+                  <p class="name" id="barname">ชื่อจริง นามสกุล</p>
+                  <p class="idd" id="barid">Admin</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+<!-- 
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="img/logo.svg" alt="University Logo" class="logo">
+                <div class="tops">
+                    <p class="hasd">ระบบจัดการบุคลากร</p>
+                    <p class="asdasd">คณะวิทยาศาสตร์และเทคโนโลยี<br>มหาวิทยาลัยธรรมศาสตร์</p>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="/editFacultyStaff.html" class="menu-item active">
+                    <img src="img/edit-staff-icon.svg" alt="Edit Staff Icon">
+                    <span class="tee">แก้ไขข้อมูลอาจารย์</span>
+                </a>
+            </nav>
+        </div> -->
+
+        <!-- ส่วนเนื้อหาหลัก -->
+        <div class="scallable">
+            <h2>รายการอาจารย์</h2>
+            <button onclick="window.location.href='/facultyAdvisorDetails.html'">เพิ่มอาจารย์ใหม่</button>
+            <table id="facultyList">
+                <thead>
+                    <tr>
+                        <th>รหัสอาจารย์</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>ตำแหน่งทางวิชาการ</th>
+                        <th>สถานะ</th>
+                        <th>จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- แสดงรายการอาจารย์ -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // ดึงข้อมูลอาจารย์และแสดงในตาราง
+        fetch('/api/faculty-staff')
+            .then(response => response.json())
+            .then(data => {
+                const facultyList = document.getElementById('facultyList').querySelector('tbody');
+                facultyList.innerHTML = '';
+                data.forEach(faculty => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${faculty.university_id}</td>
+                        <td>${faculty.academic_title} ${faculty.personal_title} ${faculty.first_name} ${faculty.last_name}</td>
+                        <td>${faculty.academic_title || 'ไม่มี'}</td>
+                        <td>${faculty.status === 1 ? 'Active' : 'Inactive'}</td>
+                        <td><a href="/facultyAdvisorDetails.html?id=${faculty.staff_id}">ดูรายละเอียด</a></td>
+                    `;
+                    facultyList.appendChild(row);
+                });
+            })
+            .catch(error => console.error('Error fetching faculty data:', error));
+
+            function goBack() {
+            window.location.href = '/ITStaffSystemLogs.html';
+        }
+
+    </script>
+</body>
+</html>

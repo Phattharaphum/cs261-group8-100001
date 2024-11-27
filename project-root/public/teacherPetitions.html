@@ -72,14 +72,14 @@
             </p>
           </div>
         </div>
-		  <p class="topnavto">รายการคำร้อง</p>
+        <p class="topnavto">รายการคำร้อง</p>
         <nav class="sidebar-menu">
-          <a href="/advisorPetitions" class="menu-item active">
+          <a href="/advisorPetitions" class="menu-item">
             <img src="img/Artboard2.svg" alt="Status Icon" />
             <span class="tee">นักศึกษาในที่ปรึกษา</span>
           </a>
-          <a href="/teacherPetitions" class="menu-item">
-            <img src="img/Artboard2.svg" alt="Status Icon" />
+          <a href="/teacherPetitions" class="menu-item active">
+            <img src="img/Artboard2.svg" alt="Approved Icon" />
             <span class="tee">ของรายวิชา</span>
           </a>
         </nav>
@@ -250,34 +250,36 @@
       let reviewedPetitions = [];
       let currentView = "pending";
 
+      let sortDirection = "desc";
+      let sortColumn = "submit_time";
+
       // Fetch petitions data from server
-      fetch("/advisor/pending-petitions")
+      fetch("/teacher/pending-petitions")
         .then((response) => response.json())
         .then((data) => {
-          pendingPetitions = data.pending;
-          reviewedPetitions = data.reviewed;
-          renderPetitions();
+          console.log("Fetched data:", data);
+          pendingPetitions = data.pending || [];
+          reviewedPetitions = data.reviewed || [];
+          sortTable("submit_time"); // Default sorting on load
         })
         .catch((error) => console.error("Error fetching petitions:", error));
 
-      // ฟังก์ชันเพื่อแสดงสถานะพร้อมแถบสี
+      // Function to display status with color labels
       function getStatusLabel(status) {
         switch (status) {
-          case 3:
-            return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
-          case 5:
-            return '<span class="status-label status-read">อ่านแล้ว</span>';
-          case 7:
-            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
           case 6:
+            return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
+          case 8:
+            return '<span class="status-label status-read">อ่านแล้ว</span>';
+          case 10:
+            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
+          case 9:
             return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
-
           default:
-            return '<span class="status-label">ไม่ทราบสถานะ</span>';
+            return '<span class="status-label status-unknown">ไม่ทราบสถานะ</span>';
         }
       }
 
-      // ฟังก์ชันเพื่อแสดงประเภทคำร้อง
       function getPetitionType(type) {
         switch (parseInt(type)) {
           case 1:
@@ -293,63 +295,43 @@
         }
       }
 
-      // ฟังก์ชันเพื่อจัดการชื่อ โดยตัดคำว่า "นาย" หรือ "นางสาว" ออก
-      function formatStudentName(name) {
-        return name.replace(/^(นาย|นางสาว)\s*/, "");
-      }
-
-      // อัปเดตฟังก์ชัน renderPetitions เพื่อแสดงคอลัมน์สถานะพร้อมแถบสี
+      // Function to render petitions
       function renderPetitions() {
+        const petitions =
+          currentView === "pending" ? pendingPetitions : reviewedPetitions;
         const petitionList = document.getElementById("petition-list");
         petitionList.innerHTML = ""; // Clear existing rows
 
-        const petitions =
-          currentView === "pending" ? pendingPetitions : reviewedPetitions;
         petitions.forEach((petition) => {
           const row = document.createElement("tr");
           row.className = "table-row";
-
           const submitDate = new Date(petition.submit_time);
-          const petitionType = getPetitionType(petition.petition_type);
-          const statusLabel = getStatusLabel(petition.status); // เรียกใช้ getStatusLabel
-
-          // ตรวจสอบว่าถ้า petition_type == 4 (ลาออก)
-          const subjectName =
-            petition.petition_type == 4
-              ? `ปี: ${petition.subject_code} ภาคเรียน: ${petition.semester}`
-              : petition.subject_name || "N/A";
-          const subjectCode =
-            petition.petition_type == 4 ? "-" : petition.subject_code || "N/A";
-          const section =
-            petition.petition_type == 4 ? "-" : petition.section || "N/A";
-
-          // ใช้ฟังก์ชัน formatStudentName เพื่อตัดคำนำหน้า
-          const studentName = formatStudentName(petition.student_name);
-
           row.innerHTML = `
-    <td class="column-type">${petitionType}</td>
-    <td class="column-subject-name">${subjectName}</td>
-    <td class="column-subject-code">${subjectCode}</td>
-    <td class="column-section">${section}</td>
-    <td class="column-student-name">${studentName}</td>
-    <td class="column-student-id">${petition.student_id}</td>
-    <td class="column-date">${submitDate.toLocaleDateString()}</td>
-    <td class="column-time">${submitDate.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    })}</td>
-    <td class="column-status">${statusLabel}</td>
-    <td class="column-check"><button class="verify-button" onclick="viewPetition(${
-      petition.petition_id
-    })">ตรวจสอบ</button></td>
-`;
+          <td class="column-type">${getPetitionType(
+            petition.petition_type
+          )}</td>
+          <td class="column-subject-name">${petition.subject_name || "N/A"}</td>
+          <td class="column-subject-code">${petition.subject_code || "N/A"}</td>
+          <td class="column-section">${petition.section || "N/A"}</td>
+          <td class="column-student-name">${petition.student_name}</td>
+          <td class="column-student-id">${petition.student_id}</td>
+          <td class="column-date">${submitDate.toLocaleDateString()}</td>
+          <td class="column-time">${submitDate.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          })}</td>
+          <td class="column-status">${getStatusLabel(petition.status)}</td>
+          <td class="column-check"><button class="verify-button" onclick="viewPetition(${
+            petition.petition_id
+          })">ตรวจสอบ</button></td>
+        `;
           petitionList.appendChild(row);
         });
       }
+
       function showPending() {
         currentView = "pending";
-        renderPetitions();
-
+        sortTable(sortColumn); // Apply sorting when switching tabs
         document.getElementById("pendingButton").classList.add("active");
         document.getElementById("pendingButton").classList.remove("inactive");
         document.getElementById("reviewedButton").classList.add("inactive");
@@ -358,8 +340,7 @@
 
       function showReviewed() {
         currentView = "reviewed";
-        renderPetitions();
-
+        sortTable(sortColumn); // Apply sorting when switching tabs
         document.getElementById("reviewedButton").classList.add("active");
         document.getElementById("reviewedButton").classList.remove("inactive");
         document.getElementById("pendingButton").classList.add("inactive");
@@ -367,57 +348,8 @@
       }
 
       function viewPetition(id) {
-        window.location.href = `/advisorPetitionDetail.html?id=${id}`;
+        window.location.href = `/teacherPetitionDetail.html?id=${id}`;
       }
-
-      // Filter petitions by search input
-      document
-        .getElementById("searchInput")
-        .addEventListener("input", function () {
-          const searchQuery = this.value.toLowerCase();
-          const petitions =
-            currentView === "pending" ? pendingPetitions : reviewedPetitions;
-          const filteredPetitions = petitions.filter(
-            (petition) =>
-              petition.petition_type.toLowerCase().includes(searchQuery) ||
-              (petition.subject_name &&
-                petition.subject_name.toLowerCase().includes(searchQuery)) ||
-              petition.student_name.toLowerCase().includes(searchQuery) ||
-              petition.student_id.toLowerCase().includes(searchQuery)
-          );
-
-          // Update the petition list with filtered results
-          const petitionList = document.getElementById("petition-list");
-          petitionList.innerHTML = ""; // Clear existing rows
-          filteredPetitions.forEach((petition) => {
-            const row = document.createElement("tr");
-            row.className = "table-row";
-
-            const submitDate = new Date(petition.submit_time);
-            row.innerHTML = `
-    <td class="column-type">${getPetitionType(petition.petition_type)}</td>
-    <td class="column-subject-name">${petition.subject_name || "N/A"}</td>
-    <td class="column-subject-code">${petition.subject_code || "N/A"}</td>
-    <td class="column-section">${petition.section || "N/A"}</td>
-    <td class="column-student-name">${petition.student_name}</td>
-    <td class="column-student-id">${petition.student_id}</td>
-    <td class="column-date">${submitDate.toLocaleDateString()}</td>
-    <td class="column-time">${submitDate.toLocaleTimeString([], {
-      hour: "2-digit",
-      minute: "2-digit",
-    })}</td>
-<td class="column-status">${getStatusLabel(petition.status)}</td>
-    <td class="column-check"><button class="verify-button" onclick="viewPetition(${
-      petition.petition_id
-    })">ตรวจสอบ</button></td>
-`;
-
-            petitionList.appendChild(row);
-          });
-        });
-
-      let sortDirection = "desc";
-      let sortColumn = "submit_time";
 
       function sortTable(column) {
         if (sortColumn === column) {
@@ -453,7 +385,6 @@
         renderPetitions();
       }
 
-      // ฟังก์ชันเพื่ออัปเดตสัญลักษณ์การเรียงลำดับที่หัวคอลัมน์
       function updateSortIcons() {
         const icons = document.querySelectorAll(".sort-icon");
         icons.forEach((icon) => (icon.textContent = "▲▼")); // Reset all icons
@@ -465,14 +396,69 @@
       }
 
       document.addEventListener("DOMContentLoaded", () => {
-        // Default sorting on submit_time (ล่าสุดอยู่บนสุด)
+        // Default sorting on submit_time
         sortTable("submit_time");
       });
+
+      // Filter petitions by search input
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", function () {
+          const searchQuery = this.value.toLowerCase();
+          const petitions =
+            currentView === "pending" ? pendingPetitions : reviewedPetitions;
+
+          // Filter the petitions based on the search query
+          const filteredPetitions = petitions.filter((petition) => {
+            return (
+              getPetitionType(petition.petition_type)
+                .toLowerCase()
+                .includes(searchQuery) ||
+              (petition.subject_name &&
+                petition.subject_name.toLowerCase().includes(searchQuery)) ||
+              petition.subject_code.toLowerCase().includes(searchQuery) ||
+              petition.student_name.toLowerCase().includes(searchQuery) ||
+              petition.student_id.toLowerCase().includes(searchQuery)
+            );
+          });
+
+          // Render the filtered petitions
+          const petitionList = document.getElementById("petition-list");
+          petitionList.innerHTML = ""; // Clear existing rows
+
+          filteredPetitions.forEach((petition) => {
+            const row = document.createElement("tr");
+            row.className = "table-row";
+            const submitDate = new Date(petition.submit_time);
+
+            row.innerHTML = `
+      <td class="column-type">${getPetitionType(petition.petition_type)}</td>
+      <td class="column-subject-name">${petition.subject_name || "N/A"}</td>
+      <td class="column-subject-code">${petition.subject_code || "N/A"}</td>
+      <td class="column-section">${petition.section || "N/A"}</td>
+      <td class="column-student-name">${petition.student_name}</td>
+      <td class="column-student-id">${petition.student_id}</td>
+      <td class="column-date">${submitDate.toLocaleDateString()}</td>
+      <td class="column-time">${submitDate.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })}</td>
+      <td class="column-status">${getStatusLabel(petition.status)}</td>
+      <td class="column-check">
+        <button class="verify-button" onclick="viewPetition(${
+          petition.petition_id
+        })">ตรวจสอบ</button>
+      </td>
+    `;
+            petitionList.appendChild(row);
+          });
+        });
+
 
 
 
      // ดึงข้อมูลจาก API session
-document.addEventListener("DOMContentLoaded", () => {
+     document.addEventListener("DOMContentLoaded", () => {
   // ดึงข้อมูลจาก API session-user-info โดยส่ง cookies
   fetch("/api/session-user-info", { credentials: "include" })
     .then((response) => {
@@ -515,12 +501,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.getElementById("barid").textContent = "ไม่ทราบประเภทผู้ใช้";
     });
 });
-
-
-
-
-
-
 
     </script>
   </body>

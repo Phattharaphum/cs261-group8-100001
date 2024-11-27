@@ -382,11 +382,13 @@ h2 {
 .attachFile01 {
 	font-family: 'Bai jamjuree',Poppins;
 	font-size: 12pt;
+	width: 300px;
 }
 
 .attachFile02 {
 	font-family: 'Bai jamjuree',Poppins;
 	font-size: 12pt;
+	width: 300px;
 }
 
 .asadsad {
@@ -603,4 +605,59 @@ h2 {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5); /* สีดำโปร่งใส */
     z-index: 9998; /* ต้องน้อยกว่าโมดอล */
+}
+
+
+.course {
+			    width: 250px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.seeea {
+				    width: 150px;
+	    background-color: #D9D9D9;
+    border: none;
+    border-radius: 13px;
+    height: 30px;
+    padding-left: 10px;
+	font-size: 12pt;
+	font-weight: 600;
+	
+	    background-color: white;
+    border: none;
+    border-radius: 13px;
+    height: 40px;
+    padding-left: 10px;
+    font-size: 12pt;
+    font-weight: 600;
+    line-height: 1.5; /* Adjust line height to give room for diacritics */
+    padding-top: 5px; /* Optional: add padding to ensure diacritics display well */
+    padding-bottom: 5px; /* Optional: same as above */
+}
+
+.textaa {
+	resize: none;
+	border:none;
+	background-color: white;
+	border-radius: 15px;
+	padding: 10px;
+	width: 200px;
+	margin-left: 20px;
 }

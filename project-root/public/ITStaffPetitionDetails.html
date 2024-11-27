@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700;900&display=swap" as="style" onload="this.rel='stylesheet'">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700&display=swap" as="style" onload="this.rel='stylesheet'">
-	    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/studentPetitionsChecked.css">
     <link rel="stylesheet" href="css/stylesidebar.css">
     <style>
@@ -39,6 +39,7 @@
 
 #attachedFilesTable th {
     background-color: #f2f2f2;
+    text-align: left;
 }
 
 .highlight {
@@ -59,7 +60,7 @@
                   
                   </div>
                   <nav class="sidebar-menu" id="cancelButton" style="display: none;">
-                      <a href="javascript:void(0);" class="menu-item" onclick="updateStatus(20)" >
+                      <a href="javascript:void(0);" class="menu-item" onclick="updateStatus(6)" >
                           <img src="img/icon (2).svg" alt="Status Icon">
                           <span class="tee">ยกเลิกคำร้อง</span>
                       </a>
@@ -76,80 +77,44 @@
                       <div class="user-info">
                           <div class="asee"><img src="img/avt (2).svg" alt="Logout Icon"></div>
                           <div class="user-details">
-                              <p class="name" id="barname"></p>
-                              <p class="idd" id="barid"></p> 
+                              <p class="name" id="barname">เจ้าหน้าที่ดูแลระบบ</p>
+                              <p class="idd" id="barid">Admin</p> 
                           </div>
                       </div>
                   </div>
           </div>
         
         <!-- Main Content Section (80%) -->
-	<div class="scallable">
+	<div class="scallable"> 
+
 		<h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
         <div class="middle">
             
+            <!-- 
             <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
-			
-      <!-- Petition Form -->
-      <div class="petitionDetails">
-        <dd>
-          <div class="header-form">
-            <p>คำร้องนักศึกษา</p>
-            <p>คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต</p>
-          </div>
-          <div class="subheader-text">
-            <p>เรื่อง&emsp;ขอจดทะเบียนล่าช้า</p>
-            <p>เรียน&emsp;คณบดีคณะวิทยาศาสตร์และเทคโนโลยี</p>
-          </div>
-          <br>
-          <p class="tab-text">ข้าพเจ้า <span class="highlight" id="student_name"></span>
-            <span class="tab-space"></span>เลขทะเบียน : <span class="highlight" id="student_id">&ensp;&emsp;</span>
-            <span class="tab-space"></span>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
-          <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
-          <br>
-          <p class="subheader-text">ข้อมูลติดต่อ : </p>
-          <p class="tab-text">
-            ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number"></span>
-            <span class="tab-space"></span>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
-          <p class="tab-text">เขต/อำเภอ : <span class="highlight" id="district"></span>
-            <span class="tab-space"></span>จังหวัด : <span class="highlight" id="province"></span>
-            <span class="tab-space"></span>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
-          <p class="tab-text">
-            โทรศัพท์ติดต่อกับนักศึกษา :
-            <span class="highlight" id="student_phone"></span>
-          </p>
-          <p class="tab-text">
-            โทรศัพ์ติดต่อผู้ปกครอง :
-            <span class="highlight" id="guardian_phone"></span>
-          </p>
-        </dd>
-        <br>
-        <p class="subheader-text">ประสงค์ที่จะยื่นคำร้อง : </p>
-
-        <dd>
-          <p class="tab-text">ประเภท : <span class="highlight" id="petition_type"></span>
-            <span class="tab-space"></span>ภาคการศึกษาที่ : <span class="highlight" id="semester"></span></p>
-          <p class="tab-text">รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
-          <p class="tab-text">ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
-          <p class="tab-text">กลุ่มเรียน : <span class="highlight" id="section"></span></p>
-          <br>
-          <p class="subheader-text">
-            เหตุผลในการยื่นคำร้อง :
-            <p class="tab-text">
-              <span class="highlight" id="reason"></span>
-            </p>
-          </p>
-          <br>
-        </dd>
-        <div class="end-form">
-          <p>ขอแสดงความนับถือ</p><br>
-          <p><span class="highlight" id="student_nameb"></span>&nbsp;(นักศึกษา)</p>
-          <br>
-          <p class="time-submit">วันยื่นคำร้องผ่านระบบยื่นคำร้อง : <span id="submit_time"></span></p>
-        </div>
-      </div>
-			
-			
+            <dd>
+                <p>ผู้ยื่น : <span class="highlight" id="student_name"></span></p>
+                <p>เลขทะเบียน : <span class="highlight" id="student_id"></span></p>
+                <p>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
+                <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
+                <p>ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number"></span></p>
+                <p>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
+                <p>เขต/อำเภอ : <span class="highlight" id="district"></span></p>
+                <p>จังหวัด : <span class="highlight" id="province"></span></p>
+                <p>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
+                <p>โทรศัพท์ติดต่อกับนักศึกษา : <span class="highlight" id="student_phone"></span></p>
+                <p>ติดต่อผู้ปกครอง : <span class="highlight" id="guardian_phone"></span></p>
+            </dd><br>
+            <hr><br>
+            <h3 class="bold-text">คำร้อง</h3>
+            <dd>
+                <p>ประเภท : <span class="highlight" id="petition_type"></span></p>
+                <p>รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
+                <p>ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
+                <p>กลุ่มเรียน : <span class="highlight" id="section"></span></p>
+                <p class="dasda">เหตุผลในการยื่นคำร้อง : <span class="highlight" id="reason"></span></p>
+            </dd>
+            <br>
             <hr><br>
             <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
             <div class="file">
@@ -163,27 +128,122 @@
                     </thead>
  
                 </table>
-            </div><hr><br>
-		
-       
+            </div><br><br><br><br><br>
+        </div>
         <div class="comments-section">
-            <h3 class="bold-text">ความคิดเห็น</h3>
+            <h3>ความคิดเห็น :</h3>
             <div class="comments-grid">
               <div>
-                <label class="boxlab" for="acdemicStaff-comment">ความคิดเห็นเจ้าหน้าที่:</label><br>
-                <textarea id="acdemicStaff-comment"  class="combox" readonly></textarea>
+                <label for="acdemicStaff-comment">ความคิดเห็นเจ้าหน้าที่:</label>
+                <textarea id="acdemicStaff-comment" readonly></textarea>
               </div>
               <div>
-                <label class="boxlab" for="advisor-comment">ความคิดเห็นอาจารย์ที่ปรึกษา:</label><br>
-                <textarea class="combox" id="advisor-comment" readonly></textarea>
+                <label for="advisor-comment">ความคิดเห็นอาจารย์ที่ปรึกษา:</label>
+                <textarea id="advisor-comment" readonly></textarea>
               </div>
               <div>
-                <label class="boxlab" for="Lecturer-comment">ความคิดเห็นอาจารย์ผู้สอน:</label><br>
-                <textarea class="combox" id="Lecturer-comment" readonly></textarea>
+                <label for="Lecturer-comment">ความคิดเห็นอาจารย์ผู้สอน:</label>
+                <textarea id="Lecturer-comment" readonly></textarea>
               </div>
             </div>
           </div> 
-		
+                          -->
+
+
+ <!-- Petition Form -->
+ <div class="petitionDetails">
+    <dd>
+      <div class="header-form">
+        <p>คำร้องนักศึกษา</p>
+        <p>คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต</p>
+      </div>
+      <div class="subheader-text">
+        <p>เรื่อง&emsp;ขอจดทะเบียนล่าช้า</p>
+        <p>เรียน&emsp;คณบดีคณะวิทยาศาสตร์และเทคโนโลยี</p>
+      </div>
+      <br>
+      <p class="tab-text">ข้าพเจ้า <span class="highlight" id="student_name"></span>
+        <span class="tab-space"></span>เลขทะเบียน : <span class="highlight" id="student_id">&ensp;&emsp;</span>
+        <span class="tab-space"></span>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
+      <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
+      <br>
+      <p class="subheader-text">ข้อมูลติดต่อ : </p>
+      <p class="tab-text">
+        ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number"></span>
+        <span class="tab-space"></span>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
+      <p class="tab-text">เขต/อำเภอ : <span class="highlight" id="district"></span>
+        <span class="tab-space"></span>จังหวัด : <span class="highlight" id="province"></span>
+        <span class="tab-space"></span>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
+      <p class="tab-text">
+        โทรศัพท์ติดต่อกับนักศึกษา :
+        <span class="highlight" id="student_phone"></span>
+      </p>
+      <p class="tab-text">
+        โทรศัพ์ติดต่อผู้ปกครอง :
+        <span class="highlight" id="guardian_phone"></span>
+      </p>
+    </dd>
+    <br>
+    <p class="subheader-text">ประสงค์ที่จะยื่นคำร้อง : </p>
+
+    <dd>
+      <p class="tab-text">ประเภท : <span class="highlight" id="petition_type"></span>
+        <span class="tab-space"></span>ภาคการศึกษาที่ : <span class="highlight" id="semester"></span></p>
+      <p class="tab-text">รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
+      <p class="tab-text">ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
+      <p class="tab-text">กลุ่มเรียน : <span class="highlight" id="section"></span></p>
+      <br>
+      <p class="subheader-text">
+        เหตุผลในการยื่นคำร้อง :
+        <p class="tab-text">
+          <span class="highlight" id="reason"></span>
+        </p>
+      </p>
+      <br>
+    </dd>
+    <div class="end-form">
+      <p>ขอแสดงความนับถือ</p><br>
+      <p><span class="highlight" id="student_nameb"></span>&nbsp;(นักศึกษา)</p>
+      <br>
+      <p class="time-submit">วันยื่นคำร้องผ่านระบบยื่นคำร้อง : <span id="submit_time"></span></p>
+    </div>
+  </div>
+        
+        
+        <hr><br>
+        <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
+        <div class="file">
+            <table id="attachedFilesBody">
+                <thead>
+                    <tr>
+                        <th class="asd">ชื่อไฟล์</th>
+                        <th class="asd">คำอธิบาย</th>
+                        <th class="asd">ดาวน์โหลด</th>
+                    </tr>
+                </thead>
+
+            </table>
+        </div><hr><br>
+    
+   
+    <div class="comments-section">
+        <h3 class="bold-text">ความคิดเห็น</h3>
+        <div class="comments-grid">
+          <div>
+            <label class="boxlab" for="acdemicStaff-comment">ความคิดเห็นเจ้าหน้าที่:</label><br>
+            <textarea id="acdemicStaff-comment"  class="combox" readonly></textarea>
+          </div>
+          <div>
+            <label class="boxlab" for="advisor-comment">ความคิดเห็นอาจารย์ที่ปรึกษา:</label><br>
+            <textarea class="combox" id="advisor-comment" readonly></textarea>
+          </div>
+          <div>
+            <label class="boxlab" for="Lecturer-comment">ความคิดเห็นอาจารย์ผู้สอน:</label><br>
+            <textarea class="combox" id="Lecturer-comment" readonly></textarea>
+          </div>
+        </div>
+      </div> 
+    
 
 
 
@@ -191,26 +251,35 @@
 
 
 
- </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+       <!-- Status Section -->
+       <div class="right">
+        <h3 style="text-align: left;">สถานะคำร้อง</h3>
+        <div class="rounded-border2">
+    <p class="asad">คำร้องถูกยื่นเมื่อ: <span id="submit_timea"></span></p>
+    <!-- <p class="asad">พิจารณาเมื่อ:<span id="review_time"></span></p> -->
+    <p>เวลาพิจารณาเจ้าหน้าที่: <span id="review_time_a"></span></p>
+    <p>เวลาพิจารณาอาจารย์ที่ปรึกษา: <span id="review_time_b"></span></p>
+    <p>เวลาพิจารณาอาจารย์ผู้สอน: <span id="review_time_c"></span></p>
+    <p class="spanlab"><span id="status"></span></p>
+        </div>
     </div>
 
+    <!-- Status Section -->
 
-        <!-- Status Section -->
-        <div class="right">
-            <h3 style="text-align: left;">สถานะคำร้อง</h3>
-            <div class="rounded-border2">
-        <p class="asad">คำร้องถูกยื่นเมื่อ: <span id="submit_timea"></span></p>
-        <!-- <p class="asad">พิจารณาเมื่อ:<span id="review_time"></span></p> -->
-        <p>เวลาพิจารณาเจ้าหน้าที่: <span id="review_time_a"></span></p>
-        <p>เวลาพิจารณาอาจารย์ที่ปรึกษา: <span id="review_time_b"></span></p>
-        <p>เวลาพิจารณาอาจารย์ผู้สอน: <span id="review_time_c"></span></p>
-        <p class="spanlab"><span id="status"></span></p>
-            </div>
-        </div>
-
-        <!-- Status Section -->
-
-        
     </div>
 
     <script>
@@ -223,18 +292,18 @@
                 function getStatusText(status) {
     switch (status) {
         case 2: return '<span class="status-label status-waiting">รอเจ้าหน้าที่ตรวจสอบ</span>';
-        case 3: return '<span class="status-label status-waiting">อนุมัติโดยเจ้าหน้าที่</span>';
-        case 4: return '<span class="status-label status-rejected">ปฏิเสธโดยเจ้าหน้าที่</span>';
+        case 3: return '<span class="status-label status-waiting">ผ่าน/รออาจารย์ที่ปรึกษาตรวจสอบ</span>';
+        case 4: return '<span class="status-label status-rejected">ปฏิเสธ/ให้กลับไปแก้ไข/a</span>';
         case 5: return '<span class="status-label status-read">อาจารย์ที่ปรึกษาอ่านแล้ว</span>';
-        case 6: return '<span class="status-label status-approved">อนุมัติโดยอาจารย์ที่ปรึกษา</span>';
-        case 7: return '<span class="status-label status-rejected">ปฏิเสธโดยอาจารย์ที่ปรึกษา</span>';
+        case 6: return '<span class="status-label status-approved">อนุมัติ/รออาจารย์ผู้สอนตรวจสอบ</span>';
+        case 7: return '<span class="status-label status-rejected">ปฏิเสธ/ให้กลับไปแก้ไข/b</span>';
         case 8: return '<span class="status-label status-read">อาจารย์ผู้สอนอ่านแล้ว</span>';
-        case 9: return '<span class="status-label status-approved">อนุมัติโดยอาจารย์ผู้สอน</span>';
-        case 10: return '<span class="status-label status-rejected">ปฏิเสธโดยอาจารย์ผู้สอน/c</span>';
-        case 11: return '<span class="status-label status-approved">ยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
-        case 12: return '<span class="status-label status-rejected">ปฏิเสธโดยเจ้าหน้าที่</span>';
-        case 13: return '<span class="status-label status-approved">อนุมัติโดยคณบดี</span>';
-        case 14: return '<span class="status-label status-rejected">ปฏิเสธโดยคณบดี</span>';
+        case 9: return '<span class="status-label status-approved">อนุมัติ/รอเจ้าหน้าที่ยื่นบันทึกคำร้อง</span>';
+        case 10: return '<span class="status-label status-rejected">ปฏิเสธ/c</span>';
+        case 11: return '<span class="status-label status-approved">ผ่านยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
+        case 12: return '<span class="status-label status-rejected">ขอรายละเอียด/กลับไปแก้ไข/d</span>';
+        case 13: return '<span class="status-label status-approved">อนุมัติ</span>';
+        case 14: return '<span class="status-label status-rejected">ปฏิเสธ/ขอรายละเอียด/กลับไปแก้ไข/e</span>';
         case 15: return '<span class="status-label status-approved">ยื่นเรื่องไปยังสำนักทะเบียนเรียบร้อยแล้ว</span>';
         case 20: return '<span class="status-label status-canceled">ยกเลิกคำร้องโดยนักศึกษา</span>';
         case 22: return '<span class="status-label status-canceled">ยกเลิกโดยเจ้าหน้าที่</span>';
@@ -259,9 +328,9 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById('student_name').textContent = data.student_name || '';
-			 document.getElementById('student_nameb').textContent = data.student_name || '';            //
+			 document.getElementById('student_nameb').textContent = data.student_name || '';
                 document.getElementById('student_id').textContent = data.student_id || '';
-			document.getElementById('semester').textContent = data.semester || '';                      //
+			document.getElementById('semester').textContent = data.semester || '';
                 document.getElementById('year').textContent = data.year || '';
                 document.getElementById('major').textContent = data.major || '';
                 document.getElementById('house_number').textContent = data.house_number || '';
@@ -298,19 +367,23 @@
            data.review_time_c ? new Date(data.review_time_c).toLocaleString() : "ยังไม่มีการพิจารณา";
 
   
-                if (data.status === 2) {
+                if (data.status) {
                     document.getElementById('cancelButton').style.display = 'block';
                 } else {
                     document.getElementById('cancelButton').style.display = 'none';
                 }
 
 
-    
+                // ตรวจสอบสถานะและอัปเดตการแสดงผล review_time
+        const reviewTimeText = document.getElementById('reviewTimeText');
+        const reviewLabel = document.getElementById('reviewLabel');
+        
+
 
 
                 // Display attached files
 
-if (data.attachedFiles && data.attachedFiles.length > 0) {
+                if (data.attachedFiles && data.attachedFiles.length > 0) {
     data.attachedFiles.forEach((file, index) => {
         const row = document.createElement('tr');
 
@@ -330,7 +403,7 @@ if (data.attachedFiles && data.attachedFiles.length > 0) {
             .catch(error => console.error('Error fetching petition details:', error));
 
         function goBack() {
-            window.location.href = '/studentPetitions.html';
+            window.location.href = '/ITStaffPetitions.html';
         }
         function updateStatus(newStatus) {
             fetch(`/advisor/update-petition/${petitionId}`, {
@@ -351,15 +424,11 @@ if (data.attachedFiles && data.attachedFiles.length > 0) {
             })
             .catch(error => console.error('Error updating petition status:', error));
         }
-        document.addEventListener("DOMContentLoaded", () => {
-    fetch('/api/session-student-info')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('barname').textContent = data.student_name || 'ไม่ทราบชื่อ';
-            document.getElementById('barid').textContent = data.student_id || 'ไม่ทราบรหัส';
-        })
-        .catch(error => console.error('Error fetching student info:', error));
-});
+
+
+
+
+
     </script>
     <script src="/js/sessionTimeout.js"></script>
   </body>

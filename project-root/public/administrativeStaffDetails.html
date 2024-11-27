@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>รายละเอียดบุคลากร</title>
+    <link rel="stylesheet" href="css/stylesidebar.css" />
+    <link rel="stylesheet" href="css/styleadministrativeStaffDetails.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-header">
+          <img src="img/logo.svg" alt="University Logo" class="logo" />
+          <div class="tops">
+            <p class="hasd">ระบบสำหรับเจ้าหน้าที่</p>
+            <p class="asdasd">
+              คณะวิทยาศาสตร์และเทคโนโลยี<br />มหาวิทยาลัยธรรมศาสตร์
+            </p>
+          </div>
+        </div>
+        <nav class="sidebar-menu">
+          <a href="/ITStaffSystemLogs.html" class="menu-item">
+            <img src="img/Artboard 1.svg" alt="Logs Icon" />
+            <span class="tee">ประวัติการใช้ระบบ</span>
+          </a>
+          <a href="/manage_staff.html" class="menu-item active">
+            <img src="img/Artboard 1.svg" alt="Edit Staff Icon" />
+            <span class="tee">แก้ไขข้อมูลบุคลากรคณะ</span>
+          </a>
+          <a href="/ITStaffPetitions.html" class="menu-item">
+            <img src="img/Artboard 1.svg" alt="Petitions Icon" />
+            <span class="tee">รายการคำร้อง</span>
+          </a>
+        </nav>
+        <div class="logout-section">
+          <a href="javascript:void(0);" class="menu-item" onclick="goBack()">
+            <img src="img/back.svg" alt="Back Icon" />
+            <span class="tee">ย้อนกลับ</span>
+          </a>
+          <a href="/logout" class="menu-item">
+            <img src="img/Artboard 3.svg" alt="Logout Icon" />
+            <span class="tee">ออกจากระบบ</span>
+          </a>
+          <div class="user-info">
+            <div class="asee">
+              <img src="img/avt (1).svg" alt="User Icon" />
+            </div>
+            <div class="user-details">
+              <p class="name" id="barname">เจ้าหน้าที่ดูแลระบบ</p>
+              <p class="idd" id="barid">Admin</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Content -->
+      <div class="scallable">
+        <h2 id="pageTitle">รายละเอียดบุคลากร</h2>
+        <div id="detailsContainer" class="details-container">
+          <!-- ข้อมูลจะแสดงที่นี่ -->
+        </div>
+        <button class="edit-button" id="editButton">แก้ไขข้อมูล</button>
+
+        <div
+          id="staffFormContainer"
+          class="form-container"
+          style="display: none"
+        >
+          <form id="staffForm" class="staffForm">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="university_id">รหัสมหาวิทยาลัย</label>
+                <input
+                  type="text"
+                  id="university_id"
+                  name="university_id"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="academic_title">ตำแหน่งทางวิชาการ</label>
+                <select id="academic_title" name="academic_title" class="aaa">
+                  <option value="">--เลือกตำแหน่ง--</option>
+                  <option value="ศ.">ศ.</option>
+                  <option value="รศ.">รศ.</option>
+                  <option value="ผศ.">ผศ.</option>
+                  <option value="ดร.">ดร.</option>
+                  <option value="">ไม่มี</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="personal_title">คำนำหน้า</label>
+                <select
+                  id="personal_title"
+                  name="personal_title"
+                  required
+                  class="aaa"
+                >
+                  <option value="">คำนำหน้า</option>
+                  <option value="นาย">นาย</option>
+                  <option value="นาง">นาง</option>
+                  <option value="นางสาว">นางสาว</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="first_name">ชื่อ</label>
+                <input type="text" id="first_name" name="first_name" required />
+              </div>
+              <div class="form-group">
+                <label for="last_name">นามสกุล</label>
+                <input type="text" id="last_name" name="last_name" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="office">ห้องทำงาน</label>
+                <input type="text" id="office" name="office" />
+              </div>
+              <div class="form-group">
+                <label for="role">ประเภท</label>
+                <select id="role" name="role" required class="aaa">
+                  <option value="">เลือกประเภท</option>
+                  <option value="2">คณบดี</option>
+                  <option value="3">เจ้าหน้าที่วิชาการ</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="status">สถานะ</label>
+                <select id="status" name="status" required class="aaa">
+                  <option value="1">Active</option>
+                  <option value="0">Inactive</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="branch">สาขา</label>
+                <input type="text" id="branch" name="branch" />
+              </div>
+              <div class="form-group">
+                <label for="email">อีเมล</label>
+                <input type="email" id="email" name="email" />
+              </div>
+              <div class="form-group">
+                <label for="phone">เบอร์โทรศัพท์</label>
+                <input type="text" id="phone" name="phone" />
+              </div>
+              <div class="form-group">
+                <label for="profile_link">ลิงก์โปรไฟล์</label>
+                <input type="url" id="profile_link" name="profile_link" />
+              </div>
+            </div>
+            <button type="submit" class="addButton">บันทึก</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const staffId = urlParams.get("id");
+
+      function fetchStaffDetails(id) {
+        fetch(`/api/administrative-staff/${id}`)
+          .then((response) => response.json())
+          .then((data) => {
+            displayStaffDetails(data);
+          })
+          .catch((error) => {
+            console.error("Error fetching staff data:", error);
+            alert("ไม่สามารถดึงข้อมูลบุคลากรได้");
+          });
+      }
+
+      function displayStaffDetails(staff) {
+        const detailsContainer = document.getElementById("detailsContainer");
+        detailsContainer.innerHTML = `
+<div class="staff-details">
+    <p class="staff-university-id"><strong>รหัสมหาวิทยาลัย:</strong> ${
+      staff.university_id
+    }</p>
+    <p class="staff-academic-title"><strong>ตำแหน่งทางวิชาการ:</strong> ${
+      staff.academic_title || "ไม่มี"
+    }</p>
+    <p class="staff-personal-title"><strong>คำนำหน้า:</strong> ${
+      staff.personal_title
+    }</p>
+    <p class="staff-first-name"><strong>ชื่อ:</strong> ${staff.first_name}</p>
+    <p class="staff-last-name"><strong>นามสกุล:</strong> ${staff.last_name}</p>
+    <p class="staff-office"><strong>ห้องทำงาน:</strong> ${
+      staff.office || "ไม่มีข้อมูล"
+    }</p>
+    <p class="staff-role"><strong>ประเภท:</strong> ${
+      staff.role == 2 ? "คณบดี" : "เจ้าหน้าที่วิชาการ"
+    }</p>
+    <p class="staff-status"><strong>สถานะ:</strong> ${
+      staff.status == 1 ? "Active" : "Inactive"
+    }</p>
+    <p class="staff-branch"><strong>สาขา:</strong> ${
+      staff.branch || "ไม่มีข้อมูล"
+    }</p>
+    <p class="staff-email"><strong>อีเมล:</strong> ${
+      staff.email || "ไม่มีข้อมูล"
+    }</p>
+    <p class="staff-phone"><strong>เบอร์โทรศัพท์:</strong> ${
+      staff.phone || "ไม่มีข้อมูล"
+    }</p>
+    <p class="staff-profile-link"><strong>ลิงก์โปรไฟล์:</strong> 
+        ${
+          staff.profile_link
+            ? `<a href="${staff.profile_link}" target="_blank">ดูโปรไฟล์</a>`
+            : "ไม่มีข้อมูล"
+        }
+    </p>
+</div>
+
+    `;
+        populateForm(staff); // เตรียมข้อมูลฟอร์ม
+      }
+
+      function populateForm(staff) {
+        document.getElementById("university_id").value =
+          staff.university_id || "";
+        document.getElementById("academic_title").value =
+          staff.academic_title || "";
+        document.getElementById("personal_title").value =
+          staff.personal_title || "";
+        document.getElementById("first_name").value = staff.first_name || "";
+        document.getElementById("last_name").value = staff.last_name || "";
+        document.getElementById("office").value = staff.office || "";
+        document.getElementById("role").value = staff.role || "";
+        document.getElementById("status").value = staff.status || "";
+        document.getElementById("branch").value = staff.branch || "";
+        document.getElementById("email").value = staff.email || "";
+        document.getElementById("phone").value = staff.phone || "";
+        document.getElementById("profile_link").value =
+          staff.profile_link || "";
+      }
+
+      document.getElementById("editButton").addEventListener("click", () => {
+        document.getElementById("staffFormContainer").style.display = "block";
+        document.getElementById("detailsContainer").style.display = "none";
+        document.getElementById("editButton").style.display = "none";
+      });
+
+      if (staffId) {
+        fetchStaffDetails(staffId);
+      } else {
+        document.getElementById("pageTitle").textContent = "เพิ่มบุคลากรใหม่";
+        document.getElementById("editButton").style.display = "none";
+        document.getElementById("staffFormContainer").style.display = "block";
+      }
+
+      // เพิ่ม event listener สำหรับการส่งฟอร์ม
+      document
+        .getElementById("staffForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          // สร้าง object formData จากค่าที่ได้จากฟอร์ม
+          const formData = {
+            university_id: document.getElementById("university_id").value,
+            academic_title: document.getElementById("academic_title").value,
+            personal_title: document.getElementById("personal_title").value,
+            first_name: document.getElementById("first_name").value,
+            last_name: document.getElementById("last_name").value,
+            office: document.getElementById("office").value,
+            status: parseInt(document.getElementById("status").value),
+            role: parseInt(document.getElementById("role").value),
+            branch: document.getElementById("branch").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            profile_link: document.getElementById("profile_link").value,
+            password: "test",
+          };
+
+          if (staffId) {
+            // อัปเดตข้อมูลบุคลากร
+            fetch(`/api/administrative-staff/${staffId}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Failed to update staff");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                alert("อัปเดตข้อมูลบุคลากรเรียบร้อยแล้ว");
+                window.location.href = "/manage_staff.html";
+              })
+              .catch((error) => {
+                console.error("Error updating staff:", error);
+                alert("เกิดข้อผิดพลาดในการอัปเดตข้อมูลบุคลากร");
+              });
+          } else {
+            // เพิ่มบุคลากรใหม่
+            fetch("/api/administrative-staff", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(formData),
+            })
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Failed to add staff");
+                }
+                return response.json();
+              })
+              .then((data) => {
+                alert("เพิ่มบุคลากรใหม่เรียบร้อยแล้ว");
+                window.location.href = "/manage_staff.html";
+              })
+              .catch((error) => {
+                console.error("Error adding staff:", error);
+                alert("เกิดข้อผิดพลาดในการเพิ่มบุคลากร");
+              });
+          }
+        });
+
+      function goBack() {
+        window.location.href = "/manage_staff.html";
+      }
+    </script>
+  </body>
+</html>

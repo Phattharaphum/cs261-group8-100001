@@ -2,11 +2,10 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-	font-family: 'Bai jamjuree';
 }
 
 body, html {
-    font-family: Arial, sans-serif;
+    font-family: 'Bai Jamjuree', sans-serif;
     background-color: #EDEDED;
 }
 
@@ -179,3 +178,9 @@ span {
 
 
 
+
+.topnavto {
+	font-weight: 600;
+	margin-top: 20px;
+	margin-bottom: 0;
+}

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>สถานะคำร้อง</title>
-    <link rel="stylesheet" href="css/styleListofPetitionAdvisor.css" />
+    <link rel="stylesheet" href="css/styleListofPetitionStu.css" />
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -95,7 +95,7 @@
               <th class="column-status" onclick="sortTable('status')">
                 สถานะ <span class="sort-icon" id="sort-icon-status">▲▼</span>
               </th>
-              <th class="column-check"></th>
+              <th class="column-check">ตรวจสอบ</th>
             </tr>
           </thead>
 
@@ -157,22 +157,28 @@
         }
       }
 
-      function getStatusLabel(status) {
-        switch (status) {
-          case 2:
-            return '<span class="status-label status-waiting">รอตรวจสอบ</span>';
-          case 3:
-            return '<span class="status-label status-read">อ่านแล้ว</span>';
-          case 4:
-            return '<span class="status-label status-rejected">ไม่อนุมัติ</span>';
-          case 5:
-            return '<span class="status-label status-approved">อนุมัติแล้ว</span>';
-          case 6:
-            return '<span class="status-label status-canceled">ยกเลิก</span>';
-          default:
-            return '<span class="status-label">ไม่ทราบสถานะ</span>';
-        }
-      }
+          // ฟังก์ชันแสดงสถานะพร้อมแถบสี
+                      function getStatusLabel(status) {
+    switch (status) {
+        case 2: return '<span class="status-label status-waiting">รอเจ้าหน้าที่ตรวจสอบ</span>';
+        case 3: return '<span class="status-label status-waiting">อนุมัติโดยเจ้าหน้าที่</span>';
+        case 4: return '<span class="status-label status-rejected">ปฏิเสธโดยเจ้าหน้าที่</span>';
+        case 5: return '<span class="status-label status-read">อาจารย์ที่ปรึกษาอ่านแล้ว</span>';
+        case 6: return '<span class="status-label status-approved">อนุมัติโดยอาจารย์ที่ปรึกษา</span>';
+        case 7: return '<span class="status-label status-rejected">ปฏิเสธโดยอาจารย์ที่ปรึกษา</span>';
+        case 8: return '<span class="status-label status-read">อาจารย์ผู้สอนอ่านแล้ว</span>';
+        case 9: return '<span class="status-label status-approved">อนุมัติโดยอาจารย์ผู้สอน</span>';
+        case 10: return '<span class="status-label status-rejected">ปฏิเสธโดยอาจารย์ผู้สอน/c</span>';
+        case 11: return '<span class="status-label status-approved">ยื่นบันทึกคำร้องส่งคณบดีแล้ว</span>';
+        case 12: return '<span class="status-label status-rejected">ปฏิเสธโดยเจ้าหน้าที่</span>';
+        case 13: return '<span class="status-label status-approved">อนุมัติโดยคณบดี</span>';
+        case 14: return '<span class="status-label status-rejected">ปฏิเสธโดยคณบดี</span>';
+        case 15: return '<span class="status-label status-approved">ยื่นเรื่องไปยังสำนักทะเบียนเรียบร้อยแล้ว</span>';
+        case 20: return '<span class="status-label status-canceled">ยกเลิกคำร้องโดยนักศึกษา</span>';
+        case 22: return '<span class="status-label status-canceled">ยกเลิกโดยเจ้าหน้าที่</span>';
+        default: return '<span class="status-label">ไม่ทราบสถานะ</span>';
+    }
+}
 
       fetch("/student/petitions")
         .then((response) => response.json())
