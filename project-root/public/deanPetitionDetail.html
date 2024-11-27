@@ -18,6 +18,8 @@
       as="style"
       onload="this.rel='stylesheet'"
     />
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="css/studentPetitionsChecked.css" />
     <link rel="stylesheet" href="css/stylesidebar.css" />
     <script defer src="./js/redirect-handler.js"></script>
@@ -116,75 +118,107 @@
         <h2 class="rounded-border" id="topmain">คำร้องขอจดทะเบียนล่าช้า</h2>
         <div class="middle">
           <h3 class="bold-text">ข้อมูลผู้ยื่นคำร้อง</h3>
-          <dd>
-            <p>ผู้ยื่น : <span class="highlight" id="student_name"></span></p>
-            <p>เลขทะเบียน : <span class="highlight" id="student_id"></span></p>
-            <p>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
-            <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
-            <p>
-              ที่อยู่ที่ติดต่อได้ :
-              <span class="highlight" id="house_number"></span>
-            </p>
-            <p>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
-            <p>เขต/อำเภอ : <span class="highlight" id="district"></span></p>
-            <p>จังหวัด : <span class="highlight" id="province"></span></p>
-            <p>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
-            <p>
-              โทรศัพท์ติดต่อกับนักศึกษา :
-              <span class="highlight" id="student_phone"></span>
-            </p>
-            <p>
-              ติดต่อผู้ปกครอง :
-              <span class="highlight" id="guardian_phone"></span>
-            </p>
-          </dd>
-          <br />
-          <hr />
-          <br />
-          <h3 class="bold-text">คำร้อง</h3>
-          <dd>
-            <p>ประเภท : <span class="highlight" id="petition_type"></span></p>
-            <p>รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
-            <p>ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
-            <p>กลุ่มเรียน : <span class="highlight" id="section"></span></p>
-            <p>
-              เหตุผลในการยื่นคำร้อง :
+      <!-- Petition Form -->
+      <div class="petitionDetails">
+        <dd>
+          <div class="header-form">
+            <p>คำร้องนักศึกษา</p>
+            <p>คณะวิทยาศาสตร์และเทคโนโลยี มหาวิทยาลัยธรรมศาสตร์ ศูนย์รังสิต</p>
+          </div>
+          <div class="subheader-text">
+            <p>เรื่อง&emsp;ขอจดทะเบียนล่าช้า</p>
+            <p>เรียน&emsp;คณบดีคณะวิทยาศาสตร์และเทคโนโลยี</p>
+          </div>
+          <br>
+          <p class="tab-text">ข้าพเจ้า <span class="highlight" id="student_name"></span>
+            <span class="tab-space"></span>เลขทะเบียน : <span class="highlight" id="student_id">&ensp;&emsp;</span>
+            <span class="tab-space"></span>ชั้นปีที่ : <span class="highlight" id="year"></span></p>
+          <p>สาขาวิชา : <span class="highlight" id="major"></span></p>
+          <br>
+          <p class="subheader-text">ข้อมูลติดต่อ : </p>
+          <p class="tab-text">
+            ที่อยู่ที่ติดต่อได้ : <span class="highlight" id="house_number"></span>
+            <span class="tab-space"></span>แขวง/ตำบล : <span class="highlight" id="sub_district"></span></p>
+          <p class="tab-text">เขต/อำเภอ : <span class="highlight" id="district"></span>
+            <span class="tab-space"></span>จังหวัด : <span class="highlight" id="province"></span>
+            <span class="tab-space"></span>รหัสไปรษณีย์ : <span class="highlight" id="postcode"></span></p>
+          <p class="tab-text">
+            โทรศัพท์ติดต่อกับนักศึกษา :
+            <span class="highlight" id="student_phone"></span>
+          </p>
+          <p class="tab-text">
+            โทรศัพ์ติดต่อผู้ปกครอง :
+            <span class="highlight" id="guardian_phone"></span>
+          </p>
+        </dd>
+        <br>
+        <p class="subheader-text">ประสงค์ที่จะยื่นคำร้อง : </p>
+
+        <dd>
+          <p class="tab-text">ประเภท : <span class="highlight" id="petition_type"></span>
+            <span class="tab-space"></span>ภาคการศึกษา : <span class="highlight" id="semester"></span></p>
+          <p class="tab-text">รหัสวิชา : <span class="highlight" id="subject_code"></span></p>
+          <p class="tab-text">ชื่อวิชา : <span class="highlight" id="subject_name"></span></p>
+          <p class="tab-text">กลุ่มเรียน : <span class="highlight" id="section"></span></p>
+          <br>
+          <p class="subheader-text">
+            เหตุผลในการยื่นคำร้อง :
+            <p class="tab-text">
               <span class="highlight" id="reason"></span>
             </p>
-          </dd>
-          <br />
-          <hr />
-          <br />
-          <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
-          <div class="file">
-            <table id="attachedFilesTable">
-              <thead>
-                <tr>
-                  <th>ชื่อไฟล์</th>
-                  <th>คำอธิบาย</th>
-                  <th>ดาวน์โหลด</th>
-                </tr>
-              </thead>
-              <tbody id="attachedFilesBody">
-                <!-- ไฟล์แนบจะถูกเพิ่มที่นี่โดย JavaScript -->
-              </tbody>
-            </table>
-          </div>
-          <div>
-            <h3>เพิ่มความคิดเห็น</h3>
-            <textarea
-              id="commentField"
-              placeholder="comment e"
-              style="
-                width: 50%;
-                height: 80px;
-                border-radius: 8px;
-                border: 1px solid #ccc;
-                padding: 10px;
-              "
-            ></textarea>
-          </div>
-          <br /><br />
+          </p>
+          <br>
+        </dd>
+        <div class="end-form">
+          <p>ขอแสดงความนับถือ</p>
+          <p><span class="highlight" id="student_nameb"></span>&nbsp;(นักศึกษา)</p>
+          <br>
+          <p class="time-submit">วันยื่นคำร้องผ่านระบบยื่นคำร้อง : <span id="submit_time"></span></p>
+        </div>
+      </div>
+
+
+
+
+
+
+        <h3 class="bold-text">เอกสารประกอบคำร้อง</h3>
+        <div class="file">
+          <table id="attachedFilesTable">
+            <thead>
+              <tr>
+                <th>ชื่อไฟล์ </th>
+                <th>คำอธิบาย</th>
+                <th>
+                  <!-- <div class="download-button">
+                    <span>ดาวน์โหลด</span>
+                    <img src="img/downloads.png" alt="download Icon" class="download" />
+                  </div> -->
+                  ดาวน์โหลด
+                </th>
+              </tr>
+            </thead>
+            <tbody id="attachedFilesBody">
+              <!-- ไฟล์แนบจะถูกเพิ่มที่นี่โดย JavaScript -->
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <!-- 
+          <h3>เพิ่มความคิดเห็น</h3>
+          <textarea
+            id="commentField"
+            placeholder="เพิ่มความเห็น"
+             class="addcomm"
+          ></textarea> -->
+        </div>
+        <br /><br />
+      </div>
+    </div>
+  </div>
+
+
+
         </div>
       </div>
     </div>
@@ -208,7 +242,7 @@
       const petitionId = urlParams.get("id");
 
       function updateStatus(newStatus) {
-        const comment = document.getElementById("commentField").value;
+        const comment = "";
         fetch(`/dean/update-petition/${petitionId}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -279,6 +313,8 @@
           document.getElementById("postcode").textContent = data.postcode || "";
           document.getElementById("student_phone").textContent =
             data.student_phone || "";
+            document.getElementById('semester').textContent = data.semester || '';                      //
+            document.getElementById('student_nameb').textContent = data.student_name || '';            //
           document.getElementById("guardian_phone").textContent =
             data.guardian_phone || "";
 
@@ -363,6 +399,54 @@
           location.reload();
         }
       }); */
+
+
+
+                 // ดึงข้อมูลจาก API session
+document.addEventListener("DOMContentLoaded", () => {
+  // ดึงข้อมูลจาก API session-user-info โดยส่ง cookies
+  fetch("/api/session-user-info", { credentials: "include" })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("User not logged in or session not found");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      // แสดง displayname_th ใน barname
+      const barnameElement = document.getElementById("barname");
+      if (barnameElement) {
+        barnameElement.textContent = data.user_name || "ไม่ทราบชื่อ";
+      }
+
+      // แสดง userType เป็นข้อความใน barid
+      const baridElement = document.getElementById("barid");
+      if (baridElement) {
+        switch (data.userType) {
+          case 1:
+            baridElement.textContent = "อาจารย์";
+            break;
+          case 2:
+            baridElement.textContent = "คณบดี";
+            break;
+          case 3:
+            baridElement.textContent = "เจ้าหน้าที่วิชาการ";
+            break;
+          default:
+            baridElement.textContent = "ไม่ทราบประเภทผู้ใช้";
+            break;
+        }
+      }
+    })
+    .catch((error) => {
+      console.error("Error fetching session user info:", error);
+
+      // กรณีเกิดข้อผิดพลาด ให้แสดงข้อความเริ่มต้น
+      document.getElementById("barname").textContent = "ไม่ทราบชื่อ";
+      document.getElementById("barid").textContent = "ไม่ทราบประเภทผู้ใช้";
+    });
+});
+
     </script>
   </body>
 </html>

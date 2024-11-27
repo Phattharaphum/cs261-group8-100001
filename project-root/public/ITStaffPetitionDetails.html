@@ -77,8 +77,8 @@
                       <div class="user-info">
                           <div class="asee"><img src="img/avt (2).svg" alt="Logout Icon"></div>
                           <div class="user-details">
-                              <p class="name" id="barname"></p>
-                              <p class="idd" id="barid"></p> 
+                              <p class="name" id="barname">เจ้าหน้าที่ดูแลระบบ</p>
+                              <p class="idd" id="barid">Admin</p> 
                           </div>
                       </div>
                   </div>
@@ -424,15 +424,7 @@
             })
             .catch(error => console.error('Error updating petition status:', error));
         }
-        document.addEventListener("DOMContentLoaded", () => {
-    fetch('/api/session-student-info')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('barname').textContent = data.student_name || 'ไม่ทราบชื่อ';
-            document.getElementById('barid').textContent = data.student_id || 'ไม่ทราบรหัส';
-        })
-        .catch(error => console.error('Error fetching student info:', error));
-});
+
 
 
 

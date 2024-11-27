@@ -49,7 +49,7 @@ function isTeacher(req, res, next) {
 }
 
 function isAcademicStaff(req, res, next) {
-  if (req.session.user && req.session.user.userType === "academicStaff") {
+  if (req.session.user && req.session.user.userType === 3) {
     return next();
   } else {
     handleUnauthorizedAccess(req, res);

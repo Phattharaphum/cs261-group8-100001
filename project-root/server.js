@@ -130,24 +130,19 @@ const StartServer = async () => {
         }`.trim();
 
         // Assign userType and redirectUrl based on role
-        let userType = "";
         let redirectUrl = "";
 
         switch (staff.role) {
           case 1:
-            userType = "teacher";
             redirectUrl = "/advisorPetitions";
             break;
           case 2:
-            userType = "dean";
             redirectUrl = "/deanPetitions";
             break;
           case 3:
-            userType = "staff";
             redirectUrl = "/academicStaffPetitions";
             break;
           default:
-            userType = "unknown";
             redirectUrl = "/unknownRole";
             break;
         }
@@ -159,7 +154,7 @@ const StartServer = async () => {
           displayname_th: displayNameTh,
           faculty: staff.faculty,
           department: staff.department,
-          userType: userType,
+          userType: staff.role,
         };
 
         res.json({
@@ -177,7 +172,7 @@ const StartServer = async () => {
         displayname_th: "สมบวน สวนสาร",
         faculty: "Faculty of Education",
         department: "Education Department",
-        userType: "1",
+        userType: 1,
       };
 
       // บันทึก session ก่อนส่ง response
@@ -1060,7 +1055,7 @@ app.get("/api/session-user-info", (req, res) => {
         const pendingResult = await pool.request().query(`
         SELECT *
         FROM petition
-        WHERE status IN (9, 14)
+        WHERE status IN (9)
       `);
 
         res.json(pendingResult.recordset); // ส่งคำร้องทั้งหมดที่ต้องตรวจสอบไปยัง client

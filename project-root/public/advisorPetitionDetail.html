@@ -451,8 +451,8 @@
       }); */
 
 
-           // ดึงข้อมูลจาก API session
-document.addEventListener("DOMContentLoaded", () => {
+     // ดึงข้อมูลจาก API session
+     document.addEventListener("DOMContentLoaded", () => {
   // ดึงข้อมูลจาก API session-user-info โดยส่ง cookies
   fetch("/api/session-user-info", { credentials: "include" })
     .then((response) => {
@@ -472,13 +472,13 @@ document.addEventListener("DOMContentLoaded", () => {
       const baridElement = document.getElementById("barid");
       if (baridElement) {
         switch (data.userType) {
-          case "1":
+          case 1:
             baridElement.textContent = "อาจารย์";
             break;
-          case "2":
+          case 2:
             baridElement.textContent = "คณบดี";
             break;
-          case "3":
+          case 3:
             baridElement.textContent = "เจ้าหน้าที่วิชาการ";
             break;
           default:
