@@ -197,6 +197,15 @@
                     <label class="boxlab" for="Lecturer-comment">ความคิดเห็นอาจารย์ผู้สอน:</label><br>
                     <textarea class="combox" id="Lecturer-comment" readonly></textarea>
                   </div>
+                  <div id="comment-box-wrapper" style="display: none;">
+                    <label class="boxlab" for="comment-box">ความคิดเห็นสุดท้าย:</label><br>
+                    <textarea
+                      id="comment-box"
+                      class="combox"
+                      placeholder="กรอกคำแนะนำหรือความคิดเห็น..."
+                      rows="4"
+                    ></textarea>
+                  </div>
                 </div>
               </div> 
 
@@ -361,7 +370,7 @@
           if (data.status === 13 ) {
           //  document.getElementById("reject-button").style.display = "flex";
             document.getElementById("approve-button").style.display = "flex";
-            document.getElementById("comment-box").style.display = "flex";
+            document.getElementById("comment-box-wrapper").style.display = "block";
           }
 
           // แสดง review_time เฉพาะเมื่อสถานะเป็น 15
