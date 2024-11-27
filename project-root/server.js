@@ -314,7 +314,11 @@ const StartServer = async () => {
     console.log("Incoming Request:", { id, status, comment });
 
     // Validate input data
-    if (!id || status === undefined || comment === undefined) {
+    if (
+      !id ||
+      status === undefined ||
+      (status !== 20 && comment === undefined)
+    ) {
       return res
         .status(400)
         .json({ success: false, message: "Missing required fields" });
