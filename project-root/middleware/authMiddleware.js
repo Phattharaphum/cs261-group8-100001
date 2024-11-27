@@ -1,5 +1,6 @@
 // Middleware to clear session and redirect to login
 function handleUnauthorizedAccess(req, res) {
+  /*
   req.session.destroy((err) => {
     if (err) {
       console.error("Failed to destroy session:", err);
@@ -17,7 +18,7 @@ function handleUnauthorizedAccess(req, res) {
       // Direct browser navigation - redirect directly
       res.redirect("/index.html");
     }
-  });
+  });*/
 }
 
 // Middleware to check if the user is authenticated

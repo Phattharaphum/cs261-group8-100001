@@ -38,6 +38,20 @@ const config = {
   },
 };
 
+app.use(
+  session({
+    secret: "your_secret_key",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: false, // ตั้งเป็น true ถ้าใช้งานผ่าน HTTPS
+      httpOnly: true,
+      sameSite: 'lax', // หรือ 'none' ถ้าใช้งานข้ามโดเมนและ HTTPS
+    },
+  })
+);
+
+
 // ฟังก์ชันสำหรับรอการเชื่อมต่อกับฐานข้อมูล SQL Server
 const waitForDatabase = async (maxRetries = 10, retryDelay = 5000) => {
   console.log("Waiting for SQL Server to be ready..."); // แสดงข้อความรอการเชื่อมต่อ
@@ -63,18 +77,6 @@ const StartServer = async () => {
   app.use(express.json());
   app.use(express.static("public"));
 
-  // ใช้งาน session
-  app.use(
-    session({
-      secret: "your_secret_key", // คีย์สำหรับเข้ารหัส session
-      resave: false,
-      saveUninitialized: true,
-      cookie: {
-        secure: false, // ตั้งเป็น true ถ้าใช้งานผ่าน HTTPS
-        httpOnly: true, // ป้องกันการเข้าถึงจาก client-side JavaScript
-      },
-    })
-  );
 
   // ใช้งาน logger และ error handler
   app.use(loggerMiddleware);
@@ -99,23 +101,33 @@ const StartServer = async () => {
 
     try {
       // ตรวจสอบ username และ password สำหรับ userType: 'teacher'
-      if (username === "0001" && password === "test") {
-        req.session.user = {
-          username: "0001",
-          email: "teacher@example.com", // ตัวอย่างข้อมูล
-          displayname_en: "Teacher",
-          displayname_th: "ครู",
-          faculty: "Faculty of Education",
-          department: "Education Department",
-          userType: "teacher",
-        };
+    if (username === "0001" && password === "test") {
+      req.session.user = {
+        username: "0001",
+        email: "teacher@example.com", // ตัวอย่างข้อมูล
+        displayname_en: "Teacher",
+        displayname_th: "สมบวน สวนสาร",
+        faculty: "Faculty of Education",
+        department: "Education Department",
+        userType: "1",
+      };
 
-        // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า hometeacher
-        res.json({
-          success: true,
-          redirectUrl: "/advisorPetitions",
-        });
-      } else if (username === "0002" && password === "test") {
+      // บันทึก session ก่อนส่ง response
+      req.session.save((err) => {
+        if (err) {
+          console.error("Failed to save session:", err);
+          res
+            .status(500)
+            .json({ success: false, message: "Failed to save session" });
+        } else {
+          // ส่ง response หลังจากบันทึก session สำเร็จ
+          res.json({
+            success: true,
+            redirectUrl: "/advisorPetitions",
+          });
+        }
+      });
+    } else if (username === "0002" && password === "test") {
         req.session.user = {
           username: username,
           email: "academicStaff@example.com", // ตัวอย่างข้อมูล
@@ -358,15 +370,34 @@ const StartServer = async () => {
 
   // Endpoint สำหรับดึงข้อมูล student_name และ student_id จากเซสชัน
   app.get("/api/session-student-info", (req, res) => {
-    if (req.session.user) {
+    if (req.session && req.session.user) {
       res.json({
-        student_name: req.session.user.displayname_th,
-        student_id: req.session.user.username,
+        student_name: req.session.user.displayname_th || "ไม่ทราบชื่อ",
+        student_id: req.session.user.username || "ไม่ทราบรหัส",
+        userType: req.session.user.userType || "unknown",
       });
     } else {
-      res.status(401).json({ error: "User not logged in" });
+      res.status(401).json({ error: "User not logged in or session not found" });
     }
   });
+
+
+  // Endpoint ใหม่สำหรับดึงข้อมูล user_name และ user_id จากเซสชัน โดยไม่ใช้ middleware
+app.get("/api/session-user-info", (req, res) => {
+  // เข้าถึงข้อมูล session โดยตรง
+  if (req.session && req.session.user) {
+    res.json({
+      user_name: req.session.user.displayname_th || "ไม่ทราบชื่อ",
+      user_id: req.session.user.username || "ไม่ทราบรหัส",
+      userType: req.session.user.userType || "unknown",
+    });
+  } else {
+    res.status(401).json({ error: "User not logged in or session not found" });
+  }
+});
+
+
+  
 
   // Route สำหรับ submit คำร้อง
   // การตั้งค่า multer สำหรับอัปโหลดไฟล์
