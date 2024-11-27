@@ -1082,19 +1082,161 @@ const insertMockData = async () => {
     },
   ];
   const advisorInfoData = [
-    { id: 1, student_id: "6609611112", advisor_id: "U001" },
-    { id: 2, student_id: "6609611113", advisor_id: "U0001" },
-    { id: 3, student_id: "6609611113", advisor_id: "U001" },
-    { id: 4, student_id: "6609667890", advisor_id: "U001" },
-    { id: 5, student_id: "6609656789", advisor_id: "U001" },
-    { id: 6, student_id: "6609678901", advisor_id: "U001" },
-    { id: 7, student_id: "6609689012", advisor_id: "U001" },
-    { id: 8, student_id: "6609687654", advisor_id: "U001" },
-    { id: 9, student_id: "6609684321", advisor_id: "U001" },
-    { id: 10, student_id: "6609681298", advisor_id: "U001" },
-    { id: 11, student_id: "6609687654", advisor_id: "U001" },
-    { id: 12, student_id: "6609685432", advisor_id: "U001" },
-    { id: 13, student_id: "6609689123", advisor_id: "U001" },
+    {
+      id: 1,
+      student_id: "6609612345",
+      advisor_id: "0001",
+    },
+    {
+      id: 2,
+      student_id: "6609623456",
+      advisor_id: "0001",
+    },
+    {
+      id: 3,
+      student_id: "6609634567",
+      advisor_id: "0001",
+    },
+    {
+      id: 4,
+      student_id: "6609645678",
+      advisor_id: "0001",
+    },
+    {
+      id: 5,
+      student_id: "6609656789",
+      advisor_id: "0001",
+    },
+    {
+      id: 6,
+      student_id: "6609667890",
+      advisor_id: "0001",
+    },
+    {
+      id: 7,
+      student_id: "6609678901",
+      advisor_id: "0001",
+    },
+    {
+      id: 8,
+      student_id: "6609689012",
+      advisor_id: "0001",
+    },
+    {
+      id: 9,
+      student_id: "6609687654",
+      advisor_id: "0001",
+    },
+    {
+      id: 10,
+      student_id: "6609684321",
+      advisor_id: "0001",
+    },
+    {
+      id: 11,
+      student_id: "6609681298",
+      advisor_id: "0001",
+    },
+    {
+      id: 12,
+      student_id: "6609687654",
+      advisor_id: "0001",
+    },
+    {
+      id: 13,
+      student_id: "6609685432",
+      advisor_id: "0001",
+    },
+    {
+      id: 14,
+      student_id: "6609689123",
+      advisor_id: "0001",
+    },
+    {
+      id: 15,
+      student_id: "6609681276",
+      advisor_id: "0001",
+    },
+    {
+      id: 16,
+      student_id: "6609683421",
+      advisor_id: "0001",
+    },
+    {
+      id: 17,
+      student_id: "6609689876",
+      advisor_id: "0001",
+    },
+    {
+      id: 18,
+      student_id: "6609687654",
+      advisor_id: "0001",
+    },
+    {
+      id: 19,
+      student_id: "6609685432",
+      advisor_id: "0001",
+    },
+    {
+      id: 20,
+      student_id: "6609678901",
+      advisor_id: "0001",
+    },
+    {
+      id: 21,
+      student_id: "6609691234",
+      advisor_id: "0001",
+    },
+    {
+      id: 22,
+      student_id: "6609694567",
+      advisor_id: "0001",
+    },
+    {
+      id: 23,
+      student_id: "6609697890",
+      advisor_id: "0001",
+    },
+    {
+      id: 24,
+      student_id: "6609695432",
+      advisor_id: "0001",
+    },
+    {
+      id: 25,
+      student_id: "6609694321",
+      advisor_id: "0001",
+    },
+    {
+      id: 26,
+      student_id: "6609698765",
+      advisor_id: "0001",
+    },
+    {
+      id: 27,
+      student_id: "6609694322",
+      advisor_id: "0001",
+    },
+    {
+      id: 28,
+      student_id: "6609699876",
+      advisor_id: "0001",
+    },
+    {
+      id: 29,
+      student_id: "6609695432",
+      advisor_id: "0001",
+    },
+    {
+      id: 30,
+      student_id: "6609698765",
+      advisor_id: "0001",
+    },
+    {
+      id: 31,
+      student_id: "6609611790",
+      advisor_id: "0001",
+    },
   ];
 
   let pool;
@@ -1108,9 +1250,11 @@ const insertMockData = async () => {
       DELETE FROM petition;
       DELETE FROM courses;
       DELETE FROM faculty_staff;
+      DELETE FROM advisor_info;
       DBCC CHECKIDENT ('petition', RESEED, 0);
       DBCC CHECKIDENT ('courses', RESEED, 0);
       DBCC CHECKIDENT ('faculty_staff', RESEED, 0);
+      DBCC CHECKIDENT ('advisor_info', RESEED, 0);
     `);
     console.log("Old data cleared and identity columns reset.");
 
@@ -1129,10 +1273,10 @@ const insertMockData = async () => {
         office,
         role
       ) VALUES 
-        (1, 'U001', 'Dr.', 'Mr.', 'John', 'Doe', 1, 'Room 101', 1),
-        (2, 'U002', 'Prof.', 'Ms.', 'Jane', 'Smith', 1, 'Room 202', 1),
-        (3, 'U003', '', 'Mr.', 'Mike', 'Johnson', 1, 'Room 303', 2),
-        (4, 'U004', 'Prof.','Dr.','Somsak','Charoen', 1, 'Dean Office',2);
+        (1,'0001', 'Dr.', 'Mr.', 'John', 'Doe', 1, 'Room 101', 1),
+        (2, '0002', 'Prof.', 'Ms.', 'Jane', 'Smith', 1, 'Room 202', 1),
+        (3, '0003', '', 'Mr.', 'Mike', 'Johnson', 1, 'Room 303', 2),
+        (4, '0004', 'Prof.','Dr.','Somsak','Charoen', 1, 'Dean Office',2);
       SET IDENTITY_INSERT faculty_staff OFF;
     `);
     console.log("Inserted mock data into faculty_staff.");
@@ -1241,9 +1385,10 @@ const insertMockData = async () => {
       advisorRequest.input("advisor_id", sql.NVarChar, advisorInfo.advisor_id);
 
       await advisorRequest.query(`
-        UPDATE advisor_info
-        SET student_id = @student_id, advisor_id = @advisor_id
-        WHERE id = @id;
+        SET IDENTITY_INSERT advisor_info ON;
+        INSERT INTO advisor_info (id, student_id, advisor_id)
+        VALUES (@id, @student_id, @advisor_id);
+        SET IDENTITY_INSERT advisor_info OFF;
       `);
     }
 

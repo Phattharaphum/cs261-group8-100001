@@ -101,7 +101,7 @@ const StartServer = async () => {
       // ตรวจสอบ username และ password สำหรับ userType: 'teacher'
       if (username === "0001" && password === "test") {
         req.session.user = {
-          username: "U001",
+          username: "0001",
           email: "teacher@example.com", // ตัวอย่างข้อมูล
           displayname_en: "Teacher",
           displayname_th: "ครู",
@@ -183,8 +183,8 @@ const StartServer = async () => {
         req.session.user = {
           username: "6609611790",
           email: "it@example.com",
-          displayname_en: "studeent",
-          displayname_th: "นักเรียน",
+          displayname_en: "chirayu charoenyos",
+          displayname_th: "จิรายุ เจริญยศ",
           faculty: "Faculty of Education",
           department: "Education Department",
           userType: "student",
@@ -409,11 +409,12 @@ const StartServer = async () => {
       } = req.body;
       const files = req.files;
 
+      let transaction;
       try {
         const pool = await sql.connect(config);
 
         // Start a transaction to ensure data integrity
-        const transaction = new sql.Transaction(pool);
+        transaction = new sql.Transaction(pool);
 
         await transaction.begin();
 
@@ -437,7 +438,7 @@ const StartServer = async () => {
         petitionRequest.input("subject_name", sql.NVarChar, subject_name);
         petitionRequest.input("section", sql.NVarChar, section);
         petitionRequest.input("status", sql.TinyInt, status);
-        petitionRequest.input("reason", sql.NVarChar, reason || ""); // เพิ่ม reason
+        petitionRequest.input("reason", sql.NVarChar, reason || ""); // Default to an empty string if reason is not provided
 
         const petitionResult = await petitionRequest.query(`
             INSERT INTO petition (
@@ -463,20 +464,15 @@ const StartServer = async () => {
           fileRequest1.input("file_type", sql.NVarChar, file1.mimetype);
           fileRequest1.input("file_name", sql.NVarChar, file1.originalname);
           fileRequest1.input(
-            "description",
+            "file_description",
             sql.NVarChar,
-            req.body.fileDescription1 || ""
-          );
-          fileRequest1.input(
-            "description",
-            sql.NVarChar,
-            req.body.description || ""
+            req.body.fileDescription1 || "" // Unique parameter name
           );
           fileRequest1.input("file_path", sql.NVarChar, file1.path);
 
           await fileRequest1.query(`
                 INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
-                VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
+                VALUES (@petition_id, @file_type, @file_name, @file_description, @file_path)
             `);
         }
 
@@ -487,20 +483,15 @@ const StartServer = async () => {
           fileRequest2.input("file_type", sql.NVarChar, file2.mimetype);
           fileRequest2.input("file_name", sql.NVarChar, file2.originalname);
           fileRequest2.input(
-            "description",
+            "file_description",
             sql.NVarChar,
-            req.body.fileDescription2 || ""
-          );
-          fileRequest2.input(
-            "description",
-            sql.NVarChar,
-            req.body.description02 || ""
+            req.body.fileDescription2 || "" // Unique parameter name
           );
           fileRequest2.input("file_path", sql.NVarChar, file2.path);
 
           await fileRequest2.query(`
                 INSERT INTO localdoc (petition_id, file_type, file_name, description, file_path)
-                VALUES (@petition_id, @file_type, @file_name, @description, @file_path)
+                VALUES (@petition_id, @file_type, @file_name, @file_description, @file_path)
             `);
         }
 
@@ -1297,7 +1288,7 @@ const StartServer = async () => {
   // ดึงข้อมูลคำร้องในรายวิชาที่ยังไม่ได้ตรวจสอบและตรวจสอบแล้ว
   app.get("/teacher/pending-petitions", async (req, res) => {
     try {
-      const teacherId = "600009"; // e.g., 'U001' req.session.user.username
+      const teacherId = req.session.user.username; // e.g., 'U001' req.session.user.username
       const pool = await sql.connect(config);
 
       // Pending petitions with status = 6
@@ -1335,9 +1326,6 @@ const StartServer = async () => {
               AND fs.university_id = @teacherId
               AND s.section = p.section
           `);
-
-      console.log("Pending petitions:", pendingResult.recordset);
-      console.log("Reviewed petitions:", reviewedResult.recordset);
 
       res.json({
         pending: pendingResult.recordset,
@@ -2249,29 +2237,48 @@ app.post("/api/courses/:course_id/sections", async (req, res) => {
 //ใช้ดึงรายวิชาที่มี sections ที่เกี่ยวข้องกับอาจารย์คนนั้น
 app.get("/api/courses/:course_id/sections", async (req, res) => {
   const { course_id } = req.params;
+
   try {
     const pool = await sql.connect(config);
-    const result = await pool
-      .request()
-      .input("course_id", sql.Int, course_id)
-      .query("SELECT sections FROM courses WHERE course_id = @course_id");
+
+    // Fetch sections for the course
+    const result = await pool.request().input("course_id", sql.Int, course_id)
+      .query(`
+        SELECT sections 
+        FROM courses 
+        WHERE course_id = @course_id
+      `);
 
     if (result.recordset.length === 0) {
       return res.status(404).json({ error: "Course not found" });
     }
 
-    // Parse sections data from database
-    const course = result.recordset[0];
-    let sections = JSON.parse(course.sections || "[]"); // Parse JSON safely
+    const sections = JSON.parse(result.recordset[0].sections);
 
-    // Ensure sections is always an array
-    if (!Array.isArray(sections)) {
-      sections = [sections];
-    }
+    // Fetch faculty staff details for each section's staff_id
+    const staffIds = sections.map((section) => section.staff_id);
+    const facultyResult = await pool.request().query(`
+        SELECT staff_id, ISNULL(academic_title, personal_title) AS title, first_name, last_name
+        FROM faculty_staff
+        WHERE staff_id IN (${staffIds.join(",")})
+      `);
 
-    return res.json(sections); // Respond with an array
-  } catch (err) {
-    console.error("Error fetching sections:", err);
+    const facultyMap = {};
+    facultyResult.recordset.forEach((staff) => {
+      facultyMap[staff.staff_id] = `${staff.title || ""} ${staff.first_name} ${
+        staff.last_name
+      }`.trim();
+    });
+
+    // Enrich sections with instructor_name
+    const enrichedSections = sections.map((section) => ({
+      ...section,
+      instructor_name: facultyMap[section.staff_id] || "Unknown",
+    }));
+
+    res.json(enrichedSections);
+  } catch (error) {
+    console.error("Error fetching sections:", error);
     res.status(500).json({ error: "Failed to fetch sections" });
   }
 });
@@ -2650,7 +2657,6 @@ app.get("/:course_id/sections", async (req, res) => {
     }
 
     const course = result.recordset[0];
-    console.log(JSON.parse(course.sections));
     let sections = [];
     try {
       sections = JSON.parse(course.sections);
