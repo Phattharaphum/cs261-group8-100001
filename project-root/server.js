@@ -132,10 +132,10 @@ const StartServer = async () => {
           username: username,
           email: "academicStaff@example.com", // ตัวอย่างข้อมูล
           displayname_en: "academicStaff",
-          displayname_th: "เจ้าหน้าที่ฝ่ายวิชาการ",
+          displayname_th: "สมศัก พักจร้า",
           faculty: "Faculty of Education",
           department: "Education Department",
-          userType: "academicStaff",
+          userType: "3",
         };
 
         // ส่ง response กลับไปยัง client โดยให้ redirect ไปที่หน้า homeacademicStaff
