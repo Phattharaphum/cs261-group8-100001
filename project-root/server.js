@@ -100,6 +100,74 @@ const StartServer = async () => {
     const apiKey = process.env.API_KEY;
 
     try {
+      // Check in faculty_staff table using university_id as the username
+      const pool = await sql.connect(config);
+      console.log(username, password);
+      const staffResult = await pool
+        .request()
+        .input("university_id", sql.VarChar, username)
+        .input("password", sql.VarChar, password).query(`
+  SELECT 
+    staff_id, 
+    university_id, 
+    ISNULL(academic_title, personal_title) AS title, 
+    first_name, 
+    last_name, 
+    email, 
+    branch AS department, 
+    office AS faculty, 
+    role,
+    password 
+  FROM faculty_staff 
+  WHERE university_id = @university_id AND password = @password
+`);
+      console.log(staffResult.recordset);
+      if (staffResult.recordset.length > 0) {
+        const staff = staffResult.recordset[0];
+        const displayNameEn = `${staff.first_name} ${staff.last_name}`;
+        const displayNameTh = `${staff.title || ""} ${staff.first_name} ${
+          staff.last_name
+        }`.trim();
+
+        // Assign userType and redirectUrl based on role
+        let userType = "";
+        let redirectUrl = "";
+
+        switch (staff.role) {
+          case 1:
+            userType = "teacher";
+            redirectUrl = "/advisorPetitions";
+            break;
+          case 2:
+            userType = "dean";
+            redirectUrl = "/deanPetitions";
+            break;
+          case 3:
+            userType = "staff";
+            redirectUrl = "/academicStaffPetitions";
+            break;
+          default:
+            userType = "unknown";
+            redirectUrl = "/unknownRole";
+            break;
+        }
+
+        req.session.user = {
+          username: staff.university_id,
+          email: staff.email || `${staff.university_id}@example.com`, // Fallback email
+          displayname_en: displayNameEn,
+          displayname_th: displayNameTh,
+          faculty: staff.faculty,
+          department: staff.department,
+          userType: userType,
+        };
+
+        res.json({
+          success: true,
+          redirectUrl: redirectUrl,
+        });
+        return;
+      }
       // ตรวจสอบ username และ password สำหรับ userType: 'teacher'
     if (username === "0001" && password === "test") {
       req.session.user = {
@@ -2030,7 +2098,23 @@ app.post("/api/faculty-staff", async (req, res) => {
     profile_link,
     status,
     role,
+    password, // Added password
   } = req.body;
+
+  // Validate required fields
+  if (
+    !university_id ||
+    !personal_title ||
+    !first_name ||
+    !last_name ||
+    !branch ||
+    !email ||
+    !phone ||
+    !role ||
+    !password // Ensure password is provided
+  ) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
 
   try {
     const pool = await sql.connect(config);
@@ -2047,10 +2131,12 @@ app.post("/api/faculty-staff", async (req, res) => {
       .input("office", sql.NVarChar, office)
       .input("profile_link", sql.NVarChar, profile_link)
       .input("status", sql.Int, status)
-      .input("role", sql.Int, role).query(`
+      .input("role", sql.Int, role)
+      .input("password", sql.NVarChar, password) // Add password input
+      .query(`
               INSERT INTO faculty_staff 
-              (university_id, academic_title, personal_title, first_name, last_name, branch, email, phone, office, profile_link, status, role)
-              VALUES (@university_id, @academic_title, @personal_title, @first_name, @last_name, @branch, @email, @phone, @office, @profile_link, @status, @role)
+              (university_id, academic_title, personal_title, first_name, last_name, branch, email, phone, office, profile_link, status, role, password)
+              VALUES (@university_id, @academic_title, @personal_title, @first_name, @last_name, @branch, @email, @phone, @office, @profile_link, @status, @role, @password)
           `);
     res.json({ success: true });
   } catch (err) {
@@ -2098,13 +2184,33 @@ app.post("/api/advisor-students", async (req, res) => {
 
   try {
     const pool = await sql.connect(config);
+
+    // Retrieve the staff_id and university_id from faculty_staff using advisor_id
+    const advisorData = await pool
+      .request()
+      .input("advisor_id", sql.Int, advisor_id).query(`
+        SELECT university_id
+        FROM faculty_staff
+        WHERE staff_id = @advisor_id
+      `);
+
+    if (advisorData.recordset.length === 0) {
+      return res
+        .status(404)
+        .json({ error: "Advisor not found with the given staff_id" });
+    }
+
+    const university_id = advisorData.recordset[0].university_id;
+
+    // Insert university_id as advisor_id into advisor_info
     await pool
       .request()
-      .input("advisor_id", sql.Int, advisor_id)
+      .input("advisor_id", sql.NVarChar, university_id)
       .input("student_id", sql.NVarChar, student_id).query(`
-              INSERT INTO advisor_info (advisor_id, student_id)
-              VALUES (@advisor_id, @student_id)
-          `);
+        INSERT INTO advisor_info (advisor_id, student_id)
+        VALUES (@advisor_id, @student_id)
+      `);
+
     res.json({ success: true });
   } catch (err) {
     console.error("Error adding advisor student:", err);
@@ -2475,7 +2581,6 @@ app.get("/api/administrative-staff/:id", async (req, res) => {
   }
 });
 
-// เพิ่มบุคลากรใหม่
 app.post("/api/administrative-staff", async (req, res) => {
   const {
     university_id,
@@ -2490,9 +2595,13 @@ app.post("/api/administrative-staff", async (req, res) => {
     email,
     phone,
     profile_link,
+    password,
   } = req.body;
 
-  // ตรวจสอบข้อมูลที่จำเป็น
+  // Set default password if not provided
+  const finalPassword = password || "test";
+
+  // Validate required fields
   if (
     !university_id ||
     !personal_title ||
@@ -2521,17 +2630,26 @@ app.post("/api/administrative-staff", async (req, res) => {
       .input("branch", sql.NVarChar, branch)
       .input("email", sql.NVarChar, email)
       .input("phone", sql.NVarChar, phone)
-      .input("profile_link", sql.NVarChar, profile_link).query(`
-              INSERT INTO faculty_staff (
-                  university_id, academic_title, personal_title, first_name, last_name, office, status, role, branch, email, phone, profile_link
-              )
-              VALUES (
-                  @university_id, @academic_title, @personal_title, @first_name, @last_name, @office, @status, @role, @branch, @email, @phone, @profile_link
-              )
-          `);
+      .input("profile_link", sql.NVarChar, profile_link)
+      .input("password", sql.NVarChar, finalPassword) // Use finalPassword
+      .query(`
+        INSERT INTO faculty_staff (
+          university_id, academic_title, personal_title, first_name, last_name, office, status, role, branch, email, phone, profile_link, password
+        )
+        VALUES (
+          @university_id, @academic_title, @personal_title, @first_name, @last_name, @office, @status, @role, @branch, @email, @phone, @profile_link, @password
+        )
+      `);
+
     res.json({ success: true });
   } catch (err) {
     console.error("Error adding new staff member:", err);
+
+    // Check if the error is due to a duplicate username
+    if (err.code === "EREQUEST") {
+      return res.status(400).json({ error: "Username already exists" });
+    }
+
     res.status(500).json({ error: "Failed to add new staff member" });
   }
 });

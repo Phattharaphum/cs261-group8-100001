@@ -1271,15 +1271,20 @@ const insertMockData = async () => {
         last_name,
         status,
         office,
-        role
+        role,
+        password
       ) VALUES 
-        (1,'0001', 'Dr.', 'Mr.', 'John', 'Doe', 1, 'Room 101', 1),
-        (2, '0002', 'Prof.', 'Ms.', 'Jane', 'Smith', 1, 'Room 202', 1),
-        (3, '0003', '', 'Mr.', 'Mike', 'Johnson', 1, 'Room 303', 2),
-        (4, '0004', 'Prof.','Dr.','Somsak','Charoen', 1, 'Dean Office',2);
+        (1, '00011', 'ดร.', 'นาย', 'John', 'Doe', 1, 'Room 101', 1, 'test'),
+        (2, '00022', 'ศ.', 'นางสาว', 'Jane', 'Smith', 1, 'Room 202', 1, 'test'),
+        (3, '00033', '', 'นาย', 'Mike', 'Johnson', 1, 'Room 303', 2, 'test'),
+        (4, '00044', 'ศ.', '', 'Somsak', 'Charoen', 1, 'Dean Office', 2, 'test'),
+        (5, '00055', '', 'นาย', 'Alan', 'Turing', 1, 'Room 404', 3, 'test'),
+        (6, '00066', 'ศ.', 'นาง', 'Marie', 'Curie', 1, 'Room 505', 3, 'test');
       SET IDENTITY_INSERT faculty_staff OFF;
     `);
-    console.log("Inserted mock data into faculty_staff.");
+    console.log(
+      "Inserted mock data into faculty_staff with passwords set to 'test'."
+    );
 
     // Insert data into courses
     console.log("Inserting data into courses...");
