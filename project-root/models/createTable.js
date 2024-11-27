@@ -102,10 +102,10 @@ BEGIN
         branch NVARCHAR(100), -- สาขา
         email NVARCHAR(100), -- อีเมล
         phone NVARCHAR(20), -- เบอร์
-        profile_link NVARCHAR(MAX) -- ลิ้งค์รูป
+        profile_link NVARCHAR(MAX), -- ลิ้งค์รูป
+        password NVARCHAR(255) -- รหัสผ่าน
     );
 END;
-
 `;
 
 const createSciITStaffTable = `
