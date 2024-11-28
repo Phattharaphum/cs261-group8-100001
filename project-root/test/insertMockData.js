@@ -1274,12 +1274,12 @@ const insertMockData = async () => {
         role,
         password
       ) VALUES 
-        (1, '00011', 'ดร.', 'นาย', 'John', 'Doe', 1, 'Room 101', 1, 'test'),
-        (2, '00022', 'ศ.', 'นางสาว', 'Jane', 'Smith', 1, 'Room 202', 1, 'test'),
-        (3, '00033', '', 'นาย', 'Mike', 'Johnson', 1, 'Room 303', 2, 'test'),
-        (4, '00044', 'ศ.', '', 'Somsak', 'Charoen', 1, 'Dean Office', 2, 'test'),
-        (5, '00055', '', 'นาย', 'Alan', 'Turing', 1, 'Room 404', 3, 'test'),
-        (6, '00066', 'ศ.', 'นาง', 'Marie', 'Curie', 1, 'Room 505', 3, 'test');
+        (1, '00011', '', '', 'John', 'Doe', 1, 'Room 101', 1, 'test'),
+        (2, '00022', '', '', 'Jane', 'Smith', 1, 'Room 202', 1, 'test'),
+        (3, '00033', '', '', 'Mike', 'Johnson', 1, 'Room 303', 2, 'test'),
+        (4, '00044', '', '', 'Somsak', 'Charoen', 1, 'Dean Office', 2, 'test'),
+        (5, '00055', '', '', 'Alan', 'Turing', 1, 'Room 404', 3, 'test'),
+        (6, '00066', '', '', 'Marie', 'Curie', 1, 'Room 505', 3, 'test');
       SET IDENTITY_INSERT faculty_staff OFF;
     `);
     console.log(
@@ -1298,8 +1298,6 @@ const insertMockData = async () => {
         curriculum_year
       ) VALUES 
         (1, 'CS101', 'Introduction to Computer Science', '[{"staff_id": 1, "section": "001"}, {"staff_id": 2, "section": "002"}, {"staff_id": 3, "section": "003"}]', 2024),
-        (2, 'MATH101', 'Calculus I', '[{"staff_id": 4, "section": "001"}, {"staff_id": 5, "section": "002"}, {"staff_id": 6, "section": "003"}]', 2024),
-        (3, 'PHYS101', 'Mechanics', '[{"staff_id": 7, "section": "001"}, {"staff_id": 8, "section": "002"}, {"staff_id": 9, "section": "003"}]', 2024);
       SET IDENTITY_INSERT courses OFF;
     `);
     console.log("Inserted mock data into courses.");

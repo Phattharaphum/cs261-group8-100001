@@ -2187,20 +2187,48 @@ app.post("/api/advisor-students", async (req, res) => {
   }
 });
 
-app.get("/api/advisor-students/:advisor_id", async (req, res) => {
-  const { advisor_id } = req.params;
+app.get("/api/advisor-students/:staff_id", async (req, res) => {
+  const { staff_id } = req.params;
+  console.log("Staff ID received:", staff_id);
 
   try {
     const pool = await sql.connect(config);
-    const result = await pool.request().input("advisor_id", sql.Int, advisor_id)
-      .query(`
-              SELECT id, student_id
-              FROM advisor_info
-              WHERE advisor_id = @advisor_id
-          `);
-    res.json(result.recordset);
+
+    // Step 1: Find the university_id from faculty_staff using staff_id
+    const universityResult = await pool
+      .request()
+      .input("staff_id", sql.Int, staff_id).query(`
+        SELECT university_id
+        FROM faculty_staff
+        WHERE staff_id = @staff_id
+      `);
+
+    // Ensure a valid university_id is returned
+    if (universityResult.recordset.length === 0) {
+      console.warn("No university_id found for staff_id:", staff_id);
+      return res.status(404).json({ error: "Faculty staff not found" });
+    }
+
+    const university_id = universityResult.recordset[0].university_id;
+    console.log("University ID found:", university_id);
+
+    // Step 2: Use the university_id to find advisor-student relationships
+    const advisorResult = await pool
+      .request()
+      .input("advisor_id", sql.NVarChar, university_id).query(`
+        SELECT id, student_id
+        FROM advisor_info
+        WHERE advisor_id = @advisor_id
+      `);
+
+    console.log(
+      "Advisor-Student relationships found:",
+      advisorResult.recordset
+    );
+
+    res.json(advisorResult.recordset);
   } catch (err) {
-    console.error("Error fetching advisor students:", err);
+    console.error("Error fetching advisor students:", err.message);
     res.status(500).json({ error: "Failed to fetch advisor students" });
   }
 });
