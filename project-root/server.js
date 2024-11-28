@@ -100,7 +100,7 @@ const StartServer = async () => {
     try {
       // Check in faculty_staff table using university_id as the username
       const pool = await sql.connect(config);
-      console.log(username, password);
+
       const staffResult = await pool
         .request()
         .input("university_id", sql.VarChar, username)
@@ -119,7 +119,7 @@ const StartServer = async () => {
   FROM faculty_staff 
   WHERE university_id = @university_id AND password = @password
 `);
-      console.log(staffResult.recordset);
+
       if (staffResult.recordset.length > 0) {
         const staff = staffResult.recordset[0];
         const displayNameEn = `${staff.first_name} ${staff.last_name}`;
@@ -377,9 +377,6 @@ const StartServer = async () => {
   app.post("/advisor/update-petition/:id", async (req, res) => {
     const { id } = req.params;
     const { status, comment } = req.body;
-
-    // Log incoming data for debugging
-    console.log("Incoming Request:", { id, status, comment });
 
     // Validate input data
     if (
@@ -2189,7 +2186,6 @@ app.post("/api/advisor-students", async (req, res) => {
 
 app.get("/api/advisor-students/:staff_id", async (req, res) => {
   const { staff_id } = req.params;
-  console.log("Staff ID received:", staff_id);
 
   try {
     const pool = await sql.connect(config);
@@ -2210,7 +2206,6 @@ app.get("/api/advisor-students/:staff_id", async (req, res) => {
     }
 
     const university_id = universityResult.recordset[0].university_id;
-    console.log("University ID found:", university_id);
 
     // Step 2: Use the university_id to find advisor-student relationships
     const advisorResult = await pool
@@ -2220,11 +2215,6 @@ app.get("/api/advisor-students/:staff_id", async (req, res) => {
         FROM advisor_info
         WHERE advisor_id = @advisor_id
       `);
-
-    console.log(
-      "Advisor-Student relationships found:",
-      advisorResult.recordset
-    );
 
     res.json(advisorResult.recordset);
   } catch (err) {
