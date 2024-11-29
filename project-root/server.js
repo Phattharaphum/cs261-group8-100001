@@ -1283,8 +1283,6 @@ app.get("/api/session-user-info", (req, res) => {
   // ดึงข้อมูลคำร้องที่ยังไม่ได้ตรวจสอบและตรวจสอบแล้ว
   app.get(
     "/advisor/pending-petitions",
-    isAuthenticated,
-    isTeacher,
     async (req, res) => {
       try {
         const advisorId = req.session.user.username;
@@ -2213,39 +2211,86 @@ app.post("/api/advisor-students", async (req, res) => {
   }
 });
 
-app.get("/api/advisor-students/:advisor_id", async (req, res) => {
-  const { advisor_id } = req.params;
+app.get("/api/advisor-students/:id", async (req, res) => {
+  const { id } = req.params; // id นี้คือ staff_id
 
   try {
     const pool = await sql.connect(config);
-    const result = await pool.request().input("advisor_id", sql.Int, advisor_id)
+
+    // หา university_id จาก faculty_staff โดยใช้ staff_id
+    const staffResult = await pool.request()
+      .input("staff_id", sql.Int, id)
       .query(`
-              SELECT id, student_id
-              FROM advisor_info
-              WHERE advisor_id = @advisor_id
-          `);
+        SELECT university_id
+        FROM faculty_staff
+        WHERE staff_id = @staff_id
+      `);
+
+    if (staffResult.recordset.length === 0) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลอาจารย์ในระบบ" });
+    }
+
+    const university_id = staffResult.recordset[0].university_id;
+
+    // ใช้ university_id เป็น advisor_id เพื่อ query advisor_info
+    const result = await pool.request()
+      .input("advisor_id", sql.VarChar, university_id)
+      .query(`
+        SELECT id, student_id
+        FROM advisor_info
+        WHERE advisor_id = @advisor_id
+      `);
+
     res.json(result.recordset);
   } catch (err) {
     console.error("Error fetching advisor students:", err);
-    res.status(500).json({ error: "Failed to fetch advisor students" });
+    res.status(500).json({ error: "ไม่สามารถดึงข้อมูลนักศึกษาที่ปรึกษาได้" });
   }
 });
 
+
 app.delete("/api/advisor-students/:id", async (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params; // id นี้คือ staff_id
+  const { advisorInfoId } = req.body; // id ของข้อมูลใน advisor_info ที่จะลบ
 
   try {
     const pool = await sql.connect(config);
-    await pool.request().input("id", sql.Int, id).query(`
-              DELETE FROM advisor_info
-              WHERE id = @id
-          `);
+
+    // หา university_id จาก faculty_staff โดยใช้ staff_id
+    const staffResult = await pool.request()
+      .input("staff_id", sql.Int, id)
+      .query(`
+        SELECT university_id
+        FROM faculty_staff
+        WHERE staff_id = @staff_id
+      `);
+
+    if (staffResult.recordset.length === 0) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลอาจารย์ในระบบ" });
+    }
+
+    const university_id = staffResult.recordset[0].university_id;
+
+    // ลบข้อมูลจาก advisor_info โดยใช้ advisorInfoId และ advisor_id
+    const deleteResult = await pool.request()
+      .input("advisorInfoId", sql.Int, advisorInfoId)
+      .input("advisor_id", sql.VarChar, university_id)
+      .query(`
+        DELETE FROM advisor_info
+        WHERE id = @advisorInfoId AND advisor_id = @advisor_id
+      `);
+
+    if (deleteResult.rowsAffected[0] === 0) {
+      return res.status(404).json({ error: "ไม่พบข้อมูลที่ต้องการลบหรือคุณไม่มีสิทธิ์ลบข้อมูลนี้" });
+    }
+
     res.json({ success: true });
   } catch (err) {
     console.error("Error deleting advisor student:", err);
-    res.status(500).json({ error: "Failed to delete advisor student" });
+    res.status(500).json({ error: "ไม่สามารถลบนักศึกษาที่ปรึกษาได้" });
   }
 });
+
 
 // ดึงรายการรายวิชาทั้งหมด
 app.get("/api/courses", async (req, res) => {
